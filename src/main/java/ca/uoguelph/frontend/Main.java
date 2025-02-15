@@ -1,10 +1,9 @@
 package ca.uoguelph.frontend;
 
-import ca.uoguelph.backend.*;
+import ca.uoguelph.frontend.App;
 
 public class Main {
     public static void main(String[] args) {
-        new database("database/UMS_Data.xlsx");
-        database.print();
+        App.main(args);
     }
 }
