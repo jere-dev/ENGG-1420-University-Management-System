@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17">
+    <left>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <Label text="Navigation" style="-fx-font-weight: bold;"/>
+            <Button text="Subject Manager" style="-fx-pref-width: 150;"/>
+            <Button text="Student List/Search" style="-fx-pref-width: 150;"/>
+            <Button text="Faculty List/Search" style="-fx-pref-width: 150;"/>
+            <Button text="Event Manager" style="-fx-pref-width: 150;"/>
+            <Button text="Course Catalog" style="-fx-pref-width: 150;"/>
+            <Button text="Profile" style="-fx-pref-width: 150;"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <Label text="Upcoming Events" style="-fx-font-size: 18;"/>
+            <ListView prefHeight="300">
+            </ListView>
+        </VBox>
+    </center>
+</BorderPane>

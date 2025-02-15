@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
+    <TabPane>
+        <Tab text="Personal Info">
+            <VBox>
+                <TextField promptText="Name"/>
+                <TextField promptText="Student ID"/>
+                <TextField promptText="Address"/>
+            </VBox>
+        </Tab>
+        <Tab text="Academic Records">
+            <TableView>
+                <columns>
+                    <TableColumn text="Course"/>
+                    <TableColumn text="Grade"/>
+                </columns>
+            </TableView>
+        </Tab>
+    </TabPane>
+    <Button text="Save Changes"/>
+</VBox>

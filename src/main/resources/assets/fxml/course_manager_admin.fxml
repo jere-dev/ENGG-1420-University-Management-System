@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
+    <HBox spacing="10">
+        <Button text="Add Course"/>
+        <Button text="Edit Course"/>
+        <Button text="Delete Course"/>
+    </HBox>
+    <TableView>
+        <columns>
+            <TableColumn text="Course Code"/>
+            <TableColumn text="Course Name"/>
+            <TableColumn text="Faculty"/>
+        </columns>
+    </TableView>
+</VBox>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane style="-fx-background-color: linear-gradient(to bottom right, #4a90e2, #6a11cb);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <VBox alignment="CENTER" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 10; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);">
+            <ImageView fitHeight="100" fitWidth="100">
+                <image>
+                    <Image url="@../images/Default_pfp.jpg" />
+                </image>
+            </ImageView>
+            <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="University Management System" />
+
+            <TextField promptText="Username" style="-fx-pref-width: 250; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+            <PasswordField promptText="Password" style="-fx-pref-width: 250; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+            <Button style="-fx-pref-width: 250; -fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5;" text="Login">
+                <effect>
+                    <DropShadow color="#00000055" radius="5" />
+                </effect>
+            </Button>
+
+            <Hyperlink style="-fx-text-fill: #4a90e2; -fx-font-size: 12;" text="Forgot Password?" />
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="414.0" style="-fx-padding: 10; -fx-background-color: rgba(0, 0, 0, 0.1);">
+            <Text style="-fx-font-size: 12; -fx-fill: white;" text="© 2025 University Management System" />
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17">
+    <top>
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Button text="Add Event"/>
+            <Button text="Edit Event"/>
+            <Button text="Delete Event"/>
+        </HBox>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.5">
+            <TableView prefWidth="300">
+                <columns>
+                    <TableColumn text="Event Name"/>
+                    <TableColumn text="Date"/>
+                </columns>
+            </TableView>
+            <DatePicker/>
+        </SplitPane>
+    </center>
+</BorderPane>

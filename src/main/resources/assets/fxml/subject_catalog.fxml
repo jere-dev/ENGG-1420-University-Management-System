@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
+    <TableView>
+        <columns>
+            <TableColumn text="Subject Code"/>
+            <TableColumn text="Subject Name"/>
+        </columns>
+    </TableView>
+</VBox>

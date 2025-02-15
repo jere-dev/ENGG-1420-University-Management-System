@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
+    <HBox spacing="20">
+        <ImageView fitWidth="100" fitHeight="100"/>
+        <Button text="Upload Photo"/>
+    </HBox>
+    <TextField promptText="Name" editable="false"/>
+    <TextField promptText="Student ID" editable="false"/>
+    <PasswordField promptText="Change Password"/>
+    <Button text="Save Changes" style="-fx-pref-width: 120;"/>
+</VBox>
