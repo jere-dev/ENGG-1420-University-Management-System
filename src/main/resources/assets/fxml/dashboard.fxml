@@ -1,24 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <!-- Sidebar -->
     <left>
-        <VBox spacing="10" style="-fx-padding: 10;">
-            <Label text="Navigation" style="-fx-font-weight: bold;"/>
-            <Button text="Subject Manager" style="-fx-pref-width: 150;"/>
-            <Button text="Student List/Search" style="-fx-pref-width: 150;"/>
-            <Button text="Faculty List/Search" style="-fx-pref-width: 150;"/>
-            <Button text="Event Manager" style="-fx-pref-width: 150;"/>
-            <Button text="Course Catalog" style="-fx-pref-width: 150;"/>
-            <Button text="Profile" style="-fx-pref-width: 150;"/>
+        <VBox spacing="20" style="-fx-background-color: #2c3e50; -fx-padding: 20; -fx-alignment: top-center;">
+            <!-- Logo -->
+            <ImageView fitHeight="80" fitWidth="80">
+                <image>
+                    <Image url="@../assets/images/Default_pfp.jpg" />
+                </image>
+            </ImageView>
+
+            <!-- Navigation Buttons with Icons -->
+            <Button contentDisplay="CENTER" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Subject Manager">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                            <Image url="@../assets/images/subject_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button contentDisplay="CENTER" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Student List">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                            <Image url="@../assets/images/student_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button contentDisplay="CENTER" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Faculty List">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                            <Image url="@../assets/images/faculty_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button contentDisplay="CENTER" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Event Manager">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                            <Image url="@../assets/images/event_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button contentDisplay="CENTER" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Course Catalog">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                            <Image url="@../assets/images/course_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button contentDisplay="CENTER" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Profile">
+                <graphic>
+                    <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                            <Image url="@../assets/images/profile_icon.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
         </VBox>
     </left>
+
+    <!-- Main Content -->
     <center>
-        <VBox spacing="10" style="-fx-padding: 20;">
-            <Label text="Upcoming Events" style="-fx-font-size: 18;"/>
-            <ListView prefHeight="300">
-            </ListView>
+        <VBox spacing="20" style="-fx-padding: 20;">
+            <!-- Welcome Message -->
+            <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="Welcome, Admin!" />
+
+            <!-- Key Metrics Cards -->
+            <HBox spacing="20">
+                <!-- Total Students Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Total Students" />
+                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #4a90e2;" text="1,234" />
+                </VBox>
+
+                <!-- Total Courses Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Total Courses" />
+                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #6a11cb;" text="56" />
+                </VBox>
+
+                <!-- Upcoming Events Card -->
+                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Upcoming Events" />
+                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #e67e22;" text="12" />
+                </VBox>
+            </HBox>
+
+            <!-- Upcoming Events List -->
+            <VBox spacing="10">
+                <Text style="-fx-font-size: 20; -fx-font-weight: bold; -fx-fill: #333333;" text="Upcoming Events" />
+                <ListView prefHeight="200" style="-fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0); -fx-background-color: white;">
+                    <!-- Event items will populate here -->
+                </ListView>
+            </VBox>
         </VBox>
     </center>
 </BorderPane>
