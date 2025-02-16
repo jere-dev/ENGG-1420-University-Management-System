@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.CourseCatalogController" style="-fx-padding: 20;">
     <TableView>
         <columns>
             <TableColumn text="Course Code"/>
