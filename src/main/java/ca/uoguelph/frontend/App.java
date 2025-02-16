@@ -1,35 +1,27 @@
 package ca.uoguelph.frontend;
 
-import ca.uoguelph.backend.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) {
-        // Create a simple UI
-        try {
-            String path = getClass().getResource("").getPath();
-System.out.println("Absolute Path: " + path);
-            Parent root = FXMLLoader.load(getClass().getResource("/assets/fxml/Main.fxml"));
-            Scene scene = new Scene(root, 400, 200);
-    
-            // Set up the stage
-            stage.setTitle("University Management System");
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void start(Stage primaryStage) throws Exception {
+        // Load the login screen FXML from the assets folder
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
+        Parent root = loader.load();
+
+        // Set up the scene and stage
+        Scene scene = new Scene(root, 800, 600);
+        primaryStage.setTitle("University Management System");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch(args); // Start JavaFX
+        launch(args);
     }
 }
