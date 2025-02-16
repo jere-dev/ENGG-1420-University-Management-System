@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.EventManagerController" style="-fx-padding: 20;">
     <top>
         <HBox spacing="10" style="-fx-padding: 10;">
             <Button text="Add Event"/>

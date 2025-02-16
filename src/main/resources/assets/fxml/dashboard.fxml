@@ -7,41 +7,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.DashboardController">
+<BorderPane style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.DashboardController">
     <left>
         <VBox spacing="20" style="-fx-background-color: #2b3e50; -fx-padding: 20; -fx-alignment: top-center;">
             <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: white;" text="UMS" />
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Dashboard">
+            <Button text="Dashboard" onAction="#handleDashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="🏠" />
                 </graphic>
             </Button>
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Subject Manager">
+            <Button text="Subject Manager" onAction="#handleSubjectManager" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="📚" />
                 </graphic>
             </Button>
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Student List">
+            <Button text="Student List" onAction="#handleStudentList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="👨‍🎓" />
                 </graphic>
             </Button>
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Faculty List">
+            <Button text="Faculty List" onAction="#handleFacultyList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="👩‍🏫" />
                 </graphic>
             </Button>
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Event Manager">
+            <Button text="Event Manager" onAction="#handleEventManager" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="📅" />
                 </graphic>
             </Button>
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Course Catalog">
+            <Button text="Course Catalog" onAction="#handleCourseCatalog" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="📖" />
                 </graphic>
             </Button>
-            <Button style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;" text="Profile">
+            <Button text="Profile" onAction="#handleProfile" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
                 <graphic>
                     <Text style="-fx-font-size: 16;" text="👤" />
                 </graphic>
