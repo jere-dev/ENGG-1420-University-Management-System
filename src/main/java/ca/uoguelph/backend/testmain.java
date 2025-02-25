@@ -1,6 +1,6 @@
 package ca.uoguelph.backend;
 
-public class testmain {
+public class Testmain {
     public static void main(String[] args) {
         /*
          * first subject

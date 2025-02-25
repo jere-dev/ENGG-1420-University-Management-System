@@ -1,27 +1,26 @@
 package ca.uoguelph.backend;
 
 
-import java.io.File; 
-import java.io.FileInputStream; 
-import org.apache.poi.ss.usermodel.Cell;  
-import org.apache.poi.ss.usermodel.Row;  
-import org.apache.poi.xssf.usermodel.XSSFSheet;  
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;  
+import java.io.File;
+import java.io.FileInputStream;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class database {
+public class Database {
     private static FileInputStream file;
     private static XSSFWorkbook workbook;
 
-    public database(String path){
+    public Database(String path){
         try {
             file = new FileInputStream(new File(path));
-            workbook = new XSSFWorkbook(file); 
+            workbook = new XSSFWorkbook(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
     public static void print(){
         XSSFSheet sheet = workbook.getSheetAt(0);  // Read first sheet
         for(Row row : sheet){

@@ -14,7 +14,7 @@ public class Prof {
 
     ArrayList<Event> events;
 
-    Prof(String _name, String _profilePhoto, String _degree, String _researchInterest, String _email,
+    public Prof(String _name, String _profilePhoto, String _degree, String _researchInterest, String _email,
             String _officeLocation) {
         this.name = _name;
         this.profilePhoto = _profilePhoto;

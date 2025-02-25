@@ -5,14 +5,14 @@ import java.util.HashMap;
 public class ProfManager {
     private static HashMap<String, Prof> profs = new HashMap<String, Prof>();
 
-    ProfManager() {
-        LoadProfs();
-    }
-
     public static void LoadProfs() {
         // TODO: load from excel
         // then use prof.addCourse(CourseManager.get("string from excel"));
         // then use prof.addEvent(EventManager.get("string from excel"));
+    }
+
+    public static Prof getProf(String _name){
+        return profs.get(_name);
     }
 
     public static void addCourse(Prof _prof, Course _course){

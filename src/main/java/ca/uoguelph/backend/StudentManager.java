@@ -3,11 +3,7 @@ package ca.uoguelph.backend;
 import java.util.HashMap;
 
 public class StudentManager {
-    public static HashMap<String, Student> students;
-
-    StudentManager(){
-
-    }
+    private static HashMap<String, Student> students = new HashMap<String, Student>();
 
     public static void loadStudents(){
         //TODO: load from excel
@@ -23,4 +19,11 @@ public class StudentManager {
         _student.removeSelf();
         //TODO: remove from excel
     }
+
+    public static Student getStudent(String _name){
+        return students.get(_name);
+    }
+
+    //TODO: search function
+
 }

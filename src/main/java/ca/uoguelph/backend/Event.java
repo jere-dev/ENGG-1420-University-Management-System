@@ -17,7 +17,7 @@ public class Event {
     ArrayList<Student> students;
     ArrayList<Prof> profs;
 
-    Event(
+    public Event(
             String _name, String _code, String _description, String _image, String _location, String _dateAndTime,
             int _capacity, String _cost) {
         this.name = _name;

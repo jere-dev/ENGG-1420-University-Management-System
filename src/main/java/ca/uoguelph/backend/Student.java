@@ -6,7 +6,7 @@ public class Student {
     String name;
     String ID;
 
-    // repersent this as a path
+    // represent this as a path
     String profilePhoto;
     String address;
     String telephone; // should this be an int?
@@ -27,7 +27,7 @@ public class Student {
     ArrayList<Prof> profs;
     ArrayList<Event> events;
 
-    Student(String _name, String _ID, String _profilePhoto, String _address, String _telephone, String _emailAddress,
+    public Student(String _name, String _ID, String _profilePhoto, String _address, String _telephone, String _emailAddress,
             String _currentSemester, String _academicLevel, String _thesisTitle, float _progress) {
         this.name = _name;
         this.ID = _ID;

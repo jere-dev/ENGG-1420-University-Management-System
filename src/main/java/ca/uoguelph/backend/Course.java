@@ -17,7 +17,7 @@ public class Course {
     Prof prof;
     ArrayList<Student> students;
 
-    Course(String _name, String _code, int _capacity, String _section, String _lecTime, String _examDate,
+    public Course(String _name, String _code, int _capacity, String _section, String _lecTime, String _examDate,
             String _location, Subject _subject) {
         this.name = _name;
         this.code = _code;

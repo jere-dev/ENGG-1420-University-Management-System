@@ -5,10 +5,6 @@ import java.util.HashMap;
 public class EventManager {
     private static HashMap<String, Event> events = new HashMap<String, Event>();
 
-    EventManager(){
-
-    }
-
     public static void load(){
         //TODO: load from excel
         //dont try link to others, others will link to it
@@ -20,4 +16,10 @@ public class EventManager {
 
         //TODO: remove from excel
     }
+
+    public static Event getEvent(String _name){
+        return events.get(_name);
+    }
+
+    //TODO: search function
 }

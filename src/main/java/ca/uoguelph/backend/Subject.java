@@ -10,7 +10,7 @@ public class Subject {
     // TODO: make better name
     ArrayList<Course> courses;
 
-    Subject(String _name, String _code) {
+    public Subject(String _name, String _code) {
         this.name = _name;
         this.code = _code;
         this.courses = new ArrayList<Course>();

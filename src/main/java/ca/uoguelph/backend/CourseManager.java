@@ -2,15 +2,11 @@ package ca.uoguelph.backend;
 
 import java.util.HashMap;
 
-public class CourseManger {
+public class CourseManager {
     private static HashMap<String, Course> courses = new HashMap<String, Course>();
 
-    public CourseManger() {
-        loadCourses();
-    }
-
     public static void loadCourses() {
-        // TDOD: load courses
+        // TODO: load courses
     }
 
     public static void removeCourse(Course _course) {

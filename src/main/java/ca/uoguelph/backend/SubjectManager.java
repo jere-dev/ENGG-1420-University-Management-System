@@ -5,10 +5,6 @@ import java.util.HashMap;
 public class SubjectManager {
     private static HashMap<String, Subject> subjects = new HashMap<String, Subject>();
 
-    public SubjectManager(){
-        loadSubjects();
-    }
-
     public static void loadSubjects(){
         //TODO: load from excel
     }
@@ -24,7 +20,7 @@ public class SubjectManager {
         //TODO: add to excel
     }
 
-    public static Subject getCourse(String _name){
+    public static Subject getSubject(String _name){
         return subjects.get(_name);
     }
 
@@ -32,6 +28,6 @@ public class SubjectManager {
         //TODO: remove course from excel
     }
 
-    //TODO: implement search function 
+    //TODO: implement search function
 
 }
