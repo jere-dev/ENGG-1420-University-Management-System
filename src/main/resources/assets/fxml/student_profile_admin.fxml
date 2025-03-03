@@ -1,24 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
-    <TabPane>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.StudentProfileController">
+    <HBox spacing="10" style="-fx-alignment: center-left;">
+        <Button onAction="#handleBackToDashboard" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5;" text="Back to Dashboard">
+            <effect>
+                <DropShadow color="#00000055" radius="5" />
+            </effect>
+        </Button>
+        <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="Student Profile" />
+    </HBox>
+
+    <HBox spacing="20" style="-fx-alignment: center-left;">
+        <ImageView fx:id="profilePhoto" fitHeight="100" fitWidth="100" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);">
+            <image>
+                <Image url="@../images/Default_pfp.jpg" />
+            </image>
+        </ImageView>
+        <VBox spacing="10">
+            <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Name: Sarah" />
+            <Label style="-fx-font-size: 14; -fx-text-fill: #666666;" text="Student ID: 1234567890" />
+            <Label style="-fx-font-size: 14; -fx-text-fill: #666666;" text="Academic Level: Undergraduate" />
+            <Label style="-fx-font-size: 14; -fx-text-fill: #666666;" text="Progress: 50%" />
+        </VBox>
+    </HBox>
+
+    <TabPane style="-fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
         <Tab text="Personal Info">
-            <VBox>
-                <TextField promptText="Name"/>
-                <TextField promptText="Student ID"/>
-                <TextField promptText="Address"/>
+            <VBox spacing="10" style="-fx-padding: 20;">
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Address" />
+                <TextField fx:id="addressField" promptText="Enter Address" style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Telephone" />
+                <TextField fx:id="telephoneField" promptText="Enter Telephone" style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Email Address" />
+                <TextField fx:id="emailField" promptText="Enter Email" style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
             </VBox>
         </Tab>
-        <Tab text="Academic Records">
-            <TableView>
-                <columns>
-                    <TableColumn text="Course"/>
-                    <TableColumn text="Grade"/>
-                </columns>
-            </TableView>
+
+        <Tab text="Academic Info">
+            <VBox spacing="10" style="-fx-padding: 20;">
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Current Semester" />
+                <TextField fx:id="currentSemesterField" promptText="Enter Current Semester" style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Thesis Title (Ph.D. Only)" />
+                <TextField fx:id="thesisTitleField" promptText="Enter Thesis Title" style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Tuition Fee Status" />
+                <TextField fx:id="tuitionField" promptText="Enter Tuition Fee Status" style="-fx-pref-width: 300; -fx-padding: 10; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+            </VBox>
+        </Tab>
+
+        <Tab text="Courses &amp; Grades">
+            <VBox spacing="10" style="-fx-padding: 20;">
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Registered Courses" />
+                <ListView fx:id="registeredCoursesList" style="-fx-pref-width: 300; -fx-pref-height: 100; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
+
+                <Label style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Grades" />
+                <TableView fx:id="gradesTable" style="-fx-pref-width: 600; -fx-pref-height: 200; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;">
+                    <columns>
+                        <TableColumn style="-fx-font-weight: bold;" text="Course" />
+                        <TableColumn style="-fx-font-weight: bold;" text="Grade" />
+                    </columns>
+                </TableView>
+            </VBox>
         </Tab>
     </TabPane>
-    <Button text="Save Changes"/>
+
+    <Button onAction="#handleSaveChanges" style="-fx-background-color: #6a11cb; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5;" text="Save Changes">
+        <effect>
+            <DropShadow color="#00000055" radius="5" />
+        </effect>
+    </Button>
 </VBox>

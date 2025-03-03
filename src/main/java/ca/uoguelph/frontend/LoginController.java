@@ -28,7 +28,7 @@ public class LoginController {
         String password = passwordField.getText();
 
         // Check if username and password are "admin"
-        if ("admin".equals(username) && "admin".equals(password)) {
+        if ("".equals(username) && "".equals(password)) {
             System.out.println("Login successful! Redirecting to Dashboard...");
 
             try {

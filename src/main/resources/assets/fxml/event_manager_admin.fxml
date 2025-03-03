@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.EventManagerController" style="-fx-padding: 20;">
+<BorderPane style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.EventManagerController">
     <top>
         <HBox spacing="10" style="-fx-padding: 10;">
-            <Button text="Add Event"/>
-            <Button text="Edit Event"/>
-            <Button text="Delete Event"/>
+            <Button text="Add Event" />
+            <Button text="Edit Event" />
+            <Button text="Delete Event" />
         </HBox>
     </top>
     <center>
         <SplitPane dividerPositions="0.5">
             <TableView prefWidth="300">
                 <columns>
-                    <TableColumn text="Event Name"/>
-                    <TableColumn text="Date"/>
+                    <TableColumn prefWidth="121.0" text="Event Name" />
+                    <TableColumn prefWidth="112.0" text="Date" />
                 </columns>
             </TableView>
-            <DatePicker/>
+            <DatePicker />
         </SplitPane>
     </center>
 </BorderPane>

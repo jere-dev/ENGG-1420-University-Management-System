@@ -1,79 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.DashboardController">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ca.uoguelph.frontend.DashboardController"
+            prefHeight="600.0" prefWidth="800.0">
+
+    <!-- Left Navigation Panel -->
     <left>
-        <VBox spacing="20" style="-fx-background-color: #2b3e50; -fx-padding: 20; -fx-alignment: top-center;">
-            <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: white;" text="UMS" />
-            <Button text="Dashboard" onAction="#handleDashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="🏠" />
-                </graphic>
-            </Button>
-            <Button text="Subject Manager" onAction="#handleSubjectManager" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="📚" />
-                </graphic>
-            </Button>
-            <Button text="Student List" onAction="#handleStudentList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="👨‍🎓" />
-                </graphic>
-            </Button>
-            <Button text="Faculty List" onAction="#handleFacultyList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="👩‍🏫" />
-                </graphic>
-            </Button>
-            <Button text="Event Manager" onAction="#handleEventManager" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="📅" />
-                </graphic>
-            </Button>
-            <Button text="Course Catalog" onAction="#handleCourseCatalog" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="📖" />
-                </graphic>
-            </Button>
-            <Button text="Profile" onAction="#handleProfile" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="👤" />
-                </graphic>
-            </Button>
+        <VBox fx:id="sideNav" prefWidth="200.0" style="-fx-background-color: #8B0000;" minWidth="60.0">
+            <!-- Header with University Name and Toggle Button -->
+            <HBox alignment="CENTER_LEFT" style="-fx-border-color: transparent transparent #FFD700 transparent; -fx-border-width: 0 0 1 0;">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                <ImageView fx:id="universityLogo" fitWidth="150" fitHeight="40" preserveRatio="true">
+                    <Image url="@../images/university_logo.png"/>
+                </ImageView>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="toggleNavButton" onAction="#toggleNavigation" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                    <graphic>
+                        <ImageView fitWidth="20" fitHeight="20">
+                            <Image url="@../images/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <!-- Navigation Items -->
+            <VBox fx:id="navItems" spacing="5" VBox.vgrow="ALWAYS">
+                <!-- Dashboard Navigation Item -->
+                <HBox fx:id="dashboardNav" onMouseClicked="#navigateToDashboard"
+                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </ImageView>
+                    <Label fx:id="dashboardLabel" text="DASHBOARD" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <HBox.margin>
+                            <Insets left="10"/>
+                        </HBox.margin>
+                    </Label>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+
+                <!-- Subject Navigation Item -->
+                <HBox fx:id="subjectNav" onMouseClicked="#navigateToSubject"
+                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </ImageView>
+                    <Label fx:id="subjectLabel" text="SUBJECT" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <HBox.margin>
+                            <Insets left="10"/>
+                        </HBox.margin>
+                    </Label>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+
+                <!-- Course Navigation Item -->
+                <HBox fx:id="courseNav" onMouseClicked="#navigateToCourse"
+                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </ImageView>
+                    <Label fx:id="courseLabel" text="COURSE" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <HBox.margin>
+                            <Insets left="10"/>
+                        </HBox.margin>
+                    </Label>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+
+                <!-- Student Navigation Item -->
+                <HBox fx:id="studentNav" onMouseClicked="#navigateToStudent"
+                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </ImageView>
+                    <Label fx:id="studentLabel" text="STUDENT" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <HBox.margin>
+                            <Insets left="10"/>
+                        </HBox.margin>
+                    </Label>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+
+                <!-- Faculty Navigation Item -->
+                <HBox fx:id="facultyNav" onMouseClicked="#navigateToFaculty"
+                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </ImageView>
+                    <Label fx:id="facultyLabel" text="FACULTY" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <HBox.margin>
+                            <Insets left="10"/>
+                        </HBox.margin>
+                    </Label>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+
+                <HBox fx:id="eventNav" onMouseClicked="#navigateToEvent"
+                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </ImageView>
+                    <Label fx:id="eventLabel" text="EVENT" style="-fx-text-fill: white; -fx-font-weight: bold;">
+                        <HBox.margin>
+                            <Insets left="10"/>
+                        </HBox.margin>
+                    </Label>
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </HBox>
+            </VBox>
+
+            <!-- Bottom Section for User Info (Optional) -->
+            <HBox fx:id="userInfoSection" style="-fx-border-color: #FFD700 transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-alignment: center-left;">
+                <ImageView fitWidth="32" fitHeight="32">
+                    <Image url="@../images/Default_pfp.jpg"/>
+                </ImageView>
+                <VBox>
+                    <Label fx:id="userNameLabel" text="User Name" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Label fx:id="userRoleLabel" text="Role" style="-fx-text-fill: white; -fx-font-size: 10pt;"/>
+                </VBox>
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </HBox>
         </VBox>
     </left>
 
+    <!-- Main Content Area -->
     <center>
-        <VBox spacing="20" style="-fx-padding: 20;">
-            <HBox spacing="10" style="-fx-alignment: center-left;">
-                <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="Welcome, Admin!" />
-            </HBox>
-
-            <HBox spacing="20">
-                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Total Students" />
-                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #4a90e2;" text="1,234" />
-                </VBox>
-                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Total Courses" />
-                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #6a11cb;" text="56" />
-                </VBox>
-                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Upcoming Events" />
-                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #e67e22;" text="12" />
-                </VBox>
-            </HBox>
-            <VBox spacing="10">
-                <Text style="-fx-font-size: 20; -fx-font-weight: bold; -fx-fill: #333333;" text="Upcoming Events" />
-                <ListView prefHeight="200" style="-fx-background-radius: 10; padd: 20; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                </ListView>
-            </VBox>
-        </VBox>
+        <StackPane fx:id="contentArea">
+            <!-- Content will be loaded here dynamically -->
+        </StackPane>
     </center>
 </BorderPane>
