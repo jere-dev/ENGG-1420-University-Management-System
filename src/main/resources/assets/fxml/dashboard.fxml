@@ -5,6 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -13,9 +14,9 @@
 
     <!-- Left Navigation Panel -->
     <left>
-        <VBox fx:id="sideNav" prefWidth="200.0" style="-fx-background-color: #8B0000;" minWidth="60.0">
+        <VBox fx:id="sideNav" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #941B0C, #7B1609);" minWidth="60.0">
             <!-- Header with University Name and Toggle Button -->
-            <HBox alignment="CENTER_LEFT" style="-fx-border-color: transparent transparent #FFD700 transparent; -fx-border-width: 0 0 1 0;">
+            <HBox alignment="CENTER_LEFT" style="-fx-border-color: transparent transparent #F6AA1C transparent; -fx-border-width: 0 0 1 0;">
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
@@ -25,9 +26,13 @@
                 <Region HBox.hgrow="ALWAYS" />
                 <Button fx:id="toggleNavButton" onAction="#toggleNavigation" style="-fx-background-color: transparent; -fx-cursor: hand;">
                     <graphic>
-                        <ImageView fitWidth="20" fitHeight="20">
-                            <Image url="@../images/menu-icon.png"/>
-                        </ImageView>
+                        <VBox fx:id="menuIcon" spacing="4" alignment="CENTER">
+                            <children>
+                                <Rectangle width="20" height="2" fill="#F6AA1C"/>
+                                <Rectangle width="20" height="2" fill="#F6AA1C"/>
+                                <Rectangle width="20" height="2" fill="#F6AA1C"/>
+                            </children>
+                        </VBox>
                     </graphic>
                 </Button>
             </HBox>
@@ -35,103 +40,62 @@
             <!-- Navigation Items -->
             <VBox fx:id="navItems" spacing="5" VBox.vgrow="ALWAYS">
                 <!-- Dashboard Navigation Item -->
-                <HBox fx:id="dashboardNav" onMouseClicked="#navigateToDashboard"
-                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                <HBox fx:id="dashboardNav" styleClass="nav-item">
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="@../images/Default_pfp.jpg"/>
+                        <Image url="@../images/dashboard-icon.png"/>
                     </ImageView>
-                    <Label fx:id="dashboardLabel" text="DASHBOARD" style="-fx-text-fill: white; -fx-font-weight: bold;">
-                        <HBox.margin>
-                            <Insets left="10"/>
-                        </HBox.margin>
-                    </Label>
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
+                    <Label fx:id="dashboardLabel" text="DASHBOARD" 
+                           style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-color: #333333; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;"/>
                 </HBox>
 
                 <!-- Subject Navigation Item -->
-                <HBox fx:id="subjectNav" onMouseClicked="#navigateToSubject"
-                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                <HBox fx:id="subjectNav" styleClass="nav-item">
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="@../images/Default_pfp.jpg"/>
+                        <Image url="@../images/subject-icon.png"/>
                     </ImageView>
-                    <Label fx:id="subjectLabel" text="SUBJECT" style="-fx-text-fill: white; -fx-font-weight: bold;">
-                        <HBox.margin>
-                            <Insets left="10"/>
-                        </HBox.margin>
-                    </Label>
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
+                    <Label fx:id="subjectLabel" text="SUBJECTS"
+                           style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-color: #333333; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;"/>
                 </HBox>
 
                 <!-- Course Navigation Item -->
-                <HBox fx:id="courseNav" onMouseClicked="#navigateToCourse"
-                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                <HBox fx:id="courseNav" styleClass="nav-item">
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="@../images/Default_pfp.jpg"/>
+                        <Image url="@../images/course-icon.png"/>
                     </ImageView>
-                    <Label fx:id="courseLabel" text="COURSE" style="-fx-text-fill: white; -fx-font-weight: bold;">
-                        <HBox.margin>
-                            <Insets left="10"/>
-                        </HBox.margin>
-                    </Label>
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
+                    <Label fx:id="courseLabel" text="COURSES"
+                           style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-color: #333333; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;"/>
                 </HBox>
 
                 <!-- Student Navigation Item -->
-                <HBox fx:id="studentNav" onMouseClicked="#navigateToStudent"
-                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                <HBox fx:id="studentNav" styleClass="nav-item">
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="@../images/Default_pfp.jpg"/>
+                        <Image url="@../images/student-icon.png"/>
                     </ImageView>
-                    <Label fx:id="studentLabel" text="STUDENT" style="-fx-text-fill: white; -fx-font-weight: bold;">
-                        <HBox.margin>
-                            <Insets left="10"/>
-                        </HBox.margin>
-                    </Label>
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
+                    <Label fx:id="studentLabel" text="STUDENTS"
+                           style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-color: #333333; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;"/>
                 </HBox>
 
                 <!-- Faculty Navigation Item -->
-                <HBox fx:id="facultyNav" onMouseClicked="#navigateToFaculty"
-                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                <HBox fx:id="facultyNav" styleClass="nav-item">
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="@../images/Default_pfp.jpg"/>
+                        <Image url="@../images/faculty-icon.png"/>
                     </ImageView>
-                    <Label fx:id="facultyLabel" text="FACULTY" style="-fx-text-fill: white; -fx-font-weight: bold;">
-                        <HBox.margin>
-                            <Insets left="10"/>
-                        </HBox.margin>
-                    </Label>
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
+                    <Label fx:id="facultyLabel" text="FACULTY"
+                           style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-color: #333333; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;"/>
                 </HBox>
 
-                <HBox fx:id="eventNav" onMouseClicked="#navigateToEvent"
-                      style="-fx-background-color: transparent; -fx-cursor: hand; -fx-alignment: center;">
+                <!-- Event Navigation Item -->
+                <HBox fx:id="eventNav" styleClass="nav-item">
                     <ImageView fitWidth="24" fitHeight="24">
-                        <Image url="@../images/Default_pfp.jpg"/>
+                        <Image url="@../images/event-icon.png"/>
                     </ImageView>
-                    <Label fx:id="eventLabel" text="EVENT" style="-fx-text-fill: white; -fx-font-weight: bold;">
-                        <HBox.margin>
-                            <Insets left="10"/>
-                        </HBox.margin>
-                    </Label>
-                    <padding>
-                        <Insets top="10" right="10" bottom="10" left="10"/>
-                    </padding>
+                    <Label fx:id="eventLabel" text="EVENTS"
+                           style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-color: #333333; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;"/>
                 </HBox>
             </VBox>
 
             <!-- Bottom Section for User Info (Optional) -->
-            <HBox fx:id="userInfoSection" style="-fx-border-color: #FFD700 transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-alignment: center-left;">
+            <HBox fx:id="userInfoSection" style="-fx-border-color: #F6AA1C transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-alignment: center-left;">
                 <ImageView fitWidth="32" fitHeight="32">
                     <Image url="@../images/Default_pfp.jpg"/>
                 </ImageView>

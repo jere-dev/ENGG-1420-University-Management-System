@@ -1,5 +1,11 @@
 package ca.uoguelph.frontend;
 
+// Add these imports
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,42 +18,97 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.stage.StageStyle;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
+import javafx.animation.RotateTransition;
+import javafx.util.Duration;
 
 public class DashboardController {
+    private static final Logger LOGGER = Logger.getLogger(DashboardController.class.getName());
 
-    @FXML
-    private VBox sideNav;
-
-    @FXML
-    private StackPane contentArea;
-
-    @FXML
-    private HBox dashboardNav;
-
-    @FXML
-    private HBox subjectNav;
-
-    @FXML
-    private HBox courseNav;
-
-    @FXML
-    private HBox studentNav;
-
-    @FXML
-    private HBox facultyNav;
-
-    @FXML
-    private HBox eventNav;
+    @FXML private VBox sideNav;
+    @FXML private StackPane contentArea;
+    @FXML private HBox dashboardNav;
+    @FXML private HBox subjectNav;
+    @FXML private HBox courseNav;
+    @FXML private HBox studentNav;
+    @FXML private HBox facultyNav;
+    @FXML private HBox eventNav;
+    @FXML private Label userNameLabel;
+    @FXML private Label userRoleLabel;
+    @FXML private VBox menuIcon;
+    
+    private String currentUser;
+    private String userRole;
+    private HBox activeNav;
+    private boolean isExpanded = true;
 
     @FXML
     private void initialize() {
-        // Set up navigation handlers
-        dashboardNav.setOnMouseClicked(event -> navigateToDashboard());
-        subjectNav.setOnMouseClicked(event -> navigateToSubject());
-        courseNav.setOnMouseClicked(event -> navigateToCourse());
-        studentNav.setOnMouseClicked(event -> navigateToStudent());
-        facultyNav.setOnMouseClicked(event -> navigateToFaculty());
-        eventNav.setOnMouseClicked(event -> navigateToEvent());
+        // Set up hover effects for navigation
+        setupHoverEffects(dashboardNav);
+        setupHoverEffects(subjectNav);
+        setupHoverEffects(courseNav);
+        setupHoverEffects(studentNav);
+        setupHoverEffects(facultyNav);
+        setupHoverEffects(eventNav);
+
+        // Set up event handlers using lambda expressions
+        dashboardNav.setOnMouseClicked(e -> handleNavigation(e, "dashboard_content.fxml"));
+        subjectNav.setOnMouseClicked(e -> handleNavigation(e, "subject_manager_admin.fxml"));
+        courseNav.setOnMouseClicked(e -> handleNavigation(e, "course_manager_admin.fxml"));
+        studentNav.setOnMouseClicked(e -> handleNavigation(e, "student_list.fxml"));
+        facultyNav.setOnMouseClicked(e -> handleNavigation(e, "faculty_list.fxml"));
+        eventNav.setOnMouseClicked(e -> handleNavigation(e, "event_manager_admin.fxml"));
+
+        // Set initial active nav and content
+        setActiveNav(dashboardNav);
+        loadContent("dashboard_content.fxml");
+
+        transformToCross(menuIcon.getChildren().toArray(new Rectangle[0])); // Start with cross
+    }
+
+    private void setupHoverEffects(HBox nav) {
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.WHITE);
+        
+        nav.setOnMouseEntered(e -> {
+            if (nav != activeNav) {
+                nav.setStyle("-fx-background-color: #990000; -fx-cursor: hand;");
+                nav.setEffect(shadow);
+            }
+        });
+        
+        nav.setOnMouseExited(e -> {
+            if (nav != activeNav) {
+                nav.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                nav.setEffect(null);
+            }
+        });
+    }
+
+    private void setActiveNav(HBox nav) {
+        if (activeNav != null) {
+            activeNav.setStyle("-fx-background-color: transparent;");
+            activeNav.setEffect(null);
+        }
+        
+        activeNav = nav;
+        activeNav.setStyle("-fx-background-color: #990000;");
+        
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.WHITE);
+        activeNav.setEffect(shadow);
+    }
+
+    private void handleNavigation(MouseEvent event, String fxmlPath) {
+        HBox clickedNav = (HBox) event.getSource();
+        setActiveNav(clickedNav);
+        loadContent(fxmlPath);
     }
 
     @FXML
@@ -55,7 +116,19 @@ public class DashboardController {
         double expandedWidth = 200.0;
         double collapsedWidth = 60.0;
         
-        // Get the logo and other elements
+        Rectangle[] bars = menuIcon.getChildren().toArray(new Rectangle[0]);
+        
+        if (isExpanded) {
+            // Collapse - transform to cross
+            sideNav.setPrefWidth(collapsedWidth);
+            transformToCross(bars);
+        } else {
+            // Expand - transform to bars
+            sideNav.setPrefWidth(expandedWidth);
+            transformToBar(bars);
+        }
+        
+        // Toggle visibility of other elements
         ImageView universityLogo = (ImageView) sideNav.lookup("#universityLogo");
         Label dashboardLabel = (Label) sideNav.lookup("#dashboardLabel");
         Label subjectLabel = (Label) sideNav.lookup("#subjectLabel");
@@ -66,98 +139,118 @@ public class DashboardController {
         Label userNameLabel = (Label) sideNav.lookup("#userNameLabel");
         Label userRoleLabel = (Label) sideNav.lookup("#userRoleLabel");
         
-        // Toggle the width of sideNav
         if (sideNav.getPrefWidth() == expandedWidth) {
             sideNav.setPrefWidth(collapsedWidth);
-            // Hide logo and labels completely
             universityLogo.setManaged(false);
             universityLogo.setVisible(false);
-            dashboardLabel.setVisible(false);
-            subjectLabel.setVisible(false);
-            courseLabel.setVisible(false);
-            studentLabel.setVisible(false);
-            facultyLabel.setVisible(false);
-            eventLabel.setVisible(false);
-            userNameLabel.setVisible(false);
-            userRoleLabel.setVisible(false);
+            setLabelsVisibility(false, dashboardLabel, subjectLabel, courseLabel, 
+                              studentLabel, facultyLabel, eventLabel, 
+                              userNameLabel, userRoleLabel);
         } else {
             sideNav.setPrefWidth(expandedWidth);
-            // Show logo and labels
             universityLogo.setManaged(true);
             universityLogo.setVisible(true);
-            dashboardLabel.setVisible(true);
-            subjectLabel.setVisible(true);
-            courseLabel.setVisible(true);
-            studentLabel.setVisible(true);
-            facultyLabel.setVisible(true);
-            eventLabel.setVisible(true);
-            userNameLabel.setVisible(true);
-            userRoleLabel.setVisible(true);
+            setLabelsVisibility(true, dashboardLabel, subjectLabel, courseLabel, 
+                              studentLabel, facultyLabel, eventLabel, 
+                              userNameLabel, userRoleLabel);
         }
+        
+        isExpanded = !isExpanded;
     }
 
-    @FXML
-    private void navigateToDashboard() {
-        loadContent("/assets/fxml/dashboard_content.fxml");
+    private void transformToCross(Rectangle[] bars) {
+        // Middle bar fade out
+        bars[1].setOpacity(0);
+        
+        // Rotate top bar
+        RotateTransition rotateTop = new RotateTransition(Duration.millis(300), bars[0]);
+        rotateTop.setToAngle(45);
+        rotateTop.setOnFinished(e -> bars[0].setTranslateY(6));
+        rotateTop.play();
+        
+        // Rotate bottom bar
+        RotateTransition rotateBottom = new RotateTransition(Duration.millis(300), bars[2]);
+        rotateBottom.setToAngle(-45);
+        rotateBottom.setOnFinished(e -> bars[2].setTranslateY(-6));
+        rotateBottom.play();
     }
 
-    @FXML
-    private void navigateToSubject() {
-        loadContent("/assets/fxml/subject_manager.fxml");
+    private void transformToBar(Rectangle[] bars) {
+        // Restore middle bar
+        bars[1].setOpacity(1);
+        
+        // Reset top bar
+        RotateTransition rotateTop = new RotateTransition(Duration.millis(300), bars[0]);
+        rotateTop.setToAngle(0);
+        rotateTop.setOnFinished(e -> bars[0].setTranslateY(0));
+        rotateTop.play();
+        
+        // Reset bottom bar
+        RotateTransition rotateBottom = new RotateTransition(Duration.millis(300), bars[2]);
+        rotateBottom.setToAngle(0);
+        rotateBottom.setOnFinished(e -> bars[2].setTranslateY(0));
+        rotateBottom.play();
     }
 
-    @FXML
-    private void navigateToCourse() {
-        loadContent("/assets/fxml/course_manager.fxml");
-    }
-
-    @FXML
-    private void navigateToStudent() {
-        loadContent("/assets/fxml/student_manager.fxml");
-    }
-
-    @FXML
-    private void navigateToFaculty() {
-        loadContent("/assets/fxml/faculty_manager.fxml");
-    }
-
-    @FXML
-    private void navigateToEvent() {
-        loadContent("/assets/fxml/event_manager.fxml");
+    private void setLabelsVisibility(boolean visible, Label... labels) {
+        for (Label label : labels) {
+            if (label != null) {
+                label.setVisible(visible);
+            }
+        }
     }
 
     private void loadContent(String fxmlFile) {
         try {
-            // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            String resourcePath = "/assets/fxml/" + fxmlFile;
+            LOGGER.info("Loading resource: " + resourcePath);
+            
+            // Try different ways to load the resource
+            URL resource = DashboardController.class.getResource(resourcePath);
+            if (resource == null) {
+                resource = DashboardController.class.getClassLoader().getResource(resourcePath.substring(1));
+            }
+            if (resource == null) {
+                LOGGER.severe("Resource not found: " + resourcePath);
+                LOGGER.info("Class loader: " + DashboardController.class.getClassLoader());
+                LOGGER.info("Working directory: " + System.getProperty("user.dir"));
+                throw new IOException("Cannot find resource: " + resourcePath);
+            }
+            
+            LOGGER.info("Resource found at: " + resource.toString());
+            FXMLLoader loader = new FXMLLoader(resource);
             Parent content = loader.load();
-
-            // Set the content in the contentArea
-            contentArea.getChildren().setAll(content);
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+            
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error loading content: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Error loading content", e);
+            showErrorDialog("Error loading content", e.getMessage() + "\nResource path: " + fxmlFile);
         }
     }
 
-    @FXML
-    private void handleBackToDashboard(ActionEvent event) {
-        try {
-            // Load the Dashboard FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
-            Parent root = loader.load();
+    private void showErrorDialog(String title, String message) {
+        Stage dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        VBox root = new VBox(10);
+        root.setStyle("-fx-padding: 10; -fx-background-color: white;");
+        
+        Label titleLabel = new Label(title);
+        titleLabel.setStyle("-fx-font-weight: bold;");
+        Label messageLabel = new Label(message);
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> dialog.close());
+        
+        root.getChildren().addAll(titleLabel, messageLabel, closeButton);
+        dialog.setScene(new Scene(root));
+        dialog.show();
+    }
 
-            // Get the current stage (window)
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Set the new scene (Dashboard)
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Dashboard - Admin");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error loading Dashboard: " + e.getMessage());
-        }
+    public void setUserInfo(String username, String role) {
+        this.currentUser = username;
+        this.userRole = role;
+        
+        if (userNameLabel != null) userNameLabel.setText(username);
+        if (userRoleLabel != null) userRoleLabel.setText(role);
     }
 }

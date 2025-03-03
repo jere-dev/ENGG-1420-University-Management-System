@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ca.uoguelph.frontend.DashboardContentController"
+      spacing="20" alignment="TOP_CENTER"
+      style="-fx-padding: 20;">
+
+    <Label text="Dashboard" 
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+           
+    <GridPane hgap="20" vgap="20" alignment="CENTER">
+        <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0"
+              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 5;">
+            <Label text="Quick Actions" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Button text="View Courses" onAction="#handleCourses"
+                    style="-fx-min-width: 200px;"/>
+            <Button text="View Students" onAction="#handleStudents"
+                    style="-fx-min-width: 200px;"/>
+            <Button text="View Faculty" onAction="#handleFaculty"
+                    style="-fx-min-width: 200px;"/>
+        </VBox>
+
+        <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0"
+              style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 5;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Upcoming Events" 
+                       style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="+" onAction="#addEvent" 
+                        style="-fx-min-width: 30px;"/>
+            </HBox>
+            <ListView fx:id="eventsList" prefHeight="200"/>
+            <VBox fx:id="eventsContainer">
+                <Label text="Upcoming Events:" style="-fx-font-weight: bold;"/>
+            </VBox>
+        </VBox>
+    </GridPane>
+</VBox>
