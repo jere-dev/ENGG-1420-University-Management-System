@@ -8,8 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
 
 public class LoginController {
 
@@ -49,6 +51,13 @@ public class LoginController {
             }
         } else {
             System.out.println("Invalid username or password!");
+        }
+    }
+
+    @FXML
+    public void keyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            loginButton.fire();
         }
     }
 }
