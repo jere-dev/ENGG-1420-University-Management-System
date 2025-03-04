@@ -7,62 +7,88 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.LoginController">
     <center>
-        <VBox alignment="CENTER" maxHeight="500.0" maxWidth="350.0" spacing="15.0" style="-fx-background-color: rgba(255,255,255,0.85); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 0); -fx-padding: 25;">
-            <ImageView fitHeight="80.0" fitWidth="250.0" preserveRatio="true">
-                <VBox.margin>
-                    <Insets bottom="20.0" />
-                </VBox.margin>
-                <Image url="@../images/unilogo.png" />
+      <StackPane fx:id="rootPane">
+         <children>
+            <!-- Normal Background (Sharp) -->
+            <ImageView fx:id="backgroundSharp" preserveRatio="true">
+                <Image url="@../images/bg-2.jpg" />
             </ImageView>
-            <Label text="USERNAME/EMAIL:" textFill="#333333">
-                <font>
-                    <Font name="Graduate" size="14.0" />
-                </font>
-                <VBox.margin>
-                    <Insets bottom="5.0" />
-                </VBox.margin>
-            </Label>
-            <TextField fx:id="usernameField" onKeyPressed="#keyPress" promptText="Enter your username" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-padding: 10 15;">
-                <VBox.margin>
-                    <Insets bottom="15.0" />
-                </VBox.margin>
-            </TextField>
 
-            <Label text="PASSWORD:" textFill="#333333">
-                <font>
-                    <Font name="Graduate" size="14.0" />
-                </font>
-                <VBox.margin>
-                    <Insets bottom="5.0" />
-                </VBox.margin>
-            </Label>
-            <PasswordField fx:id="passwordField" onKeyPressed="#keyPress" promptText="Enter your password" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-padding: 10 15;">
-                <VBox.margin>
-                    <Insets bottom="25.0" />
-                </VBox.margin>
-            </PasswordField>
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" prefHeight="41.0" prefWidth="116.0" style="-fx-font-size: 18;" styleClass="buttonDefault" stylesheets="@../styles/styles.css" text="LOGIN" textAlignment="CENTER" VBox.vgrow="NEVER">
-                <font>
-                    <Font name="System Bold" size="15.0" />
-                </font>
-                <VBox.margin>
-                    <Insets bottom="10.0" />
-                </VBox.margin>
-            <effect>
-               <DropShadow height="10.0" offsetX="2.0" offsetY="2.0" radius="4.5" width="10.0" />
-            </effect>
-            </Button>
-            <Hyperlink alignment="CENTER" contentDisplay="CENTER" style="-fx-border-color: transparent; -fx-padding: 0;" text="Forgot Password?" textAlignment="CENTER" />
-        </VBox>
+            <!-- Blurred Background (Initially Hidden) -->
+            <ImageView fx:id="backgroundBlurred" fitHeight="720.0" fitWidth="1280.0" preserveRatio="true">
+                <Image url="@../images/bg-2.jpg" />
+                <effect>
+                    <GaussianBlur radius="15" />
+                </effect>
+            </ImageView>
+              <VBox fx:id="loginBox" alignment="CENTER" maxHeight="500.0" maxWidth="350.0" prefHeight="500.0" prefWidth="354.0" style="-fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 0); -fx-background-color: #FFFFFF55; -fx-border-color: #FFFFFF; -fx-border-radius: 15;" StackPane.alignment="CENTER">
+                  <ImageView fitHeight="80.0" fitWidth="250.0" preserveRatio="true">
+                      <VBox.margin>
+                          <Insets bottom="20.0" />
+                      </VBox.margin>
+                      <Image url="@../images/unilogo.png" />
+                  </ImageView>
+               <AnchorPane>
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin>
+                  <children>
+                        <Label layoutX="14.0" text="USERNAME/EMAIL:" textFill="WHITE">
+                            <font>
+                                <Font name="Graduate" size="14.0" />
+                            </font>
+                        </Label>
+                  </children>
+               </AnchorPane>
+                  <TextField fx:id="usernameField" onKeyPressed="#keyPress" prefHeight="40.0" prefWidth="105.0" promptText="Enter your username" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: white; -fx-border-width: 2; -fx-padding: 10 15; -fx-background-color: #ffffffcd;">
+                      <VBox.margin>
+                          <Insets bottom="15.0" left="10.0" right="10.0" />
+                      </VBox.margin>
+                  </TextField>
+               <AnchorPane>
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin>
+                  <children>
+            
+                        <Label layoutX="14.0" text="PASSWORD:" textFill="WHITE">
+                            <font>
+                                <Font name="Graduate" size="14.0" />
+                            </font>
+                        </Label>
+                  </children>
+               </AnchorPane>
+                  <PasswordField fx:id="passwordField" onKeyPressed="#keyPress" promptText="Enter your password" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: white; -fx-border-width: 2; -fx-padding: 10 15; -fx-background-color: #ffffffcd;">
+                      <VBox.margin>
+                          <Insets bottom="25.0" left="10.0" right="10.0" />
+                      </VBox.margin>
+                  </PasswordField>
+                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" prefHeight="41.0" prefWidth="116.0" style="-fx-font-size: 18; -fx-background-radius: 15; -fx-background-color: #5E0B0C70; -fx-border-color: white; -fx-border-radius: 15;" styleClass="buttonDefault" stylesheets="@../styles/styles.css" text="LOGIN" textAlignment="CENTER" VBox.vgrow="NEVER">
+                      <font>
+                          <Font name="System Bold" size="15.0" />
+                      </font>
+                      <VBox.margin>
+                          <Insets bottom="10.0" />
+                      </VBox.margin>
+                  </Button>
+                  <Hyperlink alignment="CENTER" contentDisplay="CENTER" style="-fx-border-color: transparent; -fx-padding: 0; -fx-text-fill: #F6AA1C;" text="Forgot Password?" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font></Hyperlink>
+              </VBox>
+         </children>
+      </StackPane>
     </center>
    <stylesheets>
       <URL value="@../styles/styles.css" />

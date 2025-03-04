@@ -31,14 +31,16 @@ public class App extends Application {
         Parent root = loader.load();
 
         // Set up the scene and stage
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1280, 720);
         primaryStage.setTitle("University Management System");
         primaryStage.setScene(scene);
 
         // Set minimum window size
-        primaryStage.setMinWidth(450);
+        primaryStage.setMinWidth(900);
         primaryStage.setMinHeight(550);
         primaryStage.centerOnScreen();
+
+        primaryStage.setResizable(true);
 
         primaryStage.show();
     }
