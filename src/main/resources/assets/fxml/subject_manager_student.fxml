@@ -44,11 +44,6 @@
                <AnchorPane prefHeight="27.0" prefWidth="515.0">
                   <children>
                      <Label layoutX="4.0" layoutY="5.0" prefHeight="18.0" prefWidth="138.0" text="Subject" />
-                     <Button layoutX="456.0" layoutY="5.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="56.0" style="-fx-background-color: F6AA1C;" text="Edit">
-                        <font>
-                           <Font name="Roboto Regular" size="8.0" />
-                        </font>
-                     </Button>
                      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="1.0" layoutX="-3.0" layoutY="23.0" stroke="BLACK" strokeType="INSIDE" width="518.0" />
                   </children>
                </AnchorPane>
