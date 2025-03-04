@@ -24,7 +24,6 @@
             <Button text="View Faculty" onAction="#handleFaculty"
                     style="-fx-min-width: 200px;"/>
         </VBox>
-
         <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0"
               style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 5;">
             <HBox alignment="CENTER_LEFT" spacing="10">

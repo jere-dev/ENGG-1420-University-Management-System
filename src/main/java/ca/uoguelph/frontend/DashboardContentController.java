@@ -15,7 +15,7 @@ public class DashboardContentController {
 
     @FXML
     private void handleCourses() {
-        // Handle courses button click
+        // Handle courses button clic
     }
 
     @FXML

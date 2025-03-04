@@ -228,7 +228,6 @@ public class DashboardController {
             showErrorDialog("Error loading content", e.getMessage() + "\nResource path: " + fxmlFile);
         }
     }
-
     private void showErrorDialog(String title, String message) {
         Stage dialog = new Stage();
         dialog.initStyle(StageStyle.UTILITY);

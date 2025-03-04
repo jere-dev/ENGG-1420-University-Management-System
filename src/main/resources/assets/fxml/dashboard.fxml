@@ -37,7 +37,6 @@
                 </Button>
             </HBox>
 
-            <!-- Navigation Items -->
             <VBox fx:id="navItems" spacing="5" VBox.vgrow="ALWAYS">
                 <!-- Dashboard Navigation Item -->
                 <HBox fx:id="dashboardNav" styleClass="nav-item">
