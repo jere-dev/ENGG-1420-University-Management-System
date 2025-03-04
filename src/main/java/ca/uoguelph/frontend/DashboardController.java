@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -24,6 +25,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;  // Add this import
 import javafx.animation.RotateTransition;
 import javafx.util.Duration;
 
@@ -31,84 +33,82 @@ public class DashboardController {
     private static final Logger LOGGER = Logger.getLogger(DashboardController.class.getName());
 
     @FXML private VBox sideNav;
+    @FXML private VBox navItems;
     @FXML private StackPane contentArea;
-    @FXML private HBox dashboardNav;
-    @FXML private HBox subjectNav;
-    @FXML private HBox courseNav;
-    @FXML private HBox studentNav;
-    @FXML private HBox facultyNav;
-    @FXML private HBox eventNav;
+    @FXML private Label dashboardLabel;
     @FXML private Label userNameLabel;
     @FXML private Label userRoleLabel;
     @FXML private VBox menuIcon;
+    @FXML private Button toggleNavButton;
+    @FXML private ImageView universityLogo;
     
     private String currentUser;
     private String userRole;
-    private HBox activeNav;
+    private AnchorPane activeNav;
     private boolean isExpanded = true;
 
     @FXML
     private void initialize() {
-        // Set up hover effects for navigation
-        setupHoverEffects(dashboardNav);
-        setupHoverEffects(subjectNav);
-        setupHoverEffects(courseNav);
-        setupHoverEffects(studentNav);
-        setupHoverEffects(facultyNav);
-        setupHoverEffects(eventNav);
+        // Set up click handlers for navigation items
+        navItems.getChildren().stream()
+                .filter(node -> node instanceof AnchorPane)
+                .map(node -> (AnchorPane)node)
+                .forEach(this::setupNavItem);
 
-        // Set up event handlers using lambda expressions
-        dashboardNav.setOnMouseClicked(e -> handleNavigation(e, "dashboard_content.fxml"));
-        subjectNav.setOnMouseClicked(e -> handleNavigation(e, "subject_manager_admin.fxml"));
-        courseNav.setOnMouseClicked(e -> handleNavigation(e, "course_manager_admin.fxml"));
-        studentNav.setOnMouseClicked(e -> handleNavigation(e, "student_list.fxml"));
-        facultyNav.setOnMouseClicked(e -> handleNavigation(e, "faculty_list.fxml"));
-        eventNav.setOnMouseClicked(e -> handleNavigation(e, "event_manager_admin.fxml"));
-
-        // Set initial active nav and content
-        setActiveNav(dashboardNav);
+        // Set initial state
+        setActiveNav((AnchorPane)navItems.getChildren().get(0));
         loadContent("dashboard_content.fxml");
-
-        transformToCross(menuIcon.getChildren().toArray(new Rectangle[0])); // Start with cross
+        
+        // Start with bars instead of cross
+        transformToBar(menuIcon.getChildren().toArray(new Rectangle[0]));
     }
 
-    private void setupHoverEffects(HBox nav) {
-        DropShadow shadow = new DropShadow();
-        shadow.setColor(Color.WHITE);
-        
+    private void setupNavItem(AnchorPane nav) {
         nav.setOnMouseEntered(e -> {
             if (nav != activeNav) {
-                nav.setStyle("-fx-background-color: #990000; -fx-cursor: hand;");
-                nav.setEffect(shadow);
+                nav.setStyle("-fx-background-color: #7B1609; -fx-cursor: hand;");
             }
         });
         
         nav.setOnMouseExited(e -> {
             if (nav != activeNav) {
                 nav.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-                nav.setEffect(null);
             }
+        });
+
+        nav.setOnMouseClicked(e -> {
+            setActiveNav(nav);
+            String contentFile = determineContentFile(nav);
+            loadContent(contentFile);
         });
     }
 
-    private void setActiveNav(HBox nav) {
-        if (activeNav != null) {
-            activeNav.setStyle("-fx-background-color: transparent;");
-            activeNav.setEffect(null);
+    private String determineContentFile(AnchorPane nav) {
+        Label label = (Label)nav.getChildren().stream()
+                .filter(node -> node instanceof Label)
+                .findFirst()
+                .orElse(null);
+        
+        if (label != null) {
+            switch (label.getText()) {
+                case "DASHBOARD": return "dashboard_content.fxml";
+                case "SUBJECTS": return "subject_manager_admin.fxml";
+                case "COURSES": return "course_manager_admin.fxml";
+                case "STUDENT": return "student_list.fxml";
+                case "Faculty": return "faculty_list.fxml";
+                case "EVENTS": return "event_manager_admin.fxml";
+                default: return "dashboard_content.fxml";
+            }
         }
-        
-        activeNav = nav;
-        activeNav.setStyle("-fx-background-color: #990000;");
-        
-        DropShadow shadow = new DropShadow();
-        shadow.setColor(Color.WHITE);
-        activeNav.setEffect(shadow);
+        return "dashboard_content.fxml";
     }
 
-    private void handleNavigation(MouseEvent event, String fxmlPath) {
-        HBox clickedNav = (HBox) event.getSource();
-        setActiveNav(clickedNav);
-        loadContent(fxmlPath);
+    private void setActiveNav(AnchorPane nav) {
+        if (activeNav != null) {
+            activeNav.setStyle("-fx-background-color: transparent;");
+        }
+        activeNav = nav;
+        activeNav.setStyle("-fx-background-color: #941B0C;");
     }
 
     @FXML
@@ -116,46 +116,74 @@ public class DashboardController {
         double expandedWidth = 200.0;
         double collapsedWidth = 60.0;
         
-        Rectangle[] bars = menuIcon.getChildren().toArray(new Rectangle[0]);
-        
         if (isExpanded) {
-            // Collapse - transform to cross
             sideNav.setPrefWidth(collapsedWidth);
-            transformToCross(bars);
-        } else {
-            // Expand - transform to bars
-            sideNav.setPrefWidth(expandedWidth);
-            transformToBar(bars);
-        }
-        
-        // Toggle visibility of other elements
-        ImageView universityLogo = (ImageView) sideNav.lookup("#universityLogo");
-        Label dashboardLabel = (Label) sideNav.lookup("#dashboardLabel");
-        Label subjectLabel = (Label) sideNav.lookup("#subjectLabel");
-        Label courseLabel = (Label) sideNav.lookup("#courseLabel");
-        Label studentLabel = (Label) sideNav.lookup("#studentLabel");
-        Label facultyLabel = (Label) sideNav.lookup("#facultyLabel");
-        Label eventLabel = (Label) sideNav.lookup("#eventLabel");
-        Label userNameLabel = (Label) sideNav.lookup("#userNameLabel");
-        Label userRoleLabel = (Label) sideNav.lookup("#userRoleLabel");
-        
-        if (sideNav.getPrefWidth() == expandedWidth) {
-            sideNav.setPrefWidth(collapsedWidth);
-            universityLogo.setManaged(false);
             universityLogo.setVisible(false);
-            setLabelsVisibility(false, dashboardLabel, subjectLabel, courseLabel, 
-                              studentLabel, facultyLabel, eventLabel, 
-                              userNameLabel, userRoleLabel);
+            universityLogo.setManaged(false);
+            navItems.getChildren().forEach(node -> {
+                if (node instanceof AnchorPane) {
+                    AnchorPane anchor = (AnchorPane) node;
+                    anchor.setBackground(null);  // Remove background when collapsed
+                    anchor.getChildren().forEach(child -> {
+                        if (child instanceof Label) {
+                            child.setVisible(false);
+                            child.setManaged(false);
+                        } else if (child instanceof Line) {
+                            // Check if it's a collapsed line
+                            if (child.getId() != null && child.getId().contains("Collapsed")) {
+                                child.setVisible(true);
+                                child.setManaged(true);
+                            } else {
+                                child.setVisible(false);
+                                child.setManaged(false);
+                            }
+                        } else if (child instanceof ImageView) {
+                            // Keep images visible and in position
+                            child.setVisible(true);
+                            child.setManaged(true);
+                        }
+                    });
+                }
+            });
+            userNameLabel.setVisible(false);
+            userRoleLabel.setVisible(false);
         } else {
             sideNav.setPrefWidth(expandedWidth);
-            universityLogo.setManaged(true);
             universityLogo.setVisible(true);
-            setLabelsVisibility(true, dashboardLabel, subjectLabel, courseLabel, 
-                              studentLabel, facultyLabel, eventLabel, 
-                              userNameLabel, userRoleLabel);
+            universityLogo.setManaged(true);
+            navItems.getChildren().forEach(node -> {
+                if (node instanceof AnchorPane) {
+                    AnchorPane anchor = (AnchorPane) node;
+                    anchor.getChildren().forEach(child -> {
+                        if (child instanceof Label) {
+                            child.setVisible(true);
+                            child.setManaged(true);
+                        } else if (child instanceof Line) {
+                            // Show regular lines, hide collapsed ones
+                            if (child.getId() != null && child.getId().contains("Collapsed")) {
+                                child.setVisible(false);
+                            } else {
+                                child.setVisible(true);
+                            }
+                        }
+                    });
+                }
+            });
+            userNameLabel.setVisible(true);
+            userRoleLabel.setVisible(true);
         }
         
+        toggleMenuIcon();
         isExpanded = !isExpanded;
+    }
+
+    private void toggleMenuIcon() {
+        Rectangle[] bars = menuIcon.getChildren().toArray(new Rectangle[0]);
+        if (isExpanded) {
+            transformToBar(bars);  // When collapsing, show bars
+        } else {
+            transformToCross(bars);  // When expanding, show cross
+        }
     }
 
     private void transformToCross(Rectangle[] bars) {
