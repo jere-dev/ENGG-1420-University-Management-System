@@ -1,79 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.DashboardController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.DashboardController">
+
+    <!-- Left Navigation Panel -->
     <left>
-        <VBox spacing="20" style="-fx-background-color: #2b3e50; -fx-padding: 20; -fx-alignment: top-center;">
-            <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: white;" text="UMS" />
-            <Button text="Dashboard" onAction="#handleDashboard" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="🏠" />
-                </graphic>
-            </Button>
-            <Button text="Subject Manager" onAction="#handleSubjectManager" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="📚" />
-                </graphic>
-            </Button>
-            <Button text="Student List" onAction="#handleStudentList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="👨‍🎓" />
-                </graphic>
-            </Button>
-            <Button text="Faculty List" onAction="#handleFacultyList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="👩‍🏫" />
-                </graphic>
-            </Button>
-            <Button text="Event Manager" onAction="#handleEventManager" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="📅" />
-                </graphic>
-            </Button>
-            <Button text="Course Catalog" onAction="#handleCourseCatalog" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="📖" />
-                </graphic>
-            </Button>
-            <Button text="Profile" onAction="#handleProfile" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14; -fx-alignment: center-left;">
-                <graphic>
-                    <Text style="-fx-font-size: 16;" text="👤" />
-                </graphic>
-            </Button>
+        <VBox fx:id="sideNav" minWidth="60.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #941B0C, #7B1609);">
+            <!-- Header with University Name and Toggle Button -->
+            <HBox alignment="CENTER_LEFT" style="-fx-border-color: transparent transparent #F6AA1C transparent; -fx-border-width: 0 0 1 0;">
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10" />
+                </padding>
+                <ImageView fx:id="universityLogo" fitHeight="40" fitWidth="150" preserveRatio="true">
+                    <Image url="@../images/university_logo.png" />
+                </ImageView>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="toggleNavButton" onAction="#toggleNavigation" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                    <graphic>
+                        <VBox fx:id="menuIcon" alignment="CENTER" spacing="4">
+                            <children>
+                                <Rectangle fill="#F6AA1C" height="2" width="20" />
+                                <Rectangle fill="#F6AA1C" height="2" width="20" />
+                                <Rectangle fill="#F6AA1C" height="2" width="20" />
+                            </children>
+                        </VBox>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <VBox fx:id="navItems" spacing="5" VBox.vgrow="ALWAYS">
+                <AnchorPane prefHeight="31.0" prefWidth="201.0" style="-fx-background-color: transparent;">
+                    <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="16.0" layoutY="7.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="7.0">
+                            <Image url="@../images/dashboard-icon.png" />
+                        </ImageView>
+                        <Line fx:id="dashboardLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
+                        <Label fx:id="dashboardLabel" layoutX="74.0" layoutY="8.0" prefHeight="28.0" prefWidth="105.0" style="-fx-text-fill: #000000; -fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10;" text="DASHBOARD" textFill="#f6aa1c">
+                            <font>
+                                <Font name="Graduate" size="15.0" />
+                            </font>
+                        </Label>
+                        <Line endX="175.0" endY="40.0" startX="16.292892456054688" startY="41.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="21.0" prefWidth="200.0" style="-fx-background-color: transparent;">
+                    <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="16.0" layoutY="7.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="7.0">
+                            <Image url="@../images/subject-icon.png" />
+                        </ImageView>
+                        <Line fx:id="subjectLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
+                        <Label fx:id="subjectLabel" layoutX="91.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="SUBJECTS">
+                            <font>
+                                <Font name="Graduate" size="15.0" />
+                            </font>
+                        </Label>
+                        <Line endX="175.0" endY="40.0" startX="16.292892456054688" startY="41.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="21.0" prefWidth="200.0" style="-fx-background-color: transparent;">
+                    <children>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="11.0" layoutY="4.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="4.0">
+                            <Image url="@../images/course-icon.png" />
+                        </ImageView>
+                        <Line fx:id="courseLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
+                        <Label fx:id="subjectLabel1" layoutX="96.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="COURSES">
+                            <font>
+                                <Font name="Graduate" size="15.0" />
+                            </font>
+                        </Label>
+                        <Line endX="175.0" endY="40.0" startX="16.292892456054688" startY="41.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="21.0" prefWidth="200.0" style="-fx-background-color: transparent;">
+                    <children>
+                        <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="13.0" layoutY="7.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="7.0">
+                            <Image url="@../images/student-icon.png" />
+                        </ImageView>
+                        <Line fx:id="studentLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
+                        <Label fx:id="subjectLabel2" layoutX="96.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="STUDENT">
+                            <font>
+                                <Font name="Graduate" size="15.0" />
+                            </font>
+                        </Label>
+                        <Line endX="175.0" endY="40.0" startX="16.292892456054688" startY="41.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="21.0" prefWidth="200.0" style="-fx-background-color: transparent;">
+                    <children>
+                        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="13.0" layoutY="6.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="6.0">
+                            <Image url="@../images/faculty-icon.png" />
+                        </ImageView>
+                        <Line fx:id="facultyLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
+                        <Label fx:id="subjectLabel3" layoutX="100.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="Faculty">
+                            <font>
+                                <Font name="Graduate" size="15.0" />
+                            </font>
+                        </Label>
+                        <Line endX="175.0" endY="40.0" startX="16.292892456054688" startY="41.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="21.0" prefWidth="200.0" style="-fx-background-color: transparent;">
+                    <children>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="14.0" layoutY="7.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="7.0">
+                            <Image url="@../images/event-icon.png" />
+                        </ImageView>
+                        <Line fx:id="eventLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
+                        <Label fx:id="subjectLabel4" layoutX="106.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="EVENTS">
+                            <font>
+                                <Font name="Graduate" size="15.0" />
+                            </font>
+                        </Label>
+                        <Line endX="175.0" endY="40.0" startX="16.292892456054688" startY="41.0" />
+                    </children>
+                </AnchorPane>
+            </VBox>
+
+            <!-- Bottom Section for User Info (Optional) -->
+            <HBox fx:id="userInfoSection" style="-fx-border-color: #F6AA1C transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-alignment: center-left;">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../images/Default_pfp.jpg" />
+                </ImageView>
+                <VBox>
+                    <Label fx:id="userNameLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="User Name" />
+                    <Label fx:id="userRoleLabel" style="-fx-text-fill: white; -fx-font-size: 10pt;" text="Role" />
+                </VBox>
+                <padding>
+                    <Insets bottom="10" left="10" right="10" top="10" />
+                </padding>
+            </HBox>
         </VBox>
     </left>
 
+    <!-- Main Content Area -->
     <center>
-        <VBox spacing="20" style="-fx-padding: 20;">
-            <HBox spacing="10" style="-fx-alignment: center-left;">
-                <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="Welcome, Admin!" />
-            </HBox>
-
-            <HBox spacing="20">
-                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Total Students" />
-                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #4a90e2;" text="1,234" />
-                </VBox>
-                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Total Courses" />
-                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #6a11cb;" text="56" />
-                </VBox>
-                <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                    <Text style="-fx-font-size: 16; -fx-fill: #666666;" text="Upcoming Events" />
-                    <Text style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #e67e22;" text="12" />
-                </VBox>
-            </HBox>
-            <VBox spacing="10">
-                <Text style="-fx-font-size: 20; -fx-font-weight: bold; -fx-fill: #333333;" text="Upcoming Events" />
-                <ListView prefHeight="200" style="-fx-background-radius: 10; padd: 20; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                </ListView>
-            </VBox>
-        </VBox>
+        <StackPane fx:id="contentArea">
+            <!-- Content will be loaded here dynamically -->
+        </StackPane>
     </center>
 </BorderPane>
