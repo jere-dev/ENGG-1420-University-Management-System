@@ -34,6 +34,12 @@ public class App extends Application {
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("University Management System");
         primaryStage.setScene(scene);
+
+        // Set minimum window size
+        primaryStage.setMinWidth(450);
+        primaryStage.setMinHeight(550);
+        primaryStage.centerOnScreen();
+
         primaryStage.show();
     }
 

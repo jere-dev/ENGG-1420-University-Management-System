@@ -8,8 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
 
 public class LoginController {
 
@@ -27,22 +29,21 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        // Check if username and password are "admin"
-        if ("".equals(username) && "".equals(password)) {
+        if ("admin".equals(username) && "admin".equals(password)) {
             System.out.println("Login successful! Redirecting to Dashboard...");
 
             try {
-                // Load the Dashboard FXML file
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
                 Parent root = loader.load();
 
-                // Get the current stage (window)
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-                // Set the new scene (Dashboard)
                 Scene scene = new Scene(root);
+
+
                 stage.setScene(scene);
                 stage.setTitle("Dashboard - Admin");
+                stage.setMaximized(true);
+                stage.setResizable(true);
                 stage.show();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -50,6 +51,13 @@ public class LoginController {
             }
         } else {
             System.out.println("Invalid username or password!");
+        }
+    }
+
+    @FXML
+    public void keyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            loginButton.fire();
         }
     }
 }

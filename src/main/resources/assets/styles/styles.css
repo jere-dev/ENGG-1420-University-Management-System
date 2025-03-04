@@ -1,0 +1,19 @@
+.background {
+    -fx-background-image: url("../images/bg-2.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: cover;
+}
+
+.buttonDefault {
+    -fx-background-color: "#5E0B0C";
+    -fx-font-family: "Graduate";
+    -fx-text-fill: "white";
+
+    -fx-padding: 10px 0px;
+    -fx-border-radius: 5px;
+}
+
+.buttonDefault:hover {
+    -fx-background-color: "#3E090A";
+}
