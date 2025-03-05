@@ -29,6 +29,13 @@ import javafx.scene.shape.Line;  // Add this import
 import javafx.animation.RotateTransition;
 import javafx.util.Duration;
 
+// Add these new imports
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.scene.layout.Region;
+import javafx.animation.FadeTransition;
+
 public class DashboardController {
     private static final Logger LOGGER = Logger.getLogger(DashboardController.class.getName());
 
@@ -45,7 +52,8 @@ public class DashboardController {
     private String currentUser;
     private String userRole;
     private AnchorPane activeNav;
-    private boolean isExpanded = true;
+    private boolean isExpanded = false;  // Changed from true to false
+    private Timeline sidebarAnimation;
 
     @FXML
     private void initialize() {
@@ -59,8 +67,53 @@ public class DashboardController {
         setActiveNav((AnchorPane)navItems.getChildren().get(0));
         loadContent("dashboard_content.fxml");
         
-        // Start with bars instead of cross
+        // Start with bars
         transformToBar(menuIcon.getChildren().toArray(new Rectangle[0]));
+        
+        // Trigger initial collapse
+        sideNav.setPrefWidth(60.0);
+        universityLogo.setVisible(false);
+        universityLogo.setManaged(false);
+        
+        // Initially hide labels and show collapsed lines
+        navItems.getChildren().forEach(node -> {
+            if (node instanceof AnchorPane) {
+                AnchorPane anchor = (AnchorPane) node;
+                anchor.getChildren().forEach(child -> {
+                    if (child instanceof Label) {
+                        child.setVisible(false);
+                        child.setManaged(false);
+                    } else if (child instanceof Line) {
+                        if (child.getId() != null && child.getId().contains("Collapsed")) {
+                            child.setVisible(true);
+                            child.setManaged(true);
+                        } else {
+                            child.setVisible(false);
+                            child.setManaged(false);
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Hide user info labels
+        userNameLabel.setVisible(false);
+        userRoleLabel.setVisible(false);
+
+        // Add clip to prevent overflow during animation
+        Rectangle clip = new Rectangle();
+        clip.widthProperty().bind(sideNav.widthProperty());
+        clip.heightProperty().bind(sideNav.heightProperty());
+        sideNav.setClip(clip);
+        
+        // Initialize the sidebar animation
+        sidebarAnimation = new Timeline();
+        sidebarAnimation.setOnFinished(e -> {
+            if (!isExpanded) {
+                universityLogo.setVisible(false);
+                universityLogo.setManaged(false);
+            }
+        });
     }
 
     private void setupNavItem(AnchorPane nav) {
@@ -116,65 +169,137 @@ public class DashboardController {
         double expandedWidth = 200.0;
         double collapsedWidth = 60.0;
         
+        sidebarAnimation.stop();
+        
         if (isExpanded) {
-            sideNav.setPrefWidth(collapsedWidth);
-            universityLogo.setVisible(false);
-            universityLogo.setManaged(false);
-            navItems.getChildren().forEach(node -> {
-                if (node instanceof AnchorPane) {
-                    AnchorPane anchor = (AnchorPane) node;
-                    anchor.setBackground(null);  // Remove background when collapsed
-                    anchor.getChildren().forEach(child -> {
-                        if (child instanceof Label) {
-                            child.setVisible(false);
-                            child.setManaged(false);
-                        } else if (child instanceof Line) {
-                            // Check if it's a collapsed line
-                            if (child.getId() != null && child.getId().contains("Collapsed")) {
-                                child.setVisible(true);
-                                child.setManaged(true);
-                            } else {
-                                child.setVisible(false);
-                                child.setManaged(false);
-                            }
-                        } else if (child instanceof ImageView) {
-                            // Keep images visible and in position
-                            child.setVisible(true);
-                            child.setManaged(true);
-                        }
-                    });
-                }
-            });
-            userNameLabel.setVisible(false);
-            userRoleLabel.setVisible(false);
+            // First fade out the text and logo
+            universityLogo.setVisible(true); // Keep logo visible during animation
+            universityLogo.setManaged(true);
+            fadeTransition(universityLogo, false);
+            toggleVisibility(false);
+            
+            // Then animate the width after a short delay
+            Timeline delayedCollapse = new Timeline(
+                new KeyFrame(Duration.millis(150),
+                    e -> animateSidebar(sideNav.getPrefWidth(), collapsedWidth, 250)
+                )
+            );
+            delayedCollapse.play();
         } else {
-            sideNav.setPrefWidth(expandedWidth);
+            // Show logo before expanding
             universityLogo.setVisible(true);
             universityLogo.setManaged(true);
-            navItems.getChildren().forEach(node -> {
-                if (node instanceof AnchorPane) {
-                    AnchorPane anchor = (AnchorPane) node;
-                    anchor.getChildren().forEach(child -> {
-                        if (child instanceof Label) {
-                            child.setVisible(true);
-                            child.setManaged(true);
-                        } else if (child instanceof Line) {
-                            // Show regular lines, hide collapsed ones
-                            if (child.getId() != null && child.getId().contains("Collapsed")) {
-                                child.setVisible(false);
-                            } else {
-                                child.setVisible(true);
-                            }
-                        }
-                    });
-                }
-            });
-            userNameLabel.setVisible(true);
-            userRoleLabel.setVisible(true);
+            universityLogo.setOpacity(0);
+            
+            // Animate the width
+            animateSidebar(sideNav.getPrefWidth(), expandedWidth, 250);
+            
+            // Fade in elements after width animation starts
+            Timeline delayedShow = new Timeline(
+                new KeyFrame(Duration.millis(100),
+                    e -> {
+                        fadeTransition(universityLogo, true);
+                        toggleVisibility(true);
+                    }
+                )
+            );
+            delayedShow.play();
         }
         
         toggleMenuIcon();
         isExpanded = !isExpanded;
+    }
+
+    private void animateSidebar(double startWidth, double endWidth, double durationMs) {
+        sidebarAnimation.getKeyFrames().clear();
+        sidebarAnimation.getKeyFrames().add(
+            new KeyFrame(Duration.ZERO,
+                new KeyValue(sideNav.prefWidthProperty(), startWidth)
+            )
+        );
+        sidebarAnimation.getKeyFrames().add(
+            new KeyFrame(Duration.millis(durationMs),
+                new KeyValue(sideNav.prefWidthProperty(), endWidth)
+            )
+        );
+        sidebarAnimation.play();
+    }
+
+    private void toggleVisibility(boolean visible) {
+        navItems.getChildren().forEach(node -> {
+            if (node instanceof AnchorPane) {
+                AnchorPane anchor = (AnchorPane) node;
+                anchor.getChildren().forEach(child -> {
+                    if (child instanceof Label) {
+                        fadeTransition(child, visible);
+                    } else if (child instanceof ImageView && child != universityLogo) {
+                        // Keep navigation icons always visible
+                        child.setVisible(true);
+                        child.setManaged(true);
+                    } else if (child instanceof Line) {
+                        boolean isCollapsedLine = child.getId() != null && child.getId().contains("Collapsed");
+                        fadeTransition(child, isCollapsedLine != visible);
+                    }
+                });
+            }
+        });
+        
+        fadeTransition(userNameLabel, visible);
+        fadeTransition(userRoleLabel, visible);
+    }
+
+    private void setLabelsVisibility(boolean visible) {
+        navItems.getChildren().forEach(node -> {
+            if (node instanceof AnchorPane) {
+                AnchorPane anchor = (AnchorPane) node;
+                anchor.getChildren().forEach(child -> {
+                    if (child instanceof Label) {
+                        child.setVisible(visible);
+                        child.setManaged(visible);
+                    } else if (child instanceof ImageView) {
+                        // Keep icons always visible and managed
+                        child.setVisible(true);
+                        child.setManaged(true);
+                    } else if (child instanceof Line) {
+                        boolean isCollapsedLine = child.getId() != null && child.getId().contains("Collapsed");
+                        child.setVisible(isCollapsedLine != visible);
+                        child.setManaged(isCollapsedLine != visible);
+                    }
+                });
+            }
+        });
+        
+        userNameLabel.setVisible(visible);
+        userRoleLabel.setVisible(visible);
+    }
+
+    private void fadeTransition(Node node, boolean visible) {
+        if (node == null) return;
+        
+        FadeTransition fade = new FadeTransition(Duration.millis(200), node);
+        fade.setFromValue(node.getOpacity());
+        fade.setToValue(visible ? 1.0 : 0.0);
+        
+        // Keep node visible during fade out
+        if (!visible) {
+            fade.setOnFinished(e -> {
+                node.setVisible(false);
+                node.setManaged(false);
+            });
+        } else {
+            node.setVisible(true);
+            node.setManaged(true);
+        }
+        
+        fade.play();
+    }
+
+    private void setLabelsVisibility(boolean visible, Label... labels) {
+        for (Label label : labels) {
+            if (label != null) {
+                label.setVisible(visible);
+            }
+        }
     }
 
     private void toggleMenuIcon() {
@@ -218,14 +343,6 @@ public class DashboardController {
         rotateBottom.setToAngle(0);
         rotateBottom.setOnFinished(e -> bars[2].setTranslateY(0));
         rotateBottom.play();
-    }
-
-    private void setLabelsVisibility(boolean visible, Label... labels) {
-        for (Label label : labels) {
-            if (label != null) {
-                label.setVisible(visible);
-            }
-        }
     }
 
     private void loadContent(String fxmlFile) {
