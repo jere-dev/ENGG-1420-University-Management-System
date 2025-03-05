@@ -1,47 +1,39 @@
 package ca.uoguelph.frontend;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import java.util.List;
+import javafx.scene.control.ListView;
 
 public class DashboardContentController {
-    @FXML private VBox eventsContainer;
+    @FXML
+    private ListView<String> eventsList;
 
     @FXML
-    private void initialize() {
-        loadEvents();
+    public void initialize() {
+        // Initialize the events list
+        eventsList.getItems().addAll("No upcoming events");
     }
 
     @FXML
     private void handleCourses() {
-        // Handle courses button clic
+        // TODO: Implement courses view
+        System.out.println("Courses button clicked");
     }
 
     @FXML
     private void handleStudents() {
-        // Handle students button click
+        // TODO: Implement students view
+        System.out.println("Students button clicked");
     }
 
     @FXML
     private void handleFaculty() {
-        // Handle faculty button click
+        // TODO: Implement faculty view
+        System.out.println("Faculty button clicked");
     }
 
     @FXML
     private void addEvent() {
-        // Handle add event button click
-    }
-
-    private void loadEvents() {
-        List<String> events = getEvents();
-        for (String event : events) {
-            Label eventLabel = new Label(event);
-            eventsContainer.getChildren().add(eventLabel);
-        }
-    }
-
-    private List<String> getEvents() {
-        return List.of("Event 1", "Event 2", "Event 3");
+        // TODO: Implement add event functionality
+        System.out.println("Add event clicked");
     }
 }

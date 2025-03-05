@@ -1,69 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="537.0" prefWidth="562.0" style="-fx-padding: 20; -fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.SubjectManagerController">
-
-    <HBox spacing="10">
-        <AnchorPane prefHeight="17.0" prefWidth="348.0">
-            <children>
-                <!-- University Logo -->
-                <ImageView fitHeight="60.0" fitWidth="190.0" layoutX="6.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/unilogo.png" />
-                    </image>
-                </ImageView>
-
-                <!-- Create Button -->
-                <Button layoutX="244.0" layoutY="21.0" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: white;                            -fx-border-color: #9E9E9E;                            -fx-border-radius: 5;                            -fx-text-fill: #9E9E9E;" text="Create" textAlignment="CENTER">
-                    <font>
-                        <Font name="Roboto Regular" size="12.0" />
-                    </font>
-                </Button>
-
-                <!-- Search Icon -->
-                <ImageView fitHeight="26.0" fitWidth="51.0" layoutX="312.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/search-icon.png" />
-                    </image>
-                </ImageView>
-
-                <!-- Search TextField -->
-                <TextField layoutX="325.0" layoutY="20.0" prefHeight="28.0" prefWidth="197.0" promptText="Enter Subject" style="-fx-background-color: white;                            -fx-border-color: #9E9E9E;                            -fx-border-radius: 5;">
-                    <font>
-                        <Font name="Roboto Regular" size="13.0" />
-                    </font>
-                </TextField>
-            </children>
-        </AnchorPane>
+<VBox 
+    xmlns="http://javafx.com/javafx/23.0.1" 
+    xmlns:fx="http://javafx.com/fxml/1" 
+    fx:controller="ca.uoguelph.frontend.SubjectManagerController"
+    spacing="15"
+    style="-fx-background-color: #f4f4f4;">
+    
+    <!-- Header Section -->
+    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15"/>
+        </padding>
+        
+        <!-- University Logo -->
+        <ImageView fitHeight="60.0" fitWidth="164.0" preserveRatio="true">
+            <image>
+                <Image url="@../images/unilogo.png" />
+            </image>
+        </ImageView>
+        
+        <!-- Search Container -->
+        <HBox alignment="CENTER" spacing="10" HBox.hgrow="ALWAYS">
+            <TextField 
+                fx:id="searchField"
+                promptText="Search Subjects" 
+                style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #e0e0e0; -fx-padding: 8;"
+                HBox.hgrow="ALWAYS"/>
+            
+            <Button 
+                text="Search" 
+                style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-background-radius: 20;"
+                onAction="#handleSearch"/>
+        </HBox>
+        
+        <!-- Create Subject Button -->
+        <Button 
+            text="Create Subject" 
+            style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 20;"
+            onAction="#handleCreateSubject"/>
     </HBox>
-
-    <!-- Subjects ScrollPane -->
-    <AnchorPane prefHeight="200.0" prefWidth="200.0">
-        <children>
-            <ScrollPane layoutX="3.0" layoutY="14.0" prefHeight="436.0" prefWidth="518.0" style="-fx-background-radius: 15; -fx-background-color: white; -fx-border-color: #00000055; -fx-border-radius: 5;">
-                <content>
-                    <VBox>
-                        <AnchorPane prefHeight="27.0" prefWidth="515.0">
-                            <children>
-                                <Label layoutX="4.0" layoutY="2.5" prefHeight="3.0" prefWidth="67.0" style="-fx-font-weight: bold;" text="Subject">
-                                </Label>
-                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4A90E2" height="1.0" layoutX="-3.0" layoutY="23.0" stroke="TRANSPARENT" width="518.0" />
-                            </children>
-                        </AnchorPane>
-                    </VBox>
-                </content>
-            </ScrollPane>
-        </children>
-    </AnchorPane>
+    
+    <!-- Subjects Table -->
+    <ScrollPane 
+        style="-fx-background-color: transparent;" 
+        VBox.vgrow="ALWAYS">
+        <TableView 
+            fx:id="subjectsTable" 
+            style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+            <columns>
+                <TableColumn text="Subject Code" fx:id="subjectCodeColumn" prefWidth="100"/>
+                <TableColumn text="Subject Name" fx:id="subjectNameColumn" prefWidth="200"/>
+                <TableColumn text="Credits" fx:id="creditsColumn" prefWidth="80"/>
+                <TableColumn text="Actions" fx:id="actionsColumn" prefWidth="100"/>
+            </columns>
+            <placeholder>
+                <Label text="No subjects found" style="-fx-font-size: 14px;"/>
+            </placeholder>
+        </TableView>
+    </ScrollPane>
 </VBox>

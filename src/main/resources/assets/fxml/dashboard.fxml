@@ -17,7 +17,6 @@
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.DashboardController">
 
-    <!-- Left Navigation Panel -->
     <left>
         <VBox fx:id="sideNav" minWidth="60.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #941B0C, #7B1609);">
             <!-- Header with University Name and Toggle Button -->
@@ -129,7 +128,6 @@
                 </AnchorPane>
             </VBox>
 
-            <!-- Bottom Section for User Info (Optional) -->
             <HBox fx:id="userInfoSection" style="-fx-border-color: #F6AA1C transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-alignment: center-left;">
                 <ImageView fitHeight="32" fitWidth="32">
                     <Image url="@../images/Default_pfp.jpg" />
@@ -145,7 +143,6 @@
         </VBox>
     </left>
 
-    <!-- Main Content Area -->
     <center>
         <StackPane fx:id="contentArea">
             <!-- Content will be loaded here dynamically -->
