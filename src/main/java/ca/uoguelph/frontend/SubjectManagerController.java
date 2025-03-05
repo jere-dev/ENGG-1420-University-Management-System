@@ -65,9 +65,9 @@ public class SubjectManagerController {
             TextArea newCode = new TextArea(entries[i].getCode());
             Button newButton = new Button("✎");
 
-            tableGrid.add(newName, 0, i + 2);
-            tableGrid.add(newCode, 1, i + 2);
-            tableGrid.add(newButton, 2, i + 2);
+            tableGrid.add(newName, 0, i + 1);
+            tableGrid.add(newCode, 1, i + 1);
+            tableGrid.add(newButton, 2, i + 1);
 
             GridPane.setMargin(newName, new Insets(5));
             GridPane.setMargin(newCode, new Insets(5));
