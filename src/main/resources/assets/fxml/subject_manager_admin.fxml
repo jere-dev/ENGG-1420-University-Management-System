@@ -29,7 +29,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TextField fx:id="searchField" />
+            <TextField fx:id="searchField" promptText="Search" />
             <Button mnemonicParsing="false" onAction="#handleSearch" style="-fx-padding: 5;" styleClass="buttonDefault" stylesheets="@../styles/styles.css" text="Search" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets />
