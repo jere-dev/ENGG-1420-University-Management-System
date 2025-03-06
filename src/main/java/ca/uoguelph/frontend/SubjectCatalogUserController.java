@@ -50,7 +50,7 @@ public class SubjectCatalogUserController {
             Entry entry = (Entry) param;
 
             // repetitive actions may not need to occur multiple times
-            if (row.getRowConstraints().isEmpty()) {
+            if (row.getColumnConstraints().isEmpty()) {
                 // set column constraints
                 ColumnConstraints coConst = new ColumnConstraints();
                 coConst.setPercentWidth(50);
