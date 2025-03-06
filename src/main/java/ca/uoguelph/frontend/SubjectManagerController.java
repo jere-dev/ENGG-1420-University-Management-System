@@ -18,24 +18,22 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.record.chart.SeriesChartGroupIndexRecord;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class SubjectManagerController {
     private static final Logger log = LogManager.getLogger(SubjectManagerController.class);
 
-    private static class Entry {
-        private final SimpleStringProperty name, code;
+    private class Entry {
+        private final String name, code;
 
-        private String getName() {return name.get();}
+        private String getName() {return name;}
 
-        private String getCode() {return code.get();}
+        private String getCode() {return code;}
 
         private Entry(String name, String code) {
-            this.name = new SimpleStringProperty(name);
-            this.code = new SimpleStringProperty(code);
+            this.name = name;
+            this.code = code;
         }
     }
 
@@ -45,6 +43,7 @@ public class SubjectManagerController {
             new Entry("Biology", "BIO300")};
 
     @FXML private GridPane tableGrid;
+    @FXML private TextField searchField;
 
     @FXML
     public void initialize() {
@@ -65,9 +64,9 @@ public class SubjectManagerController {
             TextArea newCode = new TextArea(entries[i].getCode());
             Button newButton = new Button("✎");
 
-            tableGrid.add(newName, 0, i + 1);
-            tableGrid.add(newCode, 1, i + 1);
-            tableGrid.add(newButton, 2, i + 1);
+            tableGrid.add(newName, 0, i);
+            tableGrid.add(newCode, 1, i);
+            tableGrid.add(newButton, 2, i);
 
             GridPane.setMargin(newName, new Insets(5));
             GridPane.setMargin(newCode, new Insets(5));
@@ -92,8 +91,46 @@ public class SubjectManagerController {
         return null;
     }
 
+    private boolean temp = false;
     @FXML
     private void handleSearch(ActionEvent event) {
+        String searchText = searchField.getText();
+        if (searchText.equals("")) {
+            // TODO: load default settings
+        }
+
+        // TODO: search for subjects
+        Entry[] searchEntries = new Entry[this.entries.length];
+        if (temp) for (int i = 0; i < this.entries.length; i++) searchEntries[i] = this.entries[this.entries.length - i - 1];
+        else searchEntries = this.entries;
+        temp = !temp;
+
+        // clear grid
+        ObservableList<Node> children = tableGrid.getChildren();
+        tableGrid.getChildren().clear();
+        tableGrid.getRowConstraints().clear();
+
+        // add entries to grid
+        // TODO: create independent function to add entries to grid
+        for (int i = 0; i < searchEntries.length; i++) {
+            tableGrid.addRow(1);
+            tableGrid.getRowConstraints().add(new RowConstraints(30, 60, 60));
+
+            TextArea newName = new TextArea(searchEntries[i].getName());
+            TextArea newCode = new TextArea(searchEntries[i].getCode());
+            Button newButton = new Button("✎");
+
+            tableGrid.add(newName, 0, i);
+            tableGrid.add(newCode, 1, i);
+            tableGrid.add(newButton, 2, i);
+
+            GridPane.setMargin(newName, new Insets(5));
+            GridPane.setMargin(newCode, new Insets(5));
+            newButton.setPadding(new Insets(5, 10, 5, 10));
+
+            // attach method to on-action
+            newButton.setOnAction(this::handleEditSubject);
+        }
     }
 
     @FXML
@@ -152,15 +189,6 @@ public class SubjectManagerController {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
 
-            /*
-            // Set up the scene and stage
-            Scene scene = new Scene(root, 800, 600);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("Subject Editor");
-            stage.setScene(scene);
-
-            stage.show();
-            */
         } catch (Exception e) {
             log.error("Catch: 164", e);
         }
