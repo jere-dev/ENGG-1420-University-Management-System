@@ -1,0 +1,49 @@
+.custom-title-bar {
+    -fx-background-color: hsl(0, 0%, 100%);
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-padding: 5px;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-max-height: 25px;
+}
+
+.university-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6B6B6B;
+}
+
+.window-controls {
+    -fx-spacing: 5px;
+}
+
+.window-control-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6B6B6B;
+    -fx-font-weight: bold;
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-pref-width: 20px;
+    -fx-pref-height: 20px;
+    -fx-background-radius: 10px;
+    -fx-font-size: 10px;
+    -fx-padding: 0;
+}
+
+.window-control-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+}
+
+.window-control-button:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Specific button styles */
+.window-control-button:nth-child(3) {
+    -fx-text-fill: #D9534F; /* Red for close button */
+}
+
+.window-control-button:nth-child(3):hover {
+    -fx-background-color: #D9534F;
+    -fx-text-fill: white;
+}
