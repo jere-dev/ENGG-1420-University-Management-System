@@ -1,0 +1,7 @@
+.table-view .table-row-cell {
+    -fx-text-fill: black; /* Set text color for all cells */
+}
+
+.table-view .table-cell {
+    -fx-text-fill: black; /* Ensure text color is black */
+}
