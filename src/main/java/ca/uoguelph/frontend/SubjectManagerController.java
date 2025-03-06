@@ -46,15 +46,15 @@ public class SubjectManagerController {
 
     @FXML private GridPane tableGrid;
 
-    @FXML private TextArea replicableName, replicableCode;
-    @FXML private Button replicableButton;
-
     @FXML
     public void initialize() {
-        // TODO: grab subjects from database
+        // clear grid contents first
+        tableGrid.getChildren().clear();
 
+        // TODO: grab subjects from database
         Entry[] entries = this.entries;
 
+        // add subjects to grid
         for (int i = 0; i < entries.length; i++) {
             tableGrid.addRow(1);
 
@@ -75,12 +75,10 @@ public class SubjectManagerController {
 
             // attach method to on-action
             newButton.setOnAction(this::handleEditSubject);
-
-            for (Node node : tableGrid.getChildren())
-                System.out.printf("\nFound child %s", node.getClass());
         }
     }
 
+    // TODO: remove searchObjects and create a button-tracking system instead to optimize code
     private Node searchObjects(int r, int c) {
         for (Node node : tableGrid.getChildren()) {
             if (GridPane.getRowIndex(node) == null) continue;
@@ -92,6 +90,10 @@ public class SubjectManagerController {
 
         System.out.println("Child not found");
         return null;
+    }
+
+    @FXML
+    private void handleSearch(ActionEvent event) {
     }
 
     @FXML
