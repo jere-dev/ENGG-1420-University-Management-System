@@ -1,6 +1,5 @@
 package ca.uoguelph.frontend;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,9 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.util.Callback;
 
-import java.util.Collections;
 import java.util.List;
 
 public class SubjectCatalogUserController {
