@@ -49,7 +49,6 @@ public class Database {
                     break;
                 }
                 if (cell.getCellType() == CellType.BLANK) {
-                    returnArrayList.add(list);
                     return returnArrayList;
                 }
                 cell.setCellType(CellType.STRING);

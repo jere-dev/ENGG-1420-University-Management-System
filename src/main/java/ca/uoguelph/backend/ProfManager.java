@@ -1,14 +1,21 @@
 package ca.uoguelph.backend;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProfManager {
     private static HashMap<String, Prof> profs = new HashMap<String, Prof>();
 
     public static void LoadProfs() {
-        // TODO: load from excel
-        // then use prof.addCourse(CourseManager.get("string from excel"));
-        // then use prof.addEvent(EventManager.get("string from excel"));
+        ArrayList<ArrayList<String>> list = Database.loadStrings(3);
+        for (ArrayList<String> prof : list) {
+            Prof p = new Prof(prof.get(0),prof.get(1),prof.get(2),prof.get(3),prof.get(4),prof.get(5), prof.get(7));
+            Course c = CourseManager.getCourse(prof.get(6));
+            c.prof = p;
+            p.courses.add(c); //TODO: change after reformating xlsx to use corse code instead of name to allow more course
+            profs.put(prof.get(1), p);
+        }
+        System.out.println("fuck");
     }
 
     public static Prof getProf(String _name){

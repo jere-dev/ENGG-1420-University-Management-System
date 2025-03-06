@@ -3,22 +3,22 @@ package ca.uoguelph.backend;
 import java.util.ArrayList;
 
 public class Course {
-    String name;
-    String code;
-    int capacity;
-    String section;
+    public String name;
+    public String code;
+    public int capacity;
+    public String section;
 
     // TODO: use object to store dates/time
-    String lecTime;
-    String examDate;
-    String location;
+    public String lecTime;
+    public String examDate;
+    public String location;
 
-    Subject subject;
-    Prof prof;
-    ArrayList<Student> students;
+    public Subject subject;
+    public Prof prof;
+    public ArrayList<Student> students;
 
-    public Course(String _name, String _code, int _capacity, String _section, String _lecTime, String _examDate,
-            String _location, Subject _subject) {
+    public Course(String _code, String _name, String _section, int _capacity, String _lecTime, String _examDate,
+            String _location) {
         this.name = _name;
         this.code = _code;
         this.capacity = _capacity;
@@ -28,9 +28,6 @@ public class Course {
         this.examDate = _examDate;
         this.location = _location;
 
-        this.subject = _subject;
-        this.subject.addCourse(this);
-        
         this.students = new ArrayList<Student>();
     }
 
@@ -38,13 +35,13 @@ public class Course {
         _student.subjects.remove(this.subject);
         _student.courses.remove(this);
         students.remove(_student);
-        //TODO: Student manager remove course
+        // TODO: Student manager remove course
     }
 
-    public void removeSelf(){
-        //students also have a subject list they remove based on this class
-        //order matters
-        for(Student student : students){
+    public void removeSelf() {
+        // students also have a subject list they remove based on this class
+        // order matters
+        for (Student student : students) {
             student.removeCourse(this);
         }
         this.prof.removeCourse(this);
