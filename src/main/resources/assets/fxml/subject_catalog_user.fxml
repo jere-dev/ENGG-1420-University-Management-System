@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.SubjectCatalogUserController" spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
-    <HBox spacing="10" style="-fx-alignment: center-left;">
-        <Button text="Back to Dashboard" onAction="#handleBackToDashboard" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5;">
-            <effect>
-                <DropShadow radius="5" color="#00000055"/>
-            </effect>
-        </Button>
-        <Text text="Subject Catalog" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;"/>
-    </HBox>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-    <VBox spacing="10">
-        <Label text="Available Subjects" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
-        <ListView fx:id="subjectList" style="-fx-pref-width: 600; -fx-pref-height: 300; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;"/>
-    </VBox>
+<VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.SubjectCatalogUserController">
+     <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="Subject Catalog">
+      <font>
+         <Font name="Graduate" size="24.0" />
+      </font></Text>
+     <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Available Subjects" />
+     <ListView fx:id="subjectList" style="-fx-pref-width: 600; -fx-pref-height: 300; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #cccccc; -fx-border-width: 1;" />
 </VBox>
