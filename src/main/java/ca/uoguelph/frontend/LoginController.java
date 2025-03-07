@@ -1,6 +1,6 @@
 package ca.uoguelph.frontend;
 
-import ca.uoguelph.backend.UserLogin;
+import ca.uoguelph.backend.SystemLogin;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -118,9 +118,9 @@ public class LoginController {
         String password = passwordField.getText();
 
         boolean isLogin = false;
-        if ("admin".equals(username) && "admin".equals(password)) isLogin = UserLogin.login("admin");
-        else if ("student".equals(username) && "student".equals(password)) isLogin = UserLogin.login("student");
-        else if ("faculty".equals(username) && "faculty".equals(password)) isLogin = UserLogin.login("faculty");
+        if ("admin".equals(username) && "admin".equals(password)) isLogin = SystemLogin.login("admin");
+        else if ("student".equals(username) && "student".equals(password)) isLogin = SystemLogin.login("student");
+        else if ("faculty".equals(username) && "faculty".equals(password)) isLogin = SystemLogin.login("faculty");
 
         if (!isLogin) {
             // TODO: implement interface to tell user of invalid user/password
@@ -128,7 +128,7 @@ public class LoginController {
             return;
         }
 
-        System.out.println("Login complete to generic user: " + isLogin);
+        System.out.println("Login complete to generic user: " + SystemLogin.getRole());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
             Parent root = loader.load();

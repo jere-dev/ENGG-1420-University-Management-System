@@ -1,9 +1,6 @@
 package ca.uoguelph.backend;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class UserLogin {
+public class SystemLogin {
     private static String currentUsername, userRole;
 
     /* file paths

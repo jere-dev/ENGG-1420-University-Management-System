@@ -3,17 +3,15 @@ package ca.uoguelph.frontend;
 // Add these imports
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import ca.uoguelph.backend.UserLogin;
+import ca.uoguelph.backend.SystemLogin;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -23,9 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.stage.StageStyle;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;  // Add this import
 import javafx.animation.RotateTransition;
@@ -35,7 +30,6 @@ import javafx.util.Duration;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.scene.layout.Region;
 import javafx.animation.FadeTransition;
 
 public class DashboardController {
@@ -154,7 +148,7 @@ public class DashboardController {
 //            }
 //        }
         if (label == null) return "dashboard_content.fxml";
-        return UserLogin.getFXMLPath()[switch (label.getText()) {
+        return SystemLogin.getFXMLPath()[switch (label.getText()) {
             case "SUBJECTS" -> 1;
             case "COURSES" -> 2;
             case "STUDENT" -> 3;
@@ -399,9 +393,9 @@ public class DashboardController {
     }
 
     public void setUserInfo(String username) {
-        boolean isLogin = UserLogin.login(username);
+        boolean isLogin = SystemLogin.login(username);
         
         if (userNameLabel != null) userNameLabel.setText(username);
-        if (userRoleLabel != null) userRoleLabel.setText(UserLogin.getRole());
+        if (userRoleLabel != null) userRoleLabel.setText(SystemLogin.getRole());
     }
 }
