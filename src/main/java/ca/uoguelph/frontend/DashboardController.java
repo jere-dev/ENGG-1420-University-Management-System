@@ -6,12 +6,12 @@ import java.net.URL;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import ca.uoguelph.backend.SystemLogin;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -21,9 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.stage.StageStyle;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;  // Add this import
 import javafx.animation.RotateTransition;
@@ -33,7 +30,6 @@ import javafx.util.Duration;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.scene.layout.Region;
 import javafx.animation.FadeTransition;
 
 public class DashboardController {
@@ -48,9 +44,7 @@ public class DashboardController {
     @FXML private VBox menuIcon;
     @FXML private Button toggleNavButton;
     @FXML private ImageView universityLogo;
-    
-    private String currentUser;
-    private String userRole;
+
     private AnchorPane activeNav;
     private boolean isExpanded = false;  // Changed from true to false
     private Timeline sidebarAnimation;
@@ -66,7 +60,7 @@ public class DashboardController {
         // Set initial state
         setActiveNav((AnchorPane)navItems.getChildren().get(0));
         loadContent("dashboard_content.fxml");
-        
+
         // Start with bars
         transformToBar(menuIcon.getChildren().toArray(new Rectangle[0]));
         
@@ -142,18 +136,26 @@ public class DashboardController {
                 .findFirst()
                 .orElse(null);
         
-        if (label != null) {
-            switch (label.getText()) {
-                case "DASHBOARD": return "dashboard_content.fxml";
-                case "SUBJECTS": return "subject_manager_admin.fxml";
-                case "COURSES": return "course_manager_admin.fxml";
-                case "STUDENT": return "student_list.fxml";
-                case "Faculty": return "faculty_list.fxml";
-                case "EVENTS": return "event_manager_admin.fxml";
-                default: return "dashboard_content.fxml";
-            }
-        }
-        return "dashboard_content.fxml";
+//        if (label != null) {
+//            switch (label.getText()) {
+//                case "DASHBOARD": return "dashboard_content.fxml";
+//                case "SUBJECTS": return "subject_manager_admin.fxml";
+//                case "COURSES": return "course_manager_admin.fxml";
+//                case "STUDENT": return "student_list.fxml";
+//                case "FACULTY": return "faculty_list.fxml";
+//                case "EVENTS": return "event_manager_admin.fxml";
+//                default: return "dashboard_content.fxml";
+//            }
+//        }
+        if (label == null) return "dashboard_content.fxml";
+        return SystemLogin.getFXMLPath()[switch (label.getText()) {
+            case "SUBJECTS" -> 1;
+            case "COURSES" -> 2;
+            case "STUDENT" -> 3;
+            case "FACULTY" -> 4;
+            case "EVENTS" -> 5;
+            default -> 0;
+        }];
     }
 
     private void setActiveNav(AnchorPane nav) {
@@ -348,7 +350,7 @@ public class DashboardController {
     private void loadContent(String fxmlFile) {
         try {
             String resourcePath = "/assets/fxml/" + fxmlFile;
-            LOGGER.info("Loading resource: " + resourcePath);
+//            LOGGER.info("Loading resource: " + resourcePath);
             
             // Try different ways to load the resource
             URL resource = DashboardController.class.getResource(resourcePath);
@@ -390,11 +392,10 @@ public class DashboardController {
         dialog.show();
     }
 
-    public void setUserInfo(String username, String role) {
-        this.currentUser = username;
-        this.userRole = role;
+    public void setUserInfo(String username) {
+        boolean isLogin = SystemLogin.login(username);
         
         if (userNameLabel != null) userNameLabel.setText(username);
-        if (userRoleLabel != null) userRoleLabel.setText(role);
+        if (userRoleLabel != null) userRoleLabel.setText(SystemLogin.getRole());
     }
 }

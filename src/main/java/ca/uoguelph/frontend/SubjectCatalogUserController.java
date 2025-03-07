@@ -103,8 +103,6 @@ public class SubjectCatalogUserController {
         subjectList.setItems(entryObservableList);
     }
 
-
-    boolean temp = false;
     @FXML
     private void handleSearch(ActionEvent e) {
         String s = searchField.getText();
