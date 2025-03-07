@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend;
 
+import ca.uoguelph.backend.UserLogin;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -116,27 +117,33 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if ("admin".equals(username) && "admin".equals(password)) {
-            System.out.println("Login successful! Redirecting to Dashboard...");
+        boolean isLogin = false;
+        if ("admin".equals(username) && "admin".equals(password)) isLogin = UserLogin.login("admin");
+        else if ("student".equals(username) && "student".equals(password)) isLogin = UserLogin.login("student");
+        else if ("faculty".equals(username) && "faculty".equals(password)) isLogin = UserLogin.login("faculty");
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
-                Parent root = loader.load();
+        if (!isLogin) {
+            // TODO: implement interface to tell user of invalid user/password
+            System.out.println("Invalid username or password");
+            return;
+        }
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Scene scene = new Scene(root);
+        System.out.println("Login complete to generic user: " + isLogin);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
+            Parent root = loader.load();
 
-                stage.setScene(scene);
-                stage.setTitle("Dashboard - Admin");
-                stage.setMaximized(true);
-                stage.setResizable(true);
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Error loading Dashboard: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Invalid username or password!");
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setTitle("Dashboard - Admin");
+            stage.setMaximized(true);
+            stage.setResizable(true);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error loading Dashboard: " + e.getMessage());
         }
     }
 
