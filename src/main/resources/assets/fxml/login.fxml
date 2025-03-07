@@ -51,7 +51,7 @@
                         </Label>
                   </children>
                </AnchorPane>
-                  <TextField fx:id="usernameField" onKeyPressed="#keyPress" prefHeight="40.0" prefWidth="105.0" promptText="Enter your username" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: white; -fx-border-width: 2; -fx-padding: 10 15; -fx-background-color: #ffffffcd;">
+                  <TextField fx:id="usernameField" onKeyPressed="#keyPress" prefHeight="40.0" prefWidth="105.0" promptText="Enter your username" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: white; -fx-border-width: 2; -fx-padding: 10 15; -fx-background-color: #ffffffcd;" stylesheets="@../styles/text.css">
                       <VBox.margin>
                           <Insets bottom="15.0" left="10.0" right="10.0" />
                       </VBox.margin>
@@ -69,7 +69,7 @@
                         </Label>
                   </children>
                </AnchorPane>
-                  <PasswordField fx:id="passwordField" onKeyPressed="#keyPress" promptText="Enter your password" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: white; -fx-border-width: 2; -fx-padding: 10 15; -fx-background-color: #ffffffcd;">
+                  <PasswordField fx:id="passwordField" onKeyPressed="#keyPress" promptText="Enter your password" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: white; -fx-border-width: 2; -fx-padding: 10 15; -fx-background-color: #ffffffcd;" stylesheets="@../styles/text.css">
                       <VBox.margin>
                           <Insets bottom="25.0" left="10.0" right="10.0" />
                       </VBox.margin>

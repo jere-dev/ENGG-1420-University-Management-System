@@ -3,23 +3,22 @@ package ca.uoguelph.backend;
 import java.util.ArrayList;
 
 public class Event {
-    String name;
-    String code;
-    String description;
-    String image; // file path
-    String location;
+    public String name;
+    public String code;
+    public String description;
+    public String image; // file path
+    public String location;
 
     // TODO: use object to store dates/time
-    String dateAndTime;
-    int capacity;
+    public String dateAndTime;
+    public int capacity;
 
-    String cost;
-    ArrayList<Student> students;
-    ArrayList<Prof> profs;
+    public String cost;
+    public ArrayList<Student> students;
+    public ArrayList<Prof> profs;
 
-    public Event(
-            String _name, String _code, String _description, String _image, String _location, String _dateAndTime,
-            int _capacity, String _cost) {
+    public Event(String _code, String _name, String _description, String _location, String _dateAndTime,
+            int _capacity, String _cost, String _image) {
         this.name = _name;
         this.code = _code;
         this.description = _description;

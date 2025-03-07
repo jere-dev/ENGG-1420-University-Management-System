@@ -3,32 +3,33 @@ package ca.uoguelph.backend;
 import java.util.ArrayList;
 
 public class Student {
-    String name;
-    String ID;
+    public String name;
+    public String ID;
+    public String password;
 
     // represent this as a path
-    String profilePhoto;
-    String address;
-    String telephone; // should this be an int?
+    public String profilePhoto;
+    public String address;
+    public String telephone; // should this be an int?
 
     // TODO: Tuition fee/state
-    ArrayList<Course> courses;
-    String emailAddress;
+    public ArrayList<Course> courses;
+    public String emailAddress;
 
     // TODO: GRADES
-    String currentSemester;
-    ArrayList<Subject> subjects;
-    String academicLevel;
-    String thesisTitle; // for phd students
+    public String currentSemester;
+    public ArrayList<Subject> subjects;
+    public String academicLevel;
+    public String thesisTitle; // for phd students
 
-    float progress; // is a percentage repersented as a decimal ie 50% is .5
+    public double progress; // is a percentage repersented as a decimal ie 50% is .5
 
-    //TODO: Prof list
-    ArrayList<Prof> profs;
-    ArrayList<Event> events;
+    // TODO: Prof list
+    public ArrayList<Prof> profs;
+    public ArrayList<Event> events;
 
-    public Student(String _name, String _ID, String _profilePhoto, String _address, String _telephone, String _emailAddress,
-            String _currentSemester, String _academicLevel, String _thesisTitle, float _progress) {
+    public Student(String _ID, String _name, String _address, String _telephone, String _emailAddress,
+            String _academicLevel, String _currentSemester, String _profilePhoto, String _thesisTitle, double _progress, String _password) {
         this.name = _name;
         this.ID = _ID;
         this.profilePhoto = _profilePhoto;
@@ -39,8 +40,11 @@ public class Student {
         this.academicLevel = _academicLevel;
         this.thesisTitle = _thesisTitle;
         this.progress = _progress;
+        this.password = _password;
         this.profs = new ArrayList<Prof>();
         this.events = new ArrayList<Event>();
+        this.subjects = new ArrayList<Subject>();
+        this.courses = new ArrayList<Course>();
     }
 
     public void addCourse(Course _course) {
@@ -54,20 +58,20 @@ public class Student {
         _course.removeStudent(this);
     }
 
-    public void addEvent(Event _event){
+    public void addEvent(Event _event) {
         _event.addStudent(this);
     }
 
-    public void removeEvent(Event _event){
+    public void removeEvent(Event _event) {
         _event.removeStudent(this);
     }
 
-    //should be call by student manager only
-    public void removeSelf(){
-        for(Event _event: events){
+    // should be call by student manager only
+    public void removeSelf() {
+        for (Event _event : events) {
             _event.removeStudent(this);
         }
-        for(Course _course : courses){
+        for (Course _course : courses) {
             _course.removeStudent(this);
         }
     }

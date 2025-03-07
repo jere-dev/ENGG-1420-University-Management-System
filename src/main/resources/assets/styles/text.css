@@ -1,0 +1,19 @@
+.text-field {
+    -fx-prompt-text-fill: #63010177;
+    /* Red color for prompt text */
+}
+
+.text-area {
+    -fx-prompt-text-fill: #00ff00;
+    /* Green color for prompt text */
+}
+
+.table-view .table-row-cell {
+    -fx-text-fill: black;
+    /* Set text color for all cells */
+}
+
+.table-view .table-cell {
+    -fx-text-fill: black;
+    /* Ensure text color is black */
+}
