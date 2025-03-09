@@ -15,7 +15,6 @@ public class ProfManager {
             p.courses.add(c); //TODO: change after reformating xlsx to use corse code instead of name to allow more course
             profs.put(prof.get(1), p);
         }
-        System.out.println("fuck");
     }
 
     public static Prof getProf(String _name){
