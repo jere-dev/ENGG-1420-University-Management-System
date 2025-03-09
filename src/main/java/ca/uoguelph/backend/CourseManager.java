@@ -16,7 +16,6 @@ public class CourseManager {
             c.subject.courses.add(c);
             courses.put(course.get(1), c);
         }
-        System.out.println("test");
     }
 
     public static void removeCourse(Course _course) {
