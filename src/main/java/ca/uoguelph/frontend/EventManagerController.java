@@ -54,6 +54,10 @@ public class EventManagerController implements Initializable {
 
     @FXML
     private ComboBox<String> timeRangeFilter;
+    
+    // Buttons
+    @FXML
+    private Button refreshButton;
 
     // Sample data for demonstration
     private ObservableList<Event> eventList = FXCollections.observableArrayList();
@@ -67,14 +71,6 @@ public class EventManagerController implements Initializable {
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        // Make columns non-resizable
-        eventNameColumn.setResizable(false);
-        dateColumn.setResizable(false);
-        timeColumn.setResizable(false);
-        locationColumn.setResizable(false);
-        typeColumn.setResizable(false);
-        statusColumn.setResizable(false);
 
         // Enable table selection
         eventsTable.getSelectionModel().setCellSelectionEnabled(false);
@@ -108,6 +104,10 @@ public class EventManagerController implements Initializable {
                 LocalTime.of(14, 30), "Conference Room A", "Academic", "Pending"));
         eventList.add(new Event("Basketball Tournament", LocalDate.now().plusDays(15),
                 LocalTime.of(18, 0), "Sports Complex", "Sports", "Confirmed"));
+        eventList.add(new Event("Student Club Fair", LocalDate.now().plusDays(7),
+                LocalTime.of(12, 0), "University Center", "Club", "Confirmed"));
+        eventList.add(new Event("Research Symposium", LocalDate.now().plusDays(45),
+                LocalTime.of(9, 0), "Science Building", "Conference", "Pending"));
 
         // Set the items to the table
         eventsTable.setItems(eventList);
@@ -125,15 +125,80 @@ public class EventManagerController implements Initializable {
     }
 
     private void applyFilters() {
-        // This would be implemented to filter the events based on selection
-        System.out.println("Applying filters");
-        System.out.println("Event Type: " + eventTypeFilter.getValue());
-        System.out.println("Time Range: " + timeRangeFilter.getValue());
-        System.out.println("Sort Order: " + sortOrderCombo.getValue());
-        System.out.println("Search Term: " + searchEvents.getText());
-
-        // Actual implementation would filter the eventList based on selections
-        // and update the table
+        // Create a new filtered list
+        ObservableList<Event> filteredEvents = FXCollections.observableArrayList(eventList);
+        
+        // Apply event type filter
+        String selectedType = eventTypeFilter.getValue();
+        if (selectedType != null && !selectedType.equals("All Types")) {
+            filteredEvents.removeIf(event -> !event.getType().equals(selectedType));
+        }
+        
+        // Apply time range filter
+        String timeRange = timeRangeFilter.getValue();
+        if (timeRange != null) {
+            LocalDate today = LocalDate.now();
+            
+            switch (timeRange) {
+                case "Today":
+                    filteredEvents.removeIf(event -> !event.getDate().equals(today));
+                    break;
+                case "This Week":
+                    LocalDate weekEnd = today.plusDays(7);
+                    filteredEvents.removeIf(event -> 
+                        event.getDate().isBefore(today) || event.getDate().isAfter(weekEnd));
+                    break;
+                case "This Month":
+                    LocalDate monthEnd = today.plusMonths(1).withDayOfMonth(1).minusDays(1);
+                    filteredEvents.removeIf(event -> 
+                        event.getDate().isBefore(today) || event.getDate().isAfter(monthEnd));
+                    break;
+                case "Next Month":
+                    LocalDate nextMonthStart = today.plusMonths(1).withDayOfMonth(1);
+                    LocalDate nextMonthEnd = nextMonthStart.plusMonths(1).minusDays(1);
+                    filteredEvents.removeIf(event -> 
+                        event.getDate().isBefore(nextMonthStart) || event.getDate().isAfter(nextMonthEnd));
+                    break;
+                case "Past Events":
+                    filteredEvents.removeIf(event -> !event.getDate().isBefore(today));
+                    break;
+            }
+        }
+        
+        // Apply search filter
+        String searchText = searchEvents.getText();
+        if (searchText != null && !searchText.isEmpty()) {
+            String lowerCaseSearch = searchText.toLowerCase();
+            filteredEvents.removeIf(event -> 
+                !event.getName().toLowerCase().contains(lowerCaseSearch) &&
+                !event.getLocation().toLowerCase().contains(lowerCaseSearch) &&
+                !event.getType().toLowerCase().contains(lowerCaseSearch));
+        }
+        
+        // Apply sorting
+        String sortOrder = sortOrderCombo.getValue();
+        if (sortOrder != null) {
+            switch (sortOrder) {
+                case "Date (Ascending)":
+                    filteredEvents.sort((e1, e2) -> e1.getDate().compareTo(e2.getDate()));
+                    break;
+                case "Date (Descending)":
+                    filteredEvents.sort((e1, e2) -> e2.getDate().compareTo(e1.getDate()));
+                    break;
+                case "Name (A-Z)":
+                    filteredEvents.sort((e1, e2) -> e1.getName().compareTo(e2.getName()));
+                    break;
+                case "Name (Z-A)":
+                    filteredEvents.sort((e1, e2) -> e2.getName().compareTo(e1.getName()));
+                    break;
+                case "Event Type":
+                    filteredEvents.sort((e1, e2) -> e1.getType().compareTo(e2.getType()));
+                    break;
+            }
+        }
+        
+        // Update the table
+        eventsTable.setItems(filteredEvents);
     }
 
     @FXML
@@ -172,14 +237,6 @@ public class EventManagerController implements Initializable {
         // Add logic to send reminders for upcoming events
     }
 
-    // Remove or comment out the unused export method
-    // @FXML
-    // private void handleExportEvents(ActionEvent event) {
-    //     System.out.println("Export Calendar clicked");
-    //     // Export logic
-    // }
-
-    // Rename refreshEventList to handleRefreshEvents and update its logic
     @FXML
     private void handleRefreshEvents(ActionEvent event) {
         System.out.println("Refresh clicked");
@@ -199,6 +256,9 @@ public class EventManagerController implements Initializable {
                 }
             }
         }
+        
+        // Reapply filters
+        applyFilters();
     }
 
     // Inner class for Event model
