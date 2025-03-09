@@ -9,7 +9,15 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class SideLoaderApp extends Application {
-    public static String fxmlPath = "subject_catalog_user"; // <-- PAGE HERE
+    private static String fxmlPath = "subject_catalog_user"; // <-- PAGE HERE
+
+    public static String getFxmlPath() {
+        return fxmlPath;
+    }
+
+    public static void setFxmlPath(String fxmlPath) {
+        SideLoaderApp.fxmlPath = fxmlPath;
+    }
 
     public void start(Stage primaryStage) throws Exception {
         // .fxml file to load
