@@ -21,7 +21,7 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Load the login screen FXML from the assets folder
 
-        //the order matters pls dont change
+        // the order matters pls dont change
         Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
         SubjectManager.loadSubjects();
         CourseManager.loadCourses();
@@ -39,8 +39,8 @@ public class App extends Application {
         primaryStage.setScene(scene);
 
         // Set minimum window size
-        primaryStage.setMinWidth(900);
-        primaryStage.setMinHeight(550);
+        primaryStage.setMinWidth(1350);
+        primaryStage.setMinHeight(750);
         primaryStage.centerOnScreen();
         primaryStage.getIcons().add(icon);
 
