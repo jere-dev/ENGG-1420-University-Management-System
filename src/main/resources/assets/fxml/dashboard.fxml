@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -129,13 +130,24 @@
             </VBox>
 
             <HBox fx:id="userInfoSection" style="-fx-border-color: #F6AA1C transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-alignment: center-left;">
-                <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../images/Default_pfp.jpg" />
-                </ImageView>
-                <VBox>
-                    <Label fx:id="userNameLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="User Name" />
-                    <Label fx:id="userRoleLabel" style="-fx-text-fill: white; -fx-font-size: 10pt;" text="Role" />
-                </VBox>
+            <AnchorPane>
+               <children>
+                      <ImageView fitHeight="32" fitWidth="32" layoutX="2.0" layoutY="3.0">
+                          <Image url="@../images/Default_pfp.jpg" />
+                          <clip>
+                              <Circle centerX="16" centerY="16" radius="16" />
+                          </clip>
+                      </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="37.0" prefWidth="145.0">
+               <children>
+                      <VBox layoutX="9.0" prefHeight="37.0" prefWidth="126.0">
+                          <Label fx:id="userNameLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="User Name" />
+                          <Label fx:id="userRoleLabel" style="-fx-text-fill: white; -fx-font-size: 10pt;" text="Role" />
+                      </VBox>
+               </children>
+            </AnchorPane>
                 <padding>
                     <Insets bottom="10" left="10" right="10" top="10" />
                 </padding>
