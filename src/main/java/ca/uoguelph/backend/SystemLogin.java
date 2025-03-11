@@ -33,7 +33,7 @@ public class SystemLogin {
             "subject_manager_admin.fxml",
             "course_manager_admin.fxml",
             "student_list.fxml",    // duplicate(s)?
-            "faculty_list.fxml",
+            "faculty_list.fxml",    // TODO: replace duplicate and/or fix missing files
             "event_manager_admin.fxml",
     };
 

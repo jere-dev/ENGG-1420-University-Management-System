@@ -24,8 +24,6 @@ import java.util.HashMap;
 
 public class SubjectManagerController {
     /*------------------- internal functions -------------------*/
-    private static final Logger log = LogManager.getLogger(SubjectManagerController.class);
-
     private class Entry {
         private final String name, code;
 
@@ -109,7 +107,7 @@ public class SubjectManagerController {
             contentArea.getChildren().add(content);
 
         } catch (Exception e) {
-            log.error("Catch: 164", e);
+            e.printStackTrace();
         }
     }
     /* ------------------- \internal functions -------------------*/
@@ -167,7 +165,7 @@ public class SubjectManagerController {
             }
 
         } catch (Exception e) {
-            log.error("Catch: 122", e);
+            e.printStackTrace();
         }
     }
 }
