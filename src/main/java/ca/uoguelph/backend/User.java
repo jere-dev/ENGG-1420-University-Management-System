@@ -13,6 +13,7 @@ public class User {
         this.email = email;
         this.name = name;
         this.profilePhoto = profilePhoto;
+        LoginManager.addUser(this);
     }
 
     public boolean login(String id, String password) {
