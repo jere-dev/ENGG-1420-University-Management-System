@@ -17,7 +17,7 @@ import javafx.scene.layout.Priority;
  * in an {@code IllegalStateException}.
  * <p>
  * To be used exclusively within the bounds of {@code TableRow} and {@code ScaledTable}.
- * @author  Eric Cao
+ * @author FruitiousPotato, 180Sai
  */
 public final class TableMemberConfig {
     private boolean isFinal = false;
