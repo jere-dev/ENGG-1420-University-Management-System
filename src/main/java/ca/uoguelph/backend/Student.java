@@ -15,7 +15,7 @@ public class Student extends User {
     private String thesisTitle;
     private float progress;
 
-    Student(String Id, String password, String email, String name, String profilePhoto, String address,
+    public Student(String Id, String password, String email, String name, String profilePhoto, String address,
             String telephone, String currentSemester, String academicLevel,
             String thesisTitle, float progress) {
         super(Id, password, email, name, profilePhoto);

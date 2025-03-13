@@ -1,6 +1,11 @@
 package ca.uoguelph.frontend;
 
+import ca.uoguelph.backend.Admin;
+import ca.uoguelph.backend.Faculty;
+import ca.uoguelph.backend.LoginManager;
+import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.SystemLogin;
+import ca.uoguelph.backend.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -118,9 +123,13 @@ public class LoginController {
         String password = passwordField.getText();
 
         boolean isLogin = false;
-        if ("admin".equals(username) && "admin".equals(password)) isLogin = SystemLogin.login("admin");
-        else if ("student".equals(username) && "student".equals(password)) isLogin = SystemLogin.login("student");
-        else if ("faculty".equals(username) && "faculty".equals(password)) isLogin = SystemLogin.login("faculty");
+        if(LoginManager.login(username, password) instanceof Admin) isLogin = SystemLogin.login("admin");
+        else if(LoginManager.login(username, password) instanceof Student) isLogin = SystemLogin.login("student");
+        else if(LoginManager.login(username, password) instanceof Faculty) isLogin = SystemLogin.login("faculty");
+
+        // if ("admin".equals(username) && "admin".equals(password)) isLogin = SystemLogin.login("admin");
+        // else if ("student".equals(username) && "student".equals(password)) isLogin = SystemLogin.login("student");
+        // else if ("faculty".equals(username) && "faculty".equals(password)) isLogin = SystemLogin.login("faculty");
 
         if (!isLogin) {
             // TODO: implement interface to tell user of invalid user/password
