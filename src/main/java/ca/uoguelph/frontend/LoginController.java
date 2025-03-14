@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class LoginController {
@@ -44,6 +46,9 @@ public class LoginController {
 
     @FXML
     private Button loginButton;
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     public void initialize() {
@@ -122,20 +127,26 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
+        //TODO: handle exceptions
         boolean isLogin = false;
-        if(LoginManager.login(username, password) instanceof Admin) isLogin = SystemLogin.login("admin");
-        else if(LoginManager.login(username, password) instanceof Student) isLogin = SystemLogin.login("student");
-        else if(LoginManager.login(username, password) instanceof Faculty) isLogin = SystemLogin.login("faculty");
 
-        // if ("admin".equals(username) && "admin".equals(password)) isLogin = SystemLogin.login("admin");
-        // else if ("student".equals(username) && "student".equals(password)) isLogin = SystemLogin.login("student");
-        // else if ("faculty".equals(username) && "faculty".equals(password)) isLogin = SystemLogin.login("faculty");
-
-        if (!isLogin) {
-            // TODO: implement interface to tell user of invalid user/password
-            System.out.println("Invalid username or password");
+        try {
+            User user = LoginManager.login(username, password);
+            if(user instanceof Admin) isLogin = SystemLogin.login("admin");
+            else if(user instanceof Student) isLogin = SystemLogin.login("student");
+            else if(user instanceof Faculty) isLogin = SystemLogin.login("faculty");
+        } catch (IllegalArgumentException e) {
+            errorLabel.setText(e.getMessage());
+            errorLabel.setTextFill(Color.color(1, 0, 0));
             return;
         }
+
+        //does checking isLogin have any other purpose?
+        // if (!isLogin) {
+        //     // TODO: implement interface to tell user of invalid user/password
+        //     System.out.println("Invalid username or password");
+        //     return;
+        // }
 
         System.out.println("Login complete to generic user: " + SystemLogin.getRole());
         try {

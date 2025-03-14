@@ -17,10 +17,10 @@ public class LoginManager {
                 .orElse(null);
 
         if (user == null) {
-            throw new IllegalArgumentException("User does not exist");
+            throw new IllegalArgumentException("Invalid User ID");
         } // throw exception if user does not exist
         else if (!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("Password incorrect");
+            throw new IllegalArgumentException("Password Incorrect");
         } // throw exception if password is wrong
 
         return user; // return user

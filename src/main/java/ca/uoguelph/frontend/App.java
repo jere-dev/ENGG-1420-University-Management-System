@@ -17,9 +17,9 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Load the login screen FXML from the assets folder
 
-        Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "defult");
-        Student student = new Student("student", "student", "otherfucker@uoguelph.ca", "otherFuck", "defualt", "fuck street", "6473127895", "winter","undergrad", "fuckolegy", 0.8f);
-        Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastfucker", "default", "Comp Eng", "fuck", "ROZH");
+        Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "default");
+        Student student = new Student("student", "student", "otherfucker@uoguelph.ca", "otherFuck", "default", "fuck street", "6473127895", "winter","undergrad", "fuckolegy", 0.8f);
+        Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastFucker", "default", "Comp Eng", "fuck", "ROZH");
 
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
