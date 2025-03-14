@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class SubjectManager {
-    private static ArrayList<Subject> subjects;
+    private static ArrayList<Subject> subjects = new ArrayList<Subject>();
     public static void addSubject(String code, String name) {subjects.add(new Subject(code, name));} //TODO: remove add to excel
     public static ArrayList<Subject> getSubjects(){return subjects;}
 
