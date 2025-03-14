@@ -1,6 +1,9 @@
 package ca.uoguelph.frontend;
 
 import com.sun.jdi.event.ExceptionEvent;
+
+import ca.uoguelph.backend.Subject;
+import ca.uoguelph.backend.SubjectManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,46 +22,48 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class SubjectManagerController {
     /*------------------- internal functions -------------------*/
-    private class Entry {
-        private final String name, code;
+    // private class Entry {
+    //     private final String name, code;
 
-        private String getName() {return name;}
-        private String getCode() {return code;}
+    //     private String getName() {return name;}
+    //     private String getCode() {return code;}
 
-        private Entry(String name, String code) {
-            this.name = name;
-            this.code = code;
-        }
-    }
+    //     private Entry(String name, String code) {
+    //         this.name = name;
+    //         this.code = code;
+    //     }
+    // }
 
     // hardcoded values
-    private final Entry[] entries = {
-            new Entry("Mathematics", "MATH001"), new Entry("English", "ENG101"),
-            new Entry("Computer Science", "CS201"), new Entry("Chemistry", "CHEM200"),
-            new Entry("Biology", "BIO300")
-    };
+    // private final Entry[] entries = {
+    //         new Entry("Mathematics", "MATH001"), new Entry("English", "ENG101"),
+    //         new Entry("Computer Science", "CS201"), new Entry("Chemistry", "CHEM200"),
+    //         new Entry("Biology", "BIO300")
+    // };
 
     // maps button to entry values
-    private final HashMap<Button, Entry> buttonMap = new HashMap<>();
+    private final HashMap<Button, Subject> buttonMap = new HashMap<>();
 
-    private void updateGrid(Entry[] entries) {
+    private void updateGrid(String search) {
         // clear grid values
         tableGrid.getChildren().clear();
         tableGrid.getRowConstraints().clear();
         buttonMap.clear();
 
         // add entries
-        for (int i = 0; i < entries.length; i++) {
+        ArrayList<Subject> subjects = SubjectManager.searchByName(search);
+        for (int i = 0; i < subjects.size(); i++) {
             tableGrid.addRow(1);
             tableGrid.getRowConstraints().add(new RowConstraints(30, 60, 60));
 
-            TextArea newName = new TextArea(entries[i].getName()),
-                    newCode = new TextArea(entries[i].getCode());
+            TextArea newName = new TextArea(subjects.get(i).getName()),
+                    newCode = new TextArea(subjects.get(i).getCode());
             Button newButton = new Button("✎");
 
             // make TextAreas un-editable
@@ -73,7 +78,7 @@ public class SubjectManagerController {
             newButton.setPadding(new Insets(5, 10, 5, 10));
 
             // attach method to on-action and map
-            buttonMap.put(newButton, entries[i]);
+            buttonMap.put(newButton, subjects.get(i));
             newButton.setOnAction(this::handleEditSubject);
         }
     }
@@ -121,9 +126,9 @@ public class SubjectManagerController {
         tableGrid.getChildren().clear();
 
         // TODO: grab subjects from database
-        Entry[] entries = this.entries;
+        // Entry[] entries = this.entries;
 
-        updateGrid(entries);
+        updateGrid("");
     }
 
     private boolean temp = false;
@@ -135,12 +140,12 @@ public class SubjectManagerController {
         }
 
         // TODO: search for subjects
-        Entry[] searchEntries = new Entry[this.entries.length];
-        if (temp) for (int i = 0; i < this.entries.length; i++) searchEntries[i] = this.entries[this.entries.length - i - 1];
-        else searchEntries = this.entries;
-        temp = !temp;
+        // Entry[] searchEntries = new Entry[this.entries.length];
+        // if (temp) for (int i = 0; i < this.entries.length; i++) searchEntries[i] = this.entries[this.entries.length - i - 1];
+        // else searchEntries = this.entries;
+        // temp = !temp;
 
-        updateGrid(searchEntries);
+        updateGrid(searchText);
     }
 
     @FXML
@@ -156,7 +161,7 @@ public class SubjectManagerController {
 
         try {
             // Retrieve TextAreas from GridPane on row where Button resides
-            Entry sourceEntry = buttonMap.get((Button) event.getSource());
+            Subject sourceEntry = buttonMap.get((Button) event.getSource());
 
             if (sourceEntry.getName().isEmpty()) {
                 handleLoadEditor(event);
