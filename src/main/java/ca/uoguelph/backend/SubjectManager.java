@@ -1,38 +1,46 @@
 package ca.uoguelph.backend;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class SubjectManager {
-    private static HashMap<String, Subject> subjects = new HashMap<String, Subject>();
+    private static ArrayList<Subject> subjects = new ArrayList<Subject>();
+    public static void addSubject(String code, String name) {subjects.add(new Subject(code, name));} //TODO: remove add to excel
+    public static ArrayList<Subject> getSubjects(){return subjects;}
 
-    public static void loadSubjects(){
-        ArrayList<ArrayList<String>> lists = Database.loadStrings(0);
-        for (ArrayList<String> subject : lists) {
-            subjects.put(subject.get(0), new Subject(subject.get(0), subject.get(1)));
-        }
+    public static void removeSubject(String code){
+        Subject subject = subjects.stream().filter(s -> s.getCode().equals(code)).findFirst().orElse(null);
+        if(subject == null){throw new IllegalArgumentException("invalid code");}
+        subjects.remove(subject);
     }
 
-
-    public static void deleteSubject(Subject _subject){
-        //TODO: make _subject.removeSelf();
-        subjects.remove(_subject.name);
-        //TODO: delete from excel
+    public static void removeSubject(Subject subject){
+        subjects.remove(subject);
     }
 
-    public static void addSubject(String _name, String _code){
-        subjects.put(_name, new Subject(_name, _code));
-        //TODO: add to excel
+    public static ArrayList<Subject> searchByName(String name){
+        return subjects.stream().filter(s -> s.getName().contains(name)).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static Subject getSubject(String _code){
-        return subjects.get(_code);
+    public static ArrayList<Subject> searchByCode(String code){
+        return subjects.stream().filter(s -> s.getCode().contains(code)).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static void removeCourse(Subject _subject, Course _course){
-        //TODO: remove course from excel
+    public static Subject getSubject(String code){
+        Subject subject = subjects.stream().filter(s -> s.getCode().equals(code)).findFirst().orElse(null);
+        if(subject == null){throw new IllegalArgumentException("invalid code");}
+        return subject;
     }
 
-    //TODO: implement search function
+    public static void editSubject(String code, String newCode, String newName){
+        Subject subject = subjects.stream().filter(s -> s.getCode().equals(code)).findFirst().orElse(null);
+        if(subject == null){throw new IllegalArgumentException("invalid code");}
+        subject.setCode(newCode);
+        subject.setName(newName);
+    }
 
+    public static void editSubject(Subject subject, String newCode, String newName){
+        subject.setCode(newCode);
+        subject.setName(newName);
+    }
 }

@@ -2,6 +2,7 @@ package ca.uoguelph.frontend.admin;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import ca.uoguelph.backend.SubjectManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
@@ -26,10 +27,12 @@ public class SubjectEditorController {
         String subjectName = nameField.getText(),
                 subjectCode = codeField.getText();
 
-        if (name != null) {
+        if (name != "") {
             System.out.printf("\nSave Subject with properties\nName: %s -> %s\nCode: %s -> %s", subjectName, name, subjectCode, code);
+            SubjectManager.editSubject(SubjectManager.getSubject(code), subjectName, subjectCode);
         } else {
             System.out.printf("\nCreate Subject with properties\nName: %s\nCode: %s", subjectName, subjectCode);
+            SubjectManager.addSubject(subjectCode, subjectName);
         }
 
         // TODO: create or edit new subject in database

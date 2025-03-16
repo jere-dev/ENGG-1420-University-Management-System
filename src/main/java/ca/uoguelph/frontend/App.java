@@ -1,13 +1,10 @@
 package ca.uoguelph.frontend;
 
-import java.util.ArrayList;
-
-import ca.uoguelph.backend.CourseManager;
-import ca.uoguelph.backend.Database;
-import ca.uoguelph.backend.EventManager;
-import ca.uoguelph.backend.ProfManager;
-import ca.uoguelph.backend.StudentManager;
+import ca.uoguelph.backend.Admin;
+import ca.uoguelph.backend.Faculty;
+import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.SubjectManager;
+import ca.uoguelph.backend.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,13 +18,17 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Load the login screen FXML from the assets folder
 
-        // the order matters pls dont change
-        Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
-        SubjectManager.loadSubjects();
-        CourseManager.loadCourses();
-        ProfManager.LoadProfs();
-        StudentManager.loadStudents();
-        EventManager.loadEvents();
+        //hardcoded users
+        Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "default");
+        Student student = new Student("student", "student", "otherfucker@uoguelph.ca", "otherFuck", "default", "fuck street", "6473127895", "winter","undergrad", "fuckolegy", 0.8f);
+        Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastFucker", "default", "Comp Eng", "fuck", "ROZH");
+
+        //hardcoded subjects
+        SubjectManager.addSubject( "MATH001", "Mathematics");
+        SubjectManager.addSubject( "ENG101", "English");
+        SubjectManager.addSubject( "CS20", "Computer Science");
+        SubjectManager.addSubject( "CHEM200", "Chemistry");
+        SubjectManager.addSubject( "BIO300", "Biology");
 
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
