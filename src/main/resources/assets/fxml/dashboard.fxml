@@ -104,7 +104,7 @@
                             <Image url="@../images/faculty-icon.png" />
                         </ImageView>
                         <Line fx:id="facultyLineCollapsed" endX="45.0" endY="41.0" startX="16.0" startY="41.0" visible="false" />
-                        <Label fx:id="subjectLabel3" layoutX="100.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="Faculty">
+                        <Label fx:id="subjectLabel3" layoutX="100.0" layoutY="8.0" style="-fx-font-weight: bold; -fx-border-width: 0 0 1 0; -fx-padding: 5 0 5 10; -fx-text-fill: BLACK;" text="FACULTY">
                             <font>
                                 <Font name="Graduate" size="15.0" />
                             </font>

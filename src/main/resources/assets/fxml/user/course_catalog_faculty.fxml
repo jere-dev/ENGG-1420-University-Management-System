@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+FACULTY: View courses they teach and related student lists.
+Start here to view students that they teach.
+-->
+
+<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
+    <Label text="Courses Taught" style="-fx-font-size: 16;"/>
+    <TableView>
+        <columns>
+            <TableColumn text="Course Code"/>
+            <TableColumn text="Course Name"/>
+            <TableColumn text="Students Enrolled"/>
+        </columns>
+    </TableView>
+</VBox>

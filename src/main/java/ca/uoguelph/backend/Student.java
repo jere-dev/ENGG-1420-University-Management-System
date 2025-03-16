@@ -2,78 +2,86 @@ package ca.uoguelph.backend;
 
 import java.util.ArrayList;
 
-public class Student {
-    public String name;
-    public String ID;
-    public String password;
+import javafx.util.Pair;
 
-    // represent this as a path
-    public String profilePhoto;
-    public String address;
-    public String telephone; // should this be an int?
+public class Student extends User {
+    private String address;
+    private String telephone;
+    // TODO: figure out how to repersent tutition/payment status
+    private ArrayList<Pair<String, String>> courses; // subjects and courses in stored in same list
+    // TODO: figure out how to store grades
+    private String currentSemester;
+    private String academicLevel;
+    private String thesisTitle;
+    private float progress;
 
-    // TODO: Tuition fee/state
-    public ArrayList<Course> courses;
-    public String emailAddress;
-
-    // TODO: GRADES
-    public String currentSemester;
-    public ArrayList<Subject> subjects;
-    public String academicLevel;
-    public String thesisTitle; // for phd students
-
-    public double progress; // is a percentage repersented as a decimal ie 50% is .5
-
-    // TODO: Prof list
-    public ArrayList<Prof> profs;
-    public ArrayList<Event> events;
-
-    public Student(String _ID, String _name, String _address, String _telephone, String _emailAddress,
-            String _academicLevel, String _currentSemester, String _profilePhoto, String _thesisTitle, double _progress, String _password) {
-        this.name = _name;
-        this.ID = _ID;
-        this.profilePhoto = _profilePhoto;
-        this.address = _address;
-        this.telephone = _telephone;
-        this.emailAddress = _emailAddress;
-        this.currentSemester = _currentSemester;
-        this.academicLevel = _academicLevel;
-        this.thesisTitle = _thesisTitle;
-        this.progress = _progress;
-        this.password = _password;
-        this.profs = new ArrayList<Prof>();
-        this.events = new ArrayList<Event>();
-        this.subjects = new ArrayList<Subject>();
-        this.courses = new ArrayList<Course>();
+    public Student(String Id, String password, String email, String name, String profilePhoto, String address,
+            String telephone, String currentSemester, String academicLevel,
+            String thesisTitle, float progress) {
+        super(Id, password, email, name, profilePhoto);
+        this.address = address;
+        this.telephone = telephone;
+        this.currentSemester = currentSemester;
+        this.academicLevel = academicLevel;
+        this.thesisTitle = thesisTitle;
+        this.progress = progress;
+        this.courses =  new ArrayList<Pair<String, String>>();
     }
 
-    public void addCourse(Course _course) {
-        _course.students.add(this);
-        this.courses.add(_course);
-        this.subjects.add(_course.subject);
-        this.profs.add(_course.prof);
+    public String getAddress() {
+        return address;
     }
 
-    public void removeCourse(Course _course) {
-        _course.removeStudent(this);
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void addEvent(Event _event) {
-        _event.addStudent(this);
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void removeEvent(Event _event) {
-        _event.removeStudent(this);
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
-    // should be call by student manager only
-    public void removeSelf() {
-        for (Event _event : events) {
-            _event.removeStudent(this);
-        }
-        for (Course _course : courses) {
-            _course.removeStudent(this);
-        }
+    public ArrayList<Pair<String, String>> getCourses() {
+        return courses;
+    }
+
+    public void addCourse(Pair<String, String> course){
+        this.courses.add(course);
+    }
+
+    public String getCurrentSemester() {
+        return currentSemester;
+    }
+
+    public void setCurrentSemester(String currentSemester) {
+        this.currentSemester = currentSemester;
+    }
+
+    public String getAcademicLevel() {
+        return academicLevel;
+    }
+
+    public void setAcademicLevel(String academicLevel) {
+        this.academicLevel = academicLevel;
+    }
+
+    public String getThesisTitle() {
+        return thesisTitle;
+    }
+
+    public void setThesisTitle(String thesisTitle) {
+        this.thesisTitle = thesisTitle;
+    }
+
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setProgress(float progress) {
+        this.progress = progress;
     }
 
 }

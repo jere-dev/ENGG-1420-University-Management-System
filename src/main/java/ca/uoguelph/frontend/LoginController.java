@@ -1,5 +1,11 @@
 package ca.uoguelph.frontend;
 
+import ca.uoguelph.backend.Admin;
+import ca.uoguelph.backend.Faculty;
+import ca.uoguelph.backend.LoginManager;
+import ca.uoguelph.backend.Student;
+import ca.uoguelph.backend.SystemLogin;
+import ca.uoguelph.backend.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -15,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class LoginController {
@@ -38,6 +46,9 @@ public class LoginController {
 
     @FXML
     private Button loginButton;
+
+    @FXML
+    private Label errorLabel;
 
     @FXML
     public void initialize() {
@@ -116,27 +127,43 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if ("admin".equals(username) && "admin".equals(password)) {
-            System.out.println("Login successful! Redirecting to Dashboard...");
+        //TODO: handle exceptions
+        boolean isLogin = false;
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
-                Parent root = loader.load();
+        try {
+            User user = LoginManager.login(username, password);
+            if(user instanceof Admin) isLogin = SystemLogin.login("admin");
+            else if(user instanceof Student) isLogin = SystemLogin.login("student");
+            else if(user instanceof Faculty) isLogin = SystemLogin.login("faculty");
+        } catch (IllegalArgumentException e) {
+            errorLabel.setText(e.getMessage());
+            errorLabel.setTextFill(Color.color(1, 0, 0));
+            return;
+        }
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Scene scene = new Scene(root);
+        //does checking isLogin have any other purpose?
+        // if (!isLogin) {
+        //     // TODO: implement interface to tell user of invalid user/password
+        //     System.out.println("Invalid username or password");
+        //     return;
+        // }
 
-                stage.setScene(scene);
-                stage.setTitle("Dashboard - Admin");
-                stage.setMaximized(true);
-                stage.setResizable(true);
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Error loading Dashboard: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Invalid username or password!");
+        System.out.println("Login complete to generic user: " + SystemLogin.getRole());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setTitle("Dashboard - Admin");
+            stage.setMaximized(true);
+            stage.setResizable(true);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error loading Dashboard: " + e.getMessage());
         }
     }
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+STUDENT: View enrolled courses and course details.
+Start here to see professor profiles.
+-->
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.user.CourseCatalogController" style="-fx-padding: 20;">
+    <TableView>
+        <columns>
+            <TableColumn text="Course Code"/>
+            <TableColumn text="Course Name"/>
+            <TableColumn text="Faculty"/>
+            <TableColumn text="Schedule"/>
+        </columns>
+    </TableView>
+</VBox>
