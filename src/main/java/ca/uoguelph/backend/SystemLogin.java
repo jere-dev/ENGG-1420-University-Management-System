@@ -15,26 +15,26 @@ public class SystemLogin {
     private static final String[] studentPaths = {
             "dashboard_content.fxml",
             "subject_catalog_user.fxml",
-            "course_catalog.fxml",
+            "course_catalog_student.fxml",
             "student_profile_student.fxml",
-            "faculty_list.fxml",
+            "faculty_list_admin.fxml",
             "event_manager_user.fxml"
     };
     private static final String[] facultyPaths = {
             "dashboard_content.fxml",
             "subject_catalog_user.fxml",
-            "faculty_course_catalog.fxml",
-            "student_list.fxml",
+            "course_catalog_faculty.fxml",
+            "student_list_admin.fxml",
             "faculty_profile_faculty.fxml",
             "event_manager_user.fxml"
     };
     private static final String[] adminPaths = {
             "dashboard_content.fxml",
             "subject_manager_admin.fxml",
-            "course_manager_admin.fxml",
-            "student_list.fxml",    // duplicate(s)?
-            "faculty_list.fxml",    // TODO: replace duplicate and/or fix missing files
-            "event_manager_admin.fxml",
+            "course_manager.fxml",
+            "student_list_admin.fxml",    // duplicate(s)?
+            "faculty_list_admin.fxml",    // TODO: replace duplicate and/or fix missing files
+            "event_manager.fxml",
     };
 
     public static String[] getFXMLPath() {

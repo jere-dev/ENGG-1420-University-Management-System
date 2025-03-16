@@ -14,13 +14,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<!-- ADMIN: lists all courses with the choice to add or edit any. -->
+
 <VBox prefHeight="530.0" prefWidth="554.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.CourseManagerAdminController">
     <HBox spacing="10">
       <AnchorPane prefHeight="17.0" prefWidth="348.0">
          <children>
             <ImageView fitHeight="60.0" fitWidth="164.0" layoutX="14.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/unilogo.png" />
+                  <Image url="@../../images/unilogo.png" />
                </image>
             </ImageView>
               <Button layoutX="242.0" layoutY="12.0" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: WHITE; -fx-border-color: Gray; -fx-border-radius: 5;" text="Create" textAlignment="CENTER" textFill="#9e9e9e">
@@ -35,7 +37,7 @@
             </TextField>
             <ImageView fitHeight="26.0" fitWidth="51.0" layoutX="501.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../Downloads/Minimal-Magnifying-Glass.png" />
+                  <Image url="" />
                </image>
             </ImageView>
          </children>

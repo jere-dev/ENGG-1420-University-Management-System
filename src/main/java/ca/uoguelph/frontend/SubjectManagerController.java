@@ -1,25 +1,14 @@
 package ca.uoguelph.frontend;
 
-import com.sun.jdi.event.ExceptionEvent;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class SubjectManagerController {
@@ -83,7 +72,7 @@ public class SubjectManagerController {
     private void handleLoadEditor(String name, String code, ActionEvent event) {
         try {
             // Load the login screen FXML from the assets folder
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/subject_editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/subject_editor.fxml"));
             Parent content = loader.load();
 
             // Find contentArea that houses dashboard content

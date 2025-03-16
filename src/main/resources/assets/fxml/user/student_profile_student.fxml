@@ -18,6 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<!-- STUDENT: View their own profile and information. -->
+
 <VBox spacing="15" style="-fx-padding: 20; -fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <AnchorPane>
@@ -36,7 +38,7 @@
                <children>
                   <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="true">
                      <image>
-                        <Image url="@../images/Default_pfp.jpg" />
+                        <Image url="@../../images/Default_pfp.jpg" />
                      </image>
                   </ImageView>
                   <Button style="-fx-background-color: #8B0000; -fx-text-fill: white; -fx-font-size: 11;" text="CHANGE">

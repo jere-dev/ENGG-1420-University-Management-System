@@ -2,6 +2,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<!-- ADMIN: Edit info or delete one faculty member. -->
+
 <VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
     <TabPane>
         <Tab text="Profile">

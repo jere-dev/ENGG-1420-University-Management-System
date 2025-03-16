@@ -204,7 +204,7 @@ public class CourseManagerAdminController {
                                   String capacity, String lectureTime, String lectureLocation,
                                   String examDate, String examLocation, ActionEvent event, int row) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/course_editor.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/course_editor.fxml"));
             Parent content = loader.load();
 
             StackPane contentArea = null;

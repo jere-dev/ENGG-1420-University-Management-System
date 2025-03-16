@@ -6,6 +6,8 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 
+<!-- FACULTY: View and edit* their own profile. (*as in edit their profile picture and password only?) -->
+
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.FacultyProfileFacultyController" spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
 
     <HBox spacing="10" style="-fx-alignment: center-left;">
@@ -20,7 +22,7 @@
     <HBox spacing="20" style="-fx-alignment: center-left;">
         <ImageView fx:id="profilePhoto" fitWidth="100" fitHeight="100" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);">
             <image>
-                <Image url="@../images/Default_pfp.jpg"/>
+                <Image url="@../../images/Default_pfp.jpg"/>
             </image>
         </ImageView>
         <VBox spacing="10">

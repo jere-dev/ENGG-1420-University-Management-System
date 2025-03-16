@@ -6,6 +6,8 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 
+<!-- STUDENT: View profiles of faculty teaching their courses. -->
+
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.FacultyProfileStudentController" spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
     <HBox spacing="10" style="-fx-alignment: center-left;">
         <Button text="Back to Dashboard" onAction="#handleBackToDashboard" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5;">
@@ -19,7 +21,7 @@
     <HBox spacing="20" style="-fx-alignment: center-left;">
         <ImageView fitWidth="100" fitHeight="100" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);">
             <image>
-                <Image url="@../images/Default_pfp.jpg"/>
+                <Image url="@../../images/Default_pfp.jpg"/>
             </image>
         </ImageView>
         <VBox spacing="10">
