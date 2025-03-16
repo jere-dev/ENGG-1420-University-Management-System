@@ -7,7 +7,7 @@
         <TextField promptText="Search by Name/ID" style="-fx-pref-width: 300;"/>
         <Button text="Search"/>
     </HBox>
-    <TableView style = "-fx-border-color: #621708;">
+    <TableView style = "-fx-background-color: #D3D3D3;">
         <columns>
             <TableColumn text="Student ID"/>
             <TableColumn text="Name"/>
