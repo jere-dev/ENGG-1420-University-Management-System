@@ -1,4 +1,4 @@
-package ca.uoguelph.frontend;
+package ca.uoguelph.frontend.user;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

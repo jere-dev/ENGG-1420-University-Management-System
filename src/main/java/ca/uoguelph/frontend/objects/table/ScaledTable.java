@@ -1,4 +1,4 @@
-package ca.uoguelph.frontend.table;
+package ca.uoguelph.frontend.objects.table;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;

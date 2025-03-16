@@ -1,4 +1,4 @@
-package ca.uoguelph.frontend;
+package ca.uoguelph.frontend.admin;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

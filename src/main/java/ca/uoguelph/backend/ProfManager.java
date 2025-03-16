@@ -8,13 +8,13 @@ public class ProfManager {
 
     public static void LoadProfs() {
         ArrayList<ArrayList<String>> list = Database.loadStrings(3);
-        for (ArrayList<String> prof : list) {
-            Prof p = new Prof(prof.get(0),prof.get(1),prof.get(2),prof.get(3),prof.get(4),prof.get(5), prof.get(7));
-            Course c = CourseManager.getCourse(prof.get(6));
-            c.prof = p;
-            p.courses.add(c); //TODO: change after reformating xlsx to use corse code instead of name to allow more course
-            profs.put(prof.get(1), p);
-        }
+//        for (ArrayList<String> prof : list) {
+//            Prof p = new Prof(prof.get(0),prof.get(1),prof.get(2),prof.get(3),prof.get(4),prof.get(5), prof.get(7));
+//            Course c = CourseManager.getCourse(prof.get(6));
+//            c.prof = p;
+//            p.courses.add(c); //TODO: change after reformating xlsx to use corse code instead of name to allow more course
+//            profs.put(prof.get(1), p);
+//        }
     }
 
     public static Prof getProf(String _name){

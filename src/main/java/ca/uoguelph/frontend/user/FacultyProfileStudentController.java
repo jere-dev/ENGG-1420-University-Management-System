@@ -1,4 +1,4 @@
-package ca.uoguelph.frontend;
+package ca.uoguelph.frontend.user;
 
 public class FacultyProfileStudentController {
 }

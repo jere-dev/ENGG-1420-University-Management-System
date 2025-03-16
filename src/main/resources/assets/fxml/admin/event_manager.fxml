@@ -16,7 +16,7 @@
 
 <!-- ADMIN: Lists all events with the choice to add or edit any. -->
 
-<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="653.0" prefWidth="1253.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.EventManagerController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="653.0" prefWidth="1253.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.EventManagerController">
     <content>
         <VBox minHeight="678.0" minWidth="1224.0" prefHeight="678.0" prefWidth="1224.0" style="-fx-background-color: #F5F5F5; -fx-padding: 20;">
 

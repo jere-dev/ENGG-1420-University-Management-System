@@ -139,16 +139,16 @@ public class DashboardController {
 //        if (label != null) {
 //            switch (label.getText()) {
 //                case "DASHBOARD": return "dashboard_content.fxml";
-//                case "SUBJECTS": return "subject_manager_admin.fxml";
+//                case "SUBJECTS": return "subject_manager.fxml";
 //                case "COURSES": return "course_manager.fxml";
-//                case "STUDENT": return "student_list_admin.fxml";
-//                case "FACULTY": return "faculty_list_admin.fxml";
+//                case "STUDENT": return "student_manager.fxml";
+//                case "FACULTY": return "faculty_manager.fxml";
 //                case "EVENTS": return "event_manager.fxml";
 //                default: return "dashboard_content.fxml";
 //            }
 //        }
         if (label == null) return "dashboard_content.fxml";
-        return SystemLogin.getFXMLPath()[switch (label.getText()) {
+        return SystemLogin.getFXMLPaths()[switch (label.getText()) {
             case "SUBJECTS" -> 1;
             case "COURSES" -> 2;
             case "STUDENT" -> 3;

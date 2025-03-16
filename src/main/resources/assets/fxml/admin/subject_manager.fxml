@@ -14,7 +14,7 @@
 
 <!-- ADMIN: Lists all subjects and are available to add or edit any. -->
 
-<AnchorPane prefHeight="374.0" prefWidth="1035.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.SubjectManagerController">
+<AnchorPane prefHeight="374.0" prefWidth="1035.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.SubjectManagerController">
    <children>
       <Label layoutX="20.0" layoutY="10.0" text="Subject Manager" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="15.0">
          <font>

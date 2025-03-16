@@ -17,7 +17,7 @@
 
 <!-- ADMIN: Edit info or delete one student. -->
 
-<VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.StudentProfileController">
+<VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.StudentProfileController">
     <HBox spacing="10" style="-fx-alignment: center-left;">
         <Button onAction="#handleBackToDashboard" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5;" text="Back to Dashboard">
             <effect>

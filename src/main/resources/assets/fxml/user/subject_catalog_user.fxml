@@ -11,7 +11,7 @@
 
 <!-- STUDENT AND FACULTY: Can view subjects. -->
 
-<VBox spacing="15.0" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.SubjectCatalogUserController">
+<VBox spacing="15.0" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.user.SubjectCatalogUserController">
      <Text text="Subject Catalog">
       <font>
          <Font name="Graduate" size="24.0" />

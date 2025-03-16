@@ -14,30 +14,30 @@ public class SystemLogin {
     * */
     private static final String[] studentPaths = {
             "dashboard_content.fxml",
-            "subject_catalog_user.fxml",
-            "course_catalog_student.fxml",
-            "student_profile_student.fxml",
-            "faculty_list_admin.fxml",
-            "event_manager_user.fxml"
+            "user/subject_catalog_user.fxml",
+            "user/course_catalog_student.fxml",
+            "user/student_profile_student.fxml",
+            null,   // option should not exist for this one (project description pg. 10)
+            "user/event_manager_user.fxml"
     };
     private static final String[] facultyPaths = {
             "dashboard_content.fxml",
-            "subject_catalog_user.fxml",
-            "course_catalog_faculty.fxml",
-            "student_list_admin.fxml",
-            "faculty_profile_faculty.fxml",
-            "event_manager_user.fxml"
+            "user/subject_catalog_user.fxml",
+            "user/course_catalog_faculty.fxml",
+            null,
+            "user/faculty_profile_faculty.fxml",
+            "user/event_manager_user.fxml"
     };
     private static final String[] adminPaths = {
             "dashboard_content.fxml",
-            "subject_manager_admin.fxml",
-            "course_manager.fxml",
-            "student_list_admin.fxml",    // duplicate(s)?
-            "faculty_list_admin.fxml",    // TODO: replace duplicate and/or fix missing files
-            "event_manager.fxml",
+            "admin/subject_manager.fxml",
+            "admin/course_manager.fxml",
+            "admin/student_manager.fxml",
+            "admin/faculty_manager.fxml",
+            "admin/event_manager.fxml",
     };
 
-    public static String[] getFXMLPath() {
+    public static String[] getFXMLPaths() {
         return switch (userRole) {
             case "student" -> studentPaths;
             case "faculty" -> facultyPaths;
@@ -51,6 +51,26 @@ public class SystemLogin {
 
         // TODO: find username in database and verifies
         String role = username;
+//        // check students
+//        if (StudentManager.getStudent(username) != null && StudentManager.getStudent(username).checkPassword(password)) {
+//            currentUsername = username;
+//            userRole = "student";
+//            return true;
+//        }
+//
+//        // check professors
+//        if (ProfManager.getProf(username) != null && ProfManager.getProf(username).checkPassword(password)) {
+//            currentUsername = username;
+//            userRole = "faculty";
+//            return true;
+//        }
+//
+//        // check admin
+//        if (AdminManager.getAdmin(username) != null && AdminManager.getAdmin(username).checkPassword(password)) {
+//            currentUsername = username;
+//            userRole = "admin";
+//            return true;
+//        }
 
         currentUsername = username;
         userRole = role;

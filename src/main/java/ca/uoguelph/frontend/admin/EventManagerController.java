@@ -1,4 +1,4 @@
-package ca.uoguelph.frontend;
+package ca.uoguelph.frontend.admin;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
