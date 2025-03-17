@@ -29,7 +29,8 @@ public class SubjectEditorController {
 
         if (name != "") {
             System.out.printf("\nSave Subject with properties\nName: %s -> %s\nCode: %s -> %s", subjectName, name, subjectCode, code);
-            SubjectManager.editSubject(SubjectManager.getSubject(code), subjectName, subjectCode);
+            SubjectManager.editSubjectName(SubjectManager.getSubject(code), subjectName);
+            SubjectManager.editSubjectCode(SubjectManager.getSubject(code), subjectCode);
         } else {
             System.out.printf("\nCreate Subject with properties\nName: %s\nCode: %s", subjectName, subjectCode);
             SubjectManager.addSubject(subjectCode, subjectName);
