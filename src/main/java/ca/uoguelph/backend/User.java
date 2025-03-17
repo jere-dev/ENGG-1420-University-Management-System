@@ -1,5 +1,7 @@
 package ca.uoguelph.backend;
 
+import ca.uoguelph.backend.login.LoginManager;
+
 public class User {
     private String id;
     private String password;

@@ -1,10 +1,6 @@
 package ca.uoguelph.frontend;
 
-import ca.uoguelph.backend.Admin;
-import ca.uoguelph.backend.Faculty;
-import ca.uoguelph.backend.LoginManager;
-import ca.uoguelph.backend.Student;
-import ca.uoguelph.backend.SystemLogin;
+import ca.uoguelph.backend.login.LoginManager;
 import ca.uoguelph.backend.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -132,9 +128,6 @@ public class LoginController {
 
         try {
             User user = LoginManager.login(username, password);
-            if(user instanceof Admin) isLogin = SystemLogin.login("admin");
-            else if(user instanceof Student) isLogin = SystemLogin.login("student");
-            else if(user instanceof Faculty) isLogin = SystemLogin.login("faculty");
         } catch (IllegalArgumentException e) {
             errorLabel.setText(e.getMessage());
             errorLabel.setTextFill(Color.color(1, 0, 0));
@@ -148,7 +141,7 @@ public class LoginController {
         //     return;
         // }
 
-        System.out.println("Login complete to generic user: " + SystemLogin.getRole());
+        System.out.println("Login complete to user: " + LoginManager.getCurrentUser().getName());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/dashboard.fxml"));
             Parent root = loader.load();
