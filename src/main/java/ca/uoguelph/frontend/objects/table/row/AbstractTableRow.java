@@ -1,6 +1,6 @@
-package ca.uoguelph.frontend.objects.table;
+package ca.uoguelph.frontend.objects.table.row;
 
-
+import ca.uoguelph.frontend.objects.table.TableMemberConfig;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  *
  * @author 180Sai, FruitiousPotato
  */
-public class TableRow implements Collection<Node> {
+public abstract class AbstractTableRow implements Collection<Node> {
     private final List<Node> elements = new ArrayList<>();
     private final HashMap<Node, TableMemberConfig> nodePropertyMap = new HashMap<>();
 
@@ -26,7 +26,7 @@ public class TableRow implements Collection<Node> {
     }
 
     // Constructor to add multiple elements
-    public TableRow(Object... objects) {
+    public AbstractTableRow(Object... objects) {
         for (Object obj : objects) if (isNode(obj)) {
             elements.add((Node) obj);
             nodePropertyMap.put((Node) obj, new TableMemberConfig());
