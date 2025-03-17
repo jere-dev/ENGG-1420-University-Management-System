@@ -32,7 +32,7 @@ public class Student extends User {
         return address;
     }
 
-    public void setAddress(String address) {
+    protected void setAddress(String address) {
         this.address = address;
     }
 
@@ -40,7 +40,7 @@ public class Student extends User {
         return telephone;
     }
 
-    public void setTelephone(String telephone) {
+    protected void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
@@ -56,7 +56,7 @@ public class Student extends User {
         return currentSemester;
     }
 
-    public void setCurrentSemester(String currentSemester) {
+    protected void setCurrentSemester(String currentSemester) {
         this.currentSemester = currentSemester;
     }
 
@@ -64,7 +64,7 @@ public class Student extends User {
         return academicLevel;
     }
 
-    public void setAcademicLevel(String academicLevel) {
+    protected void setAcademicLevel(String academicLevel) {
         this.academicLevel = academicLevel;
     }
 
@@ -72,7 +72,7 @@ public class Student extends User {
         return thesisTitle;
     }
 
-    public void setThesisTitle(String thesisTitle) {
+    protected void setThesisTitle(String thesisTitle) {
         this.thesisTitle = thesisTitle;
     }
 
@@ -80,7 +80,7 @@ public class Student extends User {
         return progress;
     }
 
-    public void setProgress(float progress) {
+    protected void setProgress(float progress) {
         this.progress = progress;
     }
 

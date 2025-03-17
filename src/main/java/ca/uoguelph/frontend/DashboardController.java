@@ -6,7 +6,8 @@ import java.net.URL;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import ca.uoguelph.backend.SystemLogin;
+import ca.uoguelph.backend.*;
+import ca.uoguelph.backend.login.LoginManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -139,23 +140,24 @@ public class DashboardController {
 //        if (label != null) {
 //            switch (label.getText()) {
 //                case "DASHBOARD": return "dashboard_content.fxml";
-//                case "SUBJECTS": return "subject_manager_admin.fxml";
-//                case "COURSES": return "course_manager_admin.fxml";
-//                case "STUDENT": return "student_list.fxml";
-//                case "FACULTY": return "faculty_list.fxml";
-//                case "EVENTS": return "event_manager_admin.fxml";
+//                case "SUBJECTS": return "subject_manager.fxml";
+//                case "COURSES": return "course_manager.fxml";
+//                case "STUDENT": return "student_manager.fxml";
+//                case "FACULTY": return "faculty_manager.fxml";
+//                case "EVENTS": return "event_manager.fxml";
 //                default: return "dashboard_content.fxml";
 //            }
 //        }
         if (label == null) return "dashboard_content.fxml";
-        return SystemLogin.getFXMLPath()[switch (label.getText()) {
-            case "SUBJECTS" -> 1;
-            case "COURSES" -> 2;
-            case "STUDENT" -> 3;
-            case "FACULTY" -> 4;
-            case "EVENTS" -> 5;
-            default -> 0;
-        }];
+
+        return FXMLPath.getFXMLPath(switch (label.getText()) {
+            case "SUBJECTS" -> FXMLPath.SUBJECTS;
+            case "COURSES" -> FXMLPath.COURSES;
+            case "STUDENT" -> FXMLPath.STUDENTS;
+            case "FACULTY" -> FXMLPath.FACULTY;
+            case "EVENTS" -> FXMLPath.EVENTS;
+            default -> FXMLPath.DASHBOARD_CONTENT;
+        });
     }
 
     private void setActiveNav(AnchorPane nav) {
@@ -392,10 +394,13 @@ public class DashboardController {
         dialog.show();
     }
 
-    public void setUserInfo(String username) {
-        boolean isLogin = SystemLogin.login(username);
-        
-        if (userNameLabel != null) userNameLabel.setText(username);
-        if (userRoleLabel != null) userRoleLabel.setText(SystemLogin.getRole());
+    public void setUserInfo() {
+        userNameLabel.setText(LoginManager.getCurrentUser().getName());
+        userRoleLabel.setText(switch (LoginManager.getCurrentUser()) {
+            case Admin ignored -> "Administrator";
+            case Faculty ignored1 -> "Faculty";
+            case Student ignored2 -> "Student";
+            default -> throw new IllegalStateException("Unexpected value: " + LoginManager.getCurrentUser());
+        });
     }
 }

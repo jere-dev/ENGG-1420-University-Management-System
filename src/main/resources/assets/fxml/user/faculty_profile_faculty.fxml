@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="554.0" prefWidth="789.0" spacing="20" style="-fx-padding: 20; -fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.FacultyProfileFacultyController">
+      <Label prefHeight="39.0" prefWidth="201.0" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #333333;" text="My Profile" textFill="#b31414" />
+
+    <HBox alignment="CENTER" prefHeight="163.0" prefWidth="537.0" spacing="20" style="-fx-alignment: center-left; -fx-padding: 10;">
+        <ImageView fx:id="profilePhoto" fitHeight="144.0" fitWidth="138.0" preserveRatio="true">
+            <image>
+                <Image url="@../images/Default_pfp.jpg" />
+            </image>
+        </ImageView>
+      <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #941B0C;" text="CHANGE" textFill="WHITE" translateX="-90.0" translateY="60.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+        <VBox prefHeight="147.0" prefWidth="299.0" scaleX="0.9" spacing="10" style="-fx-background-color: #d3d3d3; -fx-background-radius: 6; -fx-padding: 12;" HBox.hgrow="ALWAYS">
+            <Label prefHeight="21.0" prefWidth="189.0" style="-fx-font-size: 15; -fx-text-fill: #000000; -fx-background-radius: 5;" text="Email: sigma@uoguelph.ca" textFill="#220901" underline="true">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <cursor>
+               <Cursor fx:constant="DEFAULT" />
+            </cursor></Label>
+            <Label style="-fx-font-size: 15; -fx-text-fill: #000000;" text="Office Location: Room 101" textFill="#220901">
+            <cursor>
+               <Cursor fx:constant="DEFAULT" />
+            </cursor></Label>
+         <Label layoutX="22.0" layoutY="53.0" style="-fx-font-size: 15; -fx-text-fill: #000000;" text="Research Interests:" textFill="#220901">
+            <cursor>
+               <Cursor fx:constant="DEFAULT" />
+            </cursor>
+         </Label>
+         <Label fx:id="passwordField" prefHeight="21.0" prefWidth="154.0" style="-fx-font-size: 15; -fx-text-fill: #000000;" text="Password: *********" textFill="#220901">
+            <cursor>
+               <Cursor fx:constant="DEFAULT" />
+            </cursor>
+         </Label>
+         <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <children>
+            
+                                                             <Button alignment="CENTER" onAction="#handleEditProfile" prefHeight="29.0" prefWidth="73.0" style="-fx-background-color: #f6aa1c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6; -fx-background-radius: 5;" text="Edit" textAlignment="RIGHT">
+                    <effect>
+                        <DropShadow height="11.0" radius="10.3525" width="32.41">
+                        <color>
+                           <Color opacity="0.33000001311302185" />
+                        </color>
+                     </DropShadow>
+                    </effect>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+                </Button>
+            </children>
+         </HBox>
+        </VBox>
+    </HBox>
+   <effect>
+      <Blend />
+   </effect>
+</VBox>
