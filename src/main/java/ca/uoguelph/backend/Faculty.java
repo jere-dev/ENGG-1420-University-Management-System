@@ -21,7 +21,7 @@ public class Faculty extends User {
         return degree;
     }
 
-    public void setDegree(String degree) {
+    protected void setDegree(String degree) {
         this.degree = degree;
     }
 
@@ -29,7 +29,7 @@ public class Faculty extends User {
         return researchInterest;
     }
 
-    public void setResearchInterest(String researchInterest) {
+    protected void setResearchInterest(String researchInterest) {
         this.researchInterest = researchInterest;
     }
 
@@ -41,7 +41,7 @@ public class Faculty extends User {
         return officeLocation;
     }
 
-    public void setOfficeLocation(String officeLocation) {
+    protected void setOfficeLocation(String officeLocation) {
         this.officeLocation = officeLocation;
     }
 

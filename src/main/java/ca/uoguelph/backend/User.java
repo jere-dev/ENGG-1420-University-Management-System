@@ -24,7 +24,7 @@ public class User {
         return id;
     }
 
-    public void setID(String id) {
+    protected void setID(String id) {
         this.id = id;
     }
 
@@ -32,7 +32,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    protected void setPassword(String password) {
         this.password = password;
     }
 
@@ -40,7 +40,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    protected void setEmail(String email) {
         this.email = email;
     }
 
@@ -48,7 +48,7 @@ public class User {
         return profilePhoto;
     }
 
-    public void setProfilePhoto(String profilePhoto) {
+    protected void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
     }
 
@@ -56,7 +56,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 }
