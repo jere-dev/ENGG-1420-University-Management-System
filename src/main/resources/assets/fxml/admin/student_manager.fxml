@@ -112,7 +112,7 @@
                     <VBox.margin>
                         <Insets top="15" />
                     </VBox.margin>
-                    <Button onAction="#handleStudentDetails" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-size: 12px;" text="VIEW DETAILS →">
+                    <Button onAction="#handleStudentDetails" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-min-width: 120; -fx-min-height: 30;" text="VIEW DETAILS →">
                         <font>
                             <Font name="Graduate" size="12.0" />
                         </font>
@@ -121,7 +121,7 @@
                         </effect>
                     </Button>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button onAction="#handleExportList" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-size: 12px;" text="EXPORT LIST →">
+                    <Button onAction="#handleExportList" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-min-width: 120; -fx-min-height: 30;" text="EXPORT LIST →">
                         <font>
                             <Font name="Graduate" size="12.0" />
                         </font>
