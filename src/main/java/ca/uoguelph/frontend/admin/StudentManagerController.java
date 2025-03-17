@@ -1,4 +1,4 @@
-package ca.uoguelph.frontend.user;
+package ca.uoguelph.frontend.admin;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import java.io.File;
 
-public class StudentListController {
+public class StudentManagerController {
 
     // FXML Injected Components
     @FXML

@@ -1,6 +1,6 @@
 package ca.uoguelph.frontend.admin;
 
-import com.sun.jdi.event.ExceptionEvent;
+import ca.uoguelph.frontend.objects.controller.AbstractAdminListController;
 
 import ca.uoguelph.backend.Subject;
 import ca.uoguelph.backend.SubjectManager;
@@ -15,16 +15,16 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
-public class SubjectManagerController {
+public final class SubjectManagerController extends AbstractAdminListController {
     /*------------------- internal functions -------------------*/
 
     // maps button to entry values
     private final HashMap<Button, Subject> buttonMap = new HashMap<>();
 
-    private void updateGrid(String search) {
+    @Override
+    protected void updateTable(String search) {
         // clear grid values
         tableGrid.getChildren().clear();
         tableGrid.getRowConstraints().clear();
@@ -53,11 +53,12 @@ public class SubjectManagerController {
 
             // attach method to on-action and map
             buttonMap.put(newButton, subjects.get(i));
-            newButton.setOnAction(this::handleEditSubject);
+            newButton.setOnAction(this::handleEdit);
         }
     }
 
-    private void handleLoadEditor(ActionEvent event) { handleLoadEditor("", "", event); }
+    @Override
+    protected void handleLoadEditor(ActionEvent event) { handleLoadEditor("", "", event); }
 
     private void handleLoadEditor(String name, String code, ActionEvent event) {
         try {
@@ -99,29 +100,28 @@ public class SubjectManagerController {
         // clear grid contents first
         tableGrid.getChildren().clear();
 
-        updateGrid("");
+        updateTable("");
     }
 
-    private boolean temp = false;
-    @FXML
-    private void handleSearch(ActionEvent event) {
+    @FXML @Override
+    protected void handleSearch(ActionEvent event) {
         String searchText = searchField.getText();
         if (searchText.isEmpty()) {
             // TODO: load default settings
         }
 
-        updateGrid(searchText);
+        updateTable(searchText);
     }
 
-    @FXML
-    private void handleAddSubject(ActionEvent event) {
+    @FXML @Override
+    protected void handleAdd(ActionEvent event) {
         System.out.println("Add Subject clicked");
 
         handleLoadEditor(event);
     }
 
-    @FXML
-    private void handleEditSubject(ActionEvent event) {
+    @FXML @Override
+    protected void handleEdit(ActionEvent event) {
         System.out.println("Edit Subject clicked");
 
         try {

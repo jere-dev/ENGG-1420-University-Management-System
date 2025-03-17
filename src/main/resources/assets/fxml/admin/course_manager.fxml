@@ -16,7 +16,7 @@
 
 <!-- ADMIN: lists all courses with the choice to add or edit any. -->
 
-<VBox prefHeight="530.0" prefWidth="554.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.CourseManagerAdminController">
+<VBox prefHeight="530.0" prefWidth="554.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.CourseManagerController">
     <HBox spacing="10">
       <AnchorPane prefHeight="17.0" prefWidth="348.0">
          <children>

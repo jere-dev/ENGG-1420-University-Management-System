@@ -17,7 +17,7 @@ public class CourseEditorController {
     @FXML private TextField examDateField;
     @FXML private TextField examLocationField;
 
-    private CourseManagerAdminController parentController;
+    private CourseManagerController parentController;
     private int editedRow;
 
     public void loadCourse(String courseCode, String sectionNumber, String professorName,
@@ -67,7 +67,7 @@ public class CourseEditorController {
         }
     }
 
-    public void setParentAndRow(CourseManagerAdminController parent, int row) {
+    public void setParentAndRow(CourseManagerController parent, int row) {
         this.parentController = parent;
         this.editedRow = row;
     }

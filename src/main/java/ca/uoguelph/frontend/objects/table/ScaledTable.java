@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend.objects.table;
 
+import ca.uoguelph.frontend.objects.table.row.AbstractTableRow;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -12,7 +13,7 @@ import javafx.scene.layout.*;
  * updates when {@code TableRow} objects are added, edited, or removed. However, dynamic updates do not exist
  * for objects inside a {@code TableRow} that are added, edited, or removed.
  *
- * @see TableRow
+ * @see AbstractTableRow
  * @author Eric Cao
  */
 public class ScaledTable {
@@ -50,14 +51,14 @@ public class ScaledTable {
     }
 
 
-    public ScaledTable(Pane pane, TableRow[] rows) {
+    public ScaledTable(Pane pane, AbstractTableRow[] rows) {
         this(pane, rows.length);
-        for (TableRow row : rows) {
+        for (AbstractTableRow row : rows) {
             addRow(row);
         }
     }
 
-    private void configure(TableRow row) {
+    private void configure(AbstractTableRow row) {
         for (Node node : row) {
             TableMemberConfig config = row.config(node);
             config.setFinal();
@@ -156,7 +157,7 @@ public class ScaledTable {
         for (int i = 0; i < columnCount; i++) setPercentWidth(i, width);
     }
 
-    public void addRow(TableRow row) {
+    public void addRow(AbstractTableRow row) {
         for (Node node : row) {
             tableGrid.add(node, rowCount, columnCount);
             configure(row);

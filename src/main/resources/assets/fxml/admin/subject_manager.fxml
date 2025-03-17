@@ -37,7 +37,7 @@
                   <Insets />
                </GridPane.margin>
             </Button>
-              <Button onAction="#handleAddSubject" style="-fx-padding: 5; -fx-background-color: #F6AA1C; -fx-text-fill: black;" styleClass="buttonDefault" stylesheets="@../../styles/styles.css" text="Add Subject" GridPane.columnIndex="2">
+              <Button onAction="#handleAdd" style="-fx-padding: 5; -fx-background-color: #F6AA1C; -fx-text-fill: black;" styleClass="buttonDefault" stylesheets="@../../styles/styles.css" text="Add Subject" GridPane.columnIndex="2">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
