@@ -1,11 +1,11 @@
-package ca.uoguelph.frontend.user;
+package ca.uoguelph.frontend.admin;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 
-public class FacultyListController {
+public class FacultyManagerController {
 
     @FXML
     private TextField searchField;
