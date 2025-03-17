@@ -56,7 +56,7 @@ public final class SubjectManagerController extends AbstractAdminListController 
             newButton.setOnAction(this::handleEdit);
         }
     }
-
+    
     @Override
     protected void handleLoadEditor(ActionEvent event) { handleLoadEditor("", "", event); }
 
@@ -90,6 +90,7 @@ public final class SubjectManagerController extends AbstractAdminListController 
             e.printStackTrace();
         }
     }
+    
     /* ------------------- \internal functions -------------------*/
 
     @FXML private GridPane tableGrid;
