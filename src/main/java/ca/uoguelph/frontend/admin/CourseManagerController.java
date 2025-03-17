@@ -19,8 +19,8 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.io.IOException;
 
-public class CourseManagerAdminController {
-    private static final Logger log = LogManager.getLogger(CourseManagerAdminController.class);
+public class CourseManagerController {
+    private static final Logger log = LogManager.getLogger(CourseManagerController.class);
 
     // Data class to hold course information with 8 fields
     private static class Entry {
