@@ -15,18 +15,6 @@ public abstract class AbstractListController {
     protected abstract void updateTable(String search);
 
     /**
-     * Initialization of the controller.
-     * <p>
-     * The starting state of the table contains no rows or columns.
-     * Loading data to the table requires JavaFX to call the controller's
-     * {@code initialize()} method when loading the .fxml file.
-     */
-    @FXML
-    protected void initialize() {
-        updateTable("");
-    }
-
-    /**
      * Handles the user searching for an entry in the table.
      */
     @FXML
