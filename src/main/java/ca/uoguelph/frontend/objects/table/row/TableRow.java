@@ -13,7 +13,7 @@ import java.util.function.Predicate;
  *
  * @author 180Sai, FruitiousPotato
  */
-public abstract class AbstractTableRow implements Collection<Node> {
+public class TableRow implements Collection<Node> {
     private final List<Node> elements = new ArrayList<>();
     private final HashMap<Node, TableMemberConfig> nodePropertyMap = new HashMap<>();
 
@@ -26,7 +26,7 @@ public abstract class AbstractTableRow implements Collection<Node> {
     }
 
     // Constructor to add multiple elements
-    public AbstractTableRow(Object... objects) {
+    public TableRow(Object... objects) {
         for (Object obj : objects) if (isNode(obj)) {
             elements.add((Node) obj);
             nodePropertyMap.put((Node) obj, new TableMemberConfig());
@@ -34,7 +34,6 @@ public abstract class AbstractTableRow implements Collection<Node> {
             Label textWrap = new Label(obj.toString());
             elements.add(textWrap);
             nodePropertyMap.put(textWrap, new TableMemberConfig());
-            // TODO: add formatting if required
         }
     }
 
