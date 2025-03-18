@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 class SideLoader {
-    private static final String defaultFileName = "subject_catalog_user"; // <-- PAGE HERE
+    private static final String defaultFileName = "admin/course_manager.fxml"; // <-- PAGE HERE
 
     private static SideLoaderApp loadedApp;
     static SideLoaderApp getLoadedApp() {return loadedApp;}
@@ -30,9 +30,9 @@ class SideLoader {
             }
 
             if (fileName.isEmpty())
-                System.out.printf("Opening default file %s.fxml\n", fileName = defaultFileName);
+                System.out.printf("Opening default file %s\n", fileName = defaultFileName);
             else
-                System.out.printf("Opening alternative file %s.fxml\n", fileName);
+                System.out.printf("Opening alternative file %s\n", fileName);
                 
             try {;
                 String finalFileName = fileName;
@@ -45,7 +45,7 @@ class SideLoader {
                 TimeUnit.SECONDS.sleep(1);
                 if (!windowThread.isAlive()) System.exit(1);
             } catch (Exception e) {
-                System.err.printf("Error occurred while loading %s.fxml.\n", fileName);
+                System.err.printf("Error occurred while loading %s.\n", fileName);
                 e.printStackTrace();
             }
 
