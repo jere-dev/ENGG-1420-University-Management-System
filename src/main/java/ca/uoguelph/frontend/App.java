@@ -25,16 +25,16 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Load the login screen FXML from the assets folder
         Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
-        SubjectManager.loadSubjects();
-        CourseManager.loadCourses();
-        EventManager.loadCourses();
         FacultyManager.loadFaculty();
         StudentManager.loadStudents();
 
-        //hardcoded users
-        Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "default");
-        // Student student = new Student("student", "student", "otherfucker@uoguelph.ca", "otherFuck", "default", "fuck street", "6473127895", "winter","undergrad", "fuckolegy", 0.8f);
-        // Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastFucker", "default", "Comp Eng", "fuck", "ROZH");
+        //TODO: Load in background Threads?
+        SubjectManager.loadSubjects();
+        CourseManager.loadCourses();
+        EventManager.loadCourses();
+
+        //TODO: add admin to excel sheet
+        Admin admin = new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
 
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
