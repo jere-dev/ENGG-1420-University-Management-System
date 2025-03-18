@@ -8,7 +8,7 @@ public class Student extends User {
     private String address;
     private String telephone;
     // TODO: figure out how to repersent tutition/payment status
-    private ArrayList<Pair<String, String>> courses; // subjects and courses in stored in same list
+    private ArrayList<Pair<String, String>> courses; // TODO: store courses and sections together
     // TODO: figure out how to store grades
     private String currentSemester;
     private String academicLevel;
