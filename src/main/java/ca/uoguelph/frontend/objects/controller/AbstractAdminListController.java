@@ -13,13 +13,11 @@ public abstract class AbstractAdminListController extends AbstractListController
     /**
      * Handles adding an entry to the list.
      */
-    @FXML
     protected abstract void handleAdd(ActionEvent event);
 
     /**
      * Handles editing an entry on the list.
      */
-    @FXML
     protected abstract void handleEdit(ActionEvent event);
 
 
