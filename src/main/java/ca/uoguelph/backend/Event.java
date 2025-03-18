@@ -16,9 +16,8 @@ public class Event {
     private ArrayList<String> students;//stored as ids
     private ArrayList<String> faculty;//stored as id
 
-    protected Event(String name, String code, String description, String headerImage, String location, String dateAndTime, int maxCapacity, int registered, float cost){
+    protected Event(String code, String name, String description, String location, String dateAndTime, int maxCapacity, float cost, String headerImage, ArrayList<String> students, ArrayList<String> faculty){
         this.cost = cost;
-        this.registered = registered;
         this.maxCapacity = maxCapacity;
         this.dateAndTime = dateAndTime;
         this.location = location;
@@ -26,8 +25,8 @@ public class Event {
         this.description = description;
         this.code = code;
         this.name = name;
-        this.students = new ArrayList<String>();
-        this.faculty = new ArrayList<String>();
+        this.students = students;
+        this.faculty = faculty;
     }
 
     protected void removeFaculty(String ID){

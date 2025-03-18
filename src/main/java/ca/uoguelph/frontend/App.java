@@ -1,8 +1,16 @@
 package ca.uoguelph.frontend;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import ca.uoguelph.backend.Admin;
+import ca.uoguelph.backend.CourseManager;
+import ca.uoguelph.backend.Database;
+import ca.uoguelph.backend.EventManager;
 import ca.uoguelph.backend.Faculty;
+import ca.uoguelph.backend.FacultyManager;
 import ca.uoguelph.backend.Student;
+import ca.uoguelph.backend.StudentManager;
 import ca.uoguelph.backend.SubjectManager;
 import ca.uoguelph.backend.User;
 import javafx.application.Application;
@@ -14,21 +22,32 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    private class backgroundLoad extends Thread{
+        public void run(){
+            try {
+                SubjectManager.loadSubjects();
+                CourseManager.loadCourses();
+                EventManager.loadCourses();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the login screen FXML from the assets folder
+        Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
 
-        //hardcoded users
-        Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "default");
-        Student student = new Student("student", "student", "otherfucker@uoguelph.ca", "otherFuck", "default", "fuck street", "6473127895", "winter","undergrad", "fuckolegy", 0.8f);
-        Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastFucker", "default", "Comp Eng", "fuck", "ROZH");
+        new backgroundLoad().start();
+        StudentManager.loadStudents();
+        FacultyManager.loadFaculty();
 
-        //hardcoded subjects
-        SubjectManager.addSubject( "MATH001", "Mathematics");
-        SubjectManager.addSubject( "ENG101", "English");
-        SubjectManager.addSubject( "CS20", "Computer Science");
-        SubjectManager.addSubject( "CHEM200", "Chemistry");
-        SubjectManager.addSubject( "BIO300", "Biology");
+        System.out.println(LocalDateTime.now().toString());
+
+        //TODO: add admin to excel sheet
+        Admin admin = new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
 
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));

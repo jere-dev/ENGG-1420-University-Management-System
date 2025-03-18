@@ -1,11 +1,32 @@
 package ca.uoguelph.backend;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
+
+import javafx.util.Pair;
 
 //TODO: modify excel sheet
 public class FacultyManager {
     private static ArrayList<Faculty> faculties = new ArrayList<Faculty>();
+
+//load faculty
+    public static void loadFaculty()
+    {
+        var arar = Database.loadStrings(3);
+        for(var ar : arar){
+            ArrayList<Pair<String, String>> courses = Arrays.stream(ar.get(6).replace(" ", "").split(","))
+                .map(sc -> {
+                    String[] parts = sc.split("\\*");
+                    if (parts.length < 2) {
+                        return new Pair<>("invalid-key", "invalid-value");//TODO: throw error instead
+                    }
+                    return new Pair<>(parts[0], parts[1]);
+                })
+                .collect(Collectors.toCollection(() -> new ArrayList<>()));
+            faculties.add(new Faculty(ar.get(0), ar.get(1), ar.get(2), ar.get(3), ar.get(4), ar.get(5), courses, ar.get(7), ar.get(8)));
+        }
+    }
 
 //getFaculty
     public static Faculty getFaculty(String ID){
@@ -19,9 +40,9 @@ public class FacultyManager {
 
 //modify Faculty
     //add faculty
-    public static void addFaculty(String ID, String password, String email, String name, String profilePhoto, String degree, String researchInterest, String officeLocation){
+    public static void addFaculty(String ID, String name, String degree, String researchInterest, String email, String officeLocation, ArrayList<Pair<String, String>> courses, String password, String profilePhoto){
         //TODO: make sure ID is unique
-        faculties.add(new Faculty(ID, password, email, name, profilePhoto, degree, researchInterest, officeLocation));
+        faculties.add(new Faculty(ID, name, degree, researchInterest, email, officeLocation, courses, password, profilePhoto));
     }
     //edit faculty
     public static void editFacultyOfficeLocation(Faculty faculty, String  OfficeLocation){faculty.setOfficeLocation(OfficeLocation);}
