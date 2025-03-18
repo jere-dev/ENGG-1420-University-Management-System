@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import ca.uoguelph.backend.Admin;
@@ -21,17 +22,29 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    private class backgroundLoad extends Thread{
+        public void run(){
+            try {
+                SubjectManager.loadSubjects();
+                CourseManager.loadCourses();
+                EventManager.loadCourses();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the login screen FXML from the assets folder
         Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
-        FacultyManager.loadFaculty();
-        StudentManager.loadStudents();
 
-        //TODO: Load in background Threads?
-        SubjectManager.loadSubjects();
-        CourseManager.loadCourses();
-        EventManager.loadCourses();
+        new backgroundLoad().start();
+        StudentManager.loadStudents();
+        FacultyManager.loadFaculty();
+
+        System.out.println(LocalDateTime.now().toString());
 
         //TODO: add admin to excel sheet
         Admin admin = new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
