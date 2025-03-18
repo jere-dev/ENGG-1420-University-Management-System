@@ -40,16 +40,29 @@ public final class CourseManagerController extends AbstractAdminListController {
     public void initialize() {
         table = new ScaledTable(scrollPane, 5);
 
-        table.setPercentWidth(2, 30);
-        table.setHGrow(2, Priority.ALWAYS);
+        // Set column widths with updated proportions
+        table.setPercentWidth(0, 12); // Subject code
+        table.setPercentWidth(1, 12); // Course code  
+        table.setPercentWidth(2, 46); // Title
+        table.setPercentWidth(3, 20); // Credits
+        table.setPercentWidth(4, 10); // Edit button
 
-        table.setPercentWidth(3, 30);
-        table.setHGrow(3, Priority.ALWAYS);
+        // Set styles for better visual appearance
+        scrollPane.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #dddddd; -fx-border-radius: 4;");
+        
+        // Set grow priorities
+        table.setHGrow(2, Priority.ALWAYS);
+        table.setHGrow(3, Priority.SOMETIMES);
 
         courseList.addAll(CourseManager.getCourses());
 
         page = 0;
         updateTable("");
+
+        searchField.textProperty().addListener((obs, old, newText) -> {
+            page = 0;
+            updateTable(newText);
+        });
     }
 
     @Override
