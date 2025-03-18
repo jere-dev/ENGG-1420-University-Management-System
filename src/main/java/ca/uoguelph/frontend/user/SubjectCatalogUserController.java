@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend.user;
 
+import ca.uoguelph.frontend.objects.SubjectEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,19 +16,6 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 
 public class SubjectCatalogUserController {
-    // object wrapper for subject name and code
-    private class Entry {
-        private final String name, code;
-
-        public String getName() {return name;}
-        public String getCode() {return code;}
-
-        public Entry(String name, String code) {
-            this.name = name;
-            this.code = code;
-        }
-    }
-
     // list entry creates new GridPane containing subject name (left) and code (right)
     private class SbjCell<E> extends ListCell<E> {
         private final GridPane row = new GridPane();
@@ -40,11 +28,11 @@ public class SubjectCatalogUserController {
 
             // assert that entry is of type Entry, etc.
             try {
-                assert param.getClass() == Entry.class;
-                assert ((Entry) param).getName() != null;
-                assert ((Entry) param).getCode() != null;
+                assert param.getClass() == SubjectEntry.class;
+                assert ((SubjectEntry) param).name() != null;
+                assert ((SubjectEntry) param).code() != null;
             } catch (Exception e) {e.printStackTrace();}
-            Entry entry = (Entry) param;
+            SubjectEntry entry = (SubjectEntry) param;
 
             // repetitive actions may not need to occur multiple times
             if (row.getColumnConstraints().isEmpty()) {
@@ -65,8 +53,8 @@ public class SubjectCatalogUserController {
 
 
             if (entry != null) {
-                nameLabel.setText(entry.getName());
-                codeLabel.setText(entry.getCode());
+                nameLabel.setText(entry.name());
+                codeLabel.setText(entry.code());
             } else {
                 nameLabel.setText("");
                 codeLabel.setText("");
@@ -78,21 +66,21 @@ public class SubjectCatalogUserController {
 
     
     // hardcoded values
-    private final Entry[] entries = {
-            new Entry("Mathematics", "MATH001"), new Entry("English", "ENG101"),
-            new Entry("Computer Science", "CS201"), new Entry("Chemistry", "CHEM200"),
-            new Entry("Biology", "BIO300")};
+    private final SubjectEntry[] entries = {
+            new SubjectEntry("Mathematics", "MATH001"), new SubjectEntry("English", "ENG101"),
+            new SubjectEntry("Computer Science", "CS201"), new SubjectEntry("Chemistry", "CHEM200"),
+            new SubjectEntry("Biology", "BIO300")};
 
     // ObservableList for cell factories
-    private ObservableList<Entry> entryObservableList;
+    private ObservableList<SubjectEntry> entryObservableList;
 
-    @FXML ListView<Entry> subjectList;
+    @FXML ListView<SubjectEntry> subjectList;
     @FXML TextField searchField;
 
     @FXML
     private void initialize() {
         // TODO: retrieve values from database
-        Entry[] entries = this.entries;
+        SubjectEntry[] entries = this.entries;
 
         // change cell factory for ListView
         subjectList.setCellFactory(entryListView -> new SbjCell<>());
@@ -108,7 +96,7 @@ public class SubjectCatalogUserController {
         String s = searchField.getText();
 
         // TODO: retrieve subjects based on search string
-        List<Entry> sortEntries = entryObservableList.reversed();
+        List<SubjectEntry> sortEntries = entryObservableList.reversed();
 
         // update entryListView
         entryObservableList.clear();
