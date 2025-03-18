@@ -38,7 +38,7 @@ public class DashboardController {
 
     @FXML private VBox sideNav;
     @FXML private VBox navItems;
-    @FXML private StackPane contentArea;
+    @FXML private StackPane contentArea; // TODO: make contentArea visible to all controllers in order to clear content effectively
     @FXML private Label dashboardLabel;
     @FXML private Label userNameLabel;
     @FXML private Label userRoleLabel;
