@@ -1,20 +1,18 @@
 package ca.uoguelph.frontend.objects.table.row;
 
 import ca.uoguelph.backend.Course;
-import ca.uoguelph.backend.Section;
 import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.Subject;
 import ca.uoguelph.backend.login.LoginManager;
 import ca.uoguelph.backend.login.LoginState;
+import ca.uoguelph.frontend.admin.CourseManagerController;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TableRowPreset extends TableRow {
     /**
@@ -54,28 +52,32 @@ public class TableRowPreset extends TableRow {
             throw new IllegalStateException("Attempt to create course list for " + LoginManager.getRole());
 
         Label titleLabel = new Label(c.getTitle()),
-                codeLabel = new Label(c.getCourseCode());
-        Hyperlink courseLink = new Hyperlink("See profile");
+                codeLabel = new Label(c.getSubjectCode() + c.getCourseCode()),
+                requisitesLabel = new Label(c.getRequisites());
+        Hyperlink editorLink = new Hyperlink("See profile");
 
+        requisitesLabel.setWrapText(true);
+
+        // manage name of instructors
         Label instructorLabel = new Label();
         instructorLabel.setWrapText(true);
 
-        String[] instructorNames = (String[]) c.getSections().stream()
-                .map(s -> s.getInstructors().stream()).distinct().limit(5).toArray();
-        System.out.println(instructorNames);
-
-//        ArrayList<String> nameList = new ArrayList<>();
-//        HashSet<String> nameSet = new HashSet<>();
-//        c.getSections().stream().forEach(s -> nameSet.addAll(s.getInstructors()));
+        HashSet<String> nameSet = new HashSet<>();
+        c.getSections().forEach(s -> nameSet.addAll(s.getInstructors()));
+        String[] names = nameSet.toArray(new String[1]);
 
         StringBuilder nameBuilder = new StringBuilder();
-        for (int i = 0; i < Math.max(instructorNames.length, 4); i++) nameBuilder.append(instructorNames[i]).append(",");
-        nameBuilder.deleteCharAt(nameBuilder.length() - 1);
-        if (instructorNames.length > 4) nameBuilder.append("...");
+        for (int i = 0; i < Math.min(names.length, 4); i++)
+            if (names[i] != null) nameBuilder.append(names[i]).append("; ");
+
+        if (!nameBuilder.isEmpty()) nameBuilder.delete(nameBuilder.length() - 2, nameBuilder.length() - 1);
+        else nameBuilder.append("N/A");
+        if (names.length > 4) nameBuilder.append("...");
 
         instructorLabel.setText(nameBuilder.toString());
+        // end instructors
 
-        return List.of(titleLabel, codeLabel, instructorLabel, courseLink);
+        return List.of(titleLabel, codeLabel, requisitesLabel, instructorLabel, editorLink);
     }
 
     /**
@@ -102,30 +104,30 @@ public class TableRowPreset extends TableRow {
         return List.of(labels);
     }
 
-//    /**
-//     * Converts a {@code Student} object to a table row for a specified course type. Specific to when the {@LoginState} is a faculty member.
-//     * @param st    student
-//     * @param c     course name of student
-//     */
-//    public TableRow(Student st, Course c) {
-//        super(studentRowFaculty(st, c));
-//    }
-//
-//    private static List<Node> studentRowFaculty(Student st, Course c) {
-//        if (LoginManager.getRole() != LoginState.FACULTY)
-//            throw new IllegalStateException("Attempt to create faculty's list of students for " + LoginManager.getRole());
-//
-//        Node[] labels = {
-//                new Label(st.getName()),
-//                new Label(st.getID()),
-//                new Label(st.getAcademicLevel()),
-//                new Label(st.getEmail()),
-//                new Label(st.getCourses().get(st.getCourses().get(c)).getValue()),
-//                new Hyperlink("See profile")
-//        };
-//
-//        // TODO: customize looks
-//
-//        return List.of(labels);
-//    }
+    /**
+     * Converts a {@code Student} object to a table row for a specified course type. Specific to when the {@LoginState} is a faculty member.
+     * @param st    student
+     * @param c     course name of student
+     */
+    public TableRowPreset(Student st, Course c) {
+        super(studentRowFaculty(st, c));
+    }
+
+    private static List<Node> studentRowFaculty(Student st, Course c) {
+        if (LoginManager.getRole() != LoginState.FACULTY)
+            throw new IllegalStateException("Attempt to create faculty's list of students for " + LoginManager.getRole());
+
+        Node[] labels = {
+                new Label(st.getName()),
+                new Label(st.getID()),
+                new Label(st.getAcademicLevel()),
+                new Label(st.getEmail()),
+                new Label("TODO"), // TODO: add courses to label
+                new Hyperlink("See profile")
+        };
+
+        // TODO: customize looks
+
+        return List.of(labels);
+    }
 }

@@ -25,27 +25,43 @@ public class TableRow implements Collection<Node> {
         return TextInputControl.class.isAssignableFrom(node.getClass());
     }
 
-    // Constructor to add multiple elements
-    public TableRow(Object... objects) {
-        for (Object obj : objects) if (isNode(obj)) {
-            elements.add((Node) obj);
-            nodePropertyMap.put((Node) obj, new TableMemberConfig());
-        } else {
-            Label textWrap = new Label(obj.toString());
-            elements.add(textWrap);
-            nodePropertyMap.put(textWrap, new TableMemberConfig());
-        }
+    public TableRow(Node[] nodes) {
+        this((Object[]) nodes);
     }
 
-    // TODO: allow for custom functionality when adding row to table
+    public TableRow(List<?> objList) {
+        this(objList.toArray());
+    }
+
+    // Constructor to add multiple elements
+    public TableRow(Object... objects) {
+        for (Object obj : objects) {
+            if (isNode(obj)) {
+                elements.add((Node) obj);
+                nodePropertyMap.put((Node) obj, new TableMemberConfig());
+            } else {
+                Label textWrap = new Label(obj.toString());
+                elements.add(textWrap);
+                nodePropertyMap.put(textWrap, new TableMemberConfig());
+            }
+        }
+
+        for (int i = 0; i < this.size(); i++) {
+            this.configure(i).setMargin(5);
+        }
+    }
 
     /**
      * Returns the {@code TableMemberConfig} object to configure specific layout properties.
      * @param node  the node to retrieve the configurator.
      * @return  the configuration object.
      */
-    public TableMemberConfig config(Node node) {
+    public TableMemberConfig configure(Node node) {
         return nodePropertyMap.get(node);
+    }
+
+    public TableMemberConfig configure(int column) {
+        return configure(get(column));
     }
 
     // ArrayList useful methods
@@ -204,5 +220,13 @@ public class TableRow implements Collection<Node> {
     @Override
     public void clear() {
         elements.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "TableRow{" +
+                "elements=" + elements +
+                ", nodePropertyMap=" + nodePropertyMap +
+                '}';
     }
 }
