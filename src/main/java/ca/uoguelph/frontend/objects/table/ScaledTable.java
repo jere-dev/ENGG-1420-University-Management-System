@@ -1,10 +1,14 @@
 package ca.uoguelph.frontend.objects.table;
 
-import ca.uoguelph.frontend.objects.table.row.AbstractTableRow;
+import ca.uoguelph.frontend.objects.table.row.TableRow;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Encapsulates the features of JavaFX {@code GridPane} to display a table of interactive content inside a JavaFX container object.
@@ -13,7 +17,7 @@ import javafx.scene.layout.*;
  * updates when {@code TableRow} objects are added, edited, or removed. However, dynamic updates do not exist
  * for objects inside a {@code TableRow} that are added, edited, or removed.
  *
- * @see AbstractTableRow
+ * @see TableRow
  * @author Eric Cao
  */
 public class ScaledTable {
@@ -27,7 +31,9 @@ public class ScaledTable {
     private final DoubleProperty[] maxWidths;
     private final DoubleProperty[] percentWidths;
 
-    public ScaledTable(Pane pane, int columnCount) {
+    private final List<TableRow> rowList = new ArrayList<>();
+
+    public ScaledTable(ScrollPane pane, int columnCount) {
         this.columnCount = columnCount;
 
         tableGrid = new GridPane();
@@ -47,18 +53,18 @@ public class ScaledTable {
             percentWidths[i] = columnConstraints.percentWidthProperty();
         }
 
-        pane.getChildren().add(tableGrid);
+        pane.setContent(tableGrid);
     }
 
 
-    public ScaledTable(Pane pane, AbstractTableRow[] rows) {
-        this(pane, rows.length);
-        for (AbstractTableRow row : rows) {
+    public ScaledTable(ScrollPane pane, TableRow[] rows) {
+        this(pane, rows[0].size());
+        for (TableRow row : rows) {
             addRow(row);
         }
     }
 
-    private void configure(AbstractTableRow row) {
+    private void configure(TableRow row) {
         for (Node node : row) {
             TableMemberConfig config = row.config(node);
             config.setFinal();
@@ -100,6 +106,8 @@ public class ScaledTable {
     public int rowOf(Node node) {
         return GridPane.getRowIndex(node);
     }
+
+    public TableRow getRow(Node node) { return rowList.get(rowOf(node)); }
 
     public double[] getMinWidths() {
         double[] minWidths = new double[this.minWidths.length];
@@ -157,11 +165,20 @@ public class ScaledTable {
         for (int i = 0; i < columnCount; i++) setPercentWidth(i, width);
     }
 
-    public void addRow(AbstractTableRow row) {
-        for (Node node : row) {
-            tableGrid.add(node, rowCount, columnCount);
-            configure(row);
-        }
+    public void addRow(TableRow row) {
+        Node[] nodes = new Node[columnCount];
+        row.toArray(nodes);
+
+        tableGrid.addRow(rowCount, row.toArray(nodes));
+        configure(row);
+
+        rowList.add(row);
+
         rowCount++;
+    }
+
+    public void clear() {
+        tableGrid.getChildren().clear();
+        rowList.clear();
     }
 }
