@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend.admin;
 
+import ca.uoguelph.frontend.objects.controller.AbstractAdminEditorController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,10 +8,13 @@ import javafx.scene.control.TextField;
 import ca.uoguelph.backend.SubjectManager;
 import javafx.event.ActionEvent;
 
-public class SubjectEditorController {
-    @FXML private Button saveButton, deleteButton;
-    @FXML private TextField nameField, codeField;
-    @FXML private Label nameErrorLabel, codeErrorLabel;
+public class SubjectEditorController extends AbstractAdminEditorController {
+    @FXML
+    private Button saveButton, deleteButton;
+    @FXML
+    private TextField nameField, codeField;
+    @FXML
+    private Label nameErrorLabel, codeErrorLabel;
     private String name, code;
     private boolean skipValidation = false;
 
@@ -18,14 +22,14 @@ public class SubjectEditorController {
         // Handle null inputs
         this.name = (name != null) ? name : "";
         this.code = (code != null) ? code.toUpperCase() : "";
-        
+
         // Temporarily disable validation
         skipValidation = true;
-        
+
         // Set values
         nameField.setText(this.name);
         codeField.setText(this.code);
-        
+
         // Re-enable validation and validate
         skipValidation = false;
         validateName();
@@ -37,19 +41,19 @@ public class SubjectEditorController {
         // Set error label colors
         nameErrorLabel.setStyle("-fx-text-fill: #941b0c");
         codeErrorLabel.setStyle("-fx-text-fill: #941b0c");
-        
+
         // Set initial button states
         updateButtonStates(false);
-        
+
         // Add listeners after FXML initialization
         nameField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (skipValidation) return;
             validateName();
         });
-        
+
         codeField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (skipValidation) return;
-            
+
             if (!newValue.equals(newValue.toUpperCase())) {
                 codeField.setText(newValue.toUpperCase());
             } else {
@@ -130,7 +134,8 @@ public class SubjectEditorController {
     }
 
     @FXML
-    private void handleSave(ActionEvent event) {
+    @Override
+    protected void handleSave(ActionEvent event) {
         try {
             String subjectName = nameField.getText(),
                     subjectCode = codeField.getText();
@@ -149,7 +154,8 @@ public class SubjectEditorController {
     }
 
     @FXML
-    private void handleDelete(ActionEvent event) {
+    @Override
+    protected void handleDelete(ActionEvent event) {
         String subjectName = nameField.getText(),
                 subjectCode = codeField.getText();
 
