@@ -7,6 +7,7 @@ import ca.uoguelph.backend.CourseManager;
 import ca.uoguelph.backend.Database;
 import ca.uoguelph.backend.EventManager;
 import ca.uoguelph.backend.Faculty;
+import ca.uoguelph.backend.FacultyManager;
 import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.SubjectManager;
 import ca.uoguelph.backend.User;
@@ -26,11 +27,12 @@ public class App extends Application {
         SubjectManager.loadSubjects();
         CourseManager.loadCourses();
         EventManager.loadCourses();
+        FacultyManager.loadFaculty();
 
         //hardcoded users
         Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "default");
         Student student = new Student("student", "student", "otherfucker@uoguelph.ca", "otherFuck", "default", "fuck street", "6473127895", "winter","undergrad", "fuckolegy", 0.8f);
-        Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastFucker", "default", "Comp Eng", "fuck", "ROZH");
+        // Faculty faculty = new Faculty("faculty", "faculty", "lastfucker@uoguelph.ca", "lastFucker", "default", "Comp Eng", "fuck", "ROZH");
 
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
