@@ -4,28 +4,32 @@ import ca.uoguelph.backend.Course;
 import ca.uoguelph.backend.CourseManager;
 import ca.uoguelph.frontend.objects.controller.AbstractAdminListController;
 import ca.uoguelph.frontend.objects.table.ScaledTable;
+import ca.uoguelph.frontend.objects.table.row.HeaderRowPreset;
 import ca.uoguelph.frontend.objects.table.row.TableRow;
 import ca.uoguelph.frontend.objects.table.row.TableRowPreset;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+// TODO: add tabs to open multiple courses at once?
 public final class CourseManagerController extends AbstractAdminListController {
-    private final TableRow headerRow = new TableRow(
-            new Label("Course Title"),
-            new Label("Course Code"),
-            new Label("Instructors"),
-            new Label("Course Profile")
-    );
+    private final List<Course> courseList = new ArrayList<>();
+    private final HashMap<TableRow, Course> rowCourseMap = new HashMap<>();
+    private int page = 0;
+    private final int pageRowCount = 100;
+
+    @FXML private Button leftPageButton, rightPageButton;
+    @FXML private Label pageCounter;
 
     @FXML private TextField searchField;
 
@@ -34,69 +38,128 @@ public final class CourseManagerController extends AbstractAdminListController {
 
     @FXML
     public void initialize() {
-        table = new ScaledTable(scrollPane, 4);
+        table = new ScaledTable(scrollPane, 5);
+
+        table.setPercentWidth(2, 30);
+        table.setHGrow(2, Priority.ALWAYS);
+
+        table.setPercentWidth(3, 30);
+        table.setHGrow(3, Priority.ALWAYS);
+
+        courseList.addAll(CourseManager.getCourses());
+
+        page = 0;
         updateTable("");
     }
 
     @Override
     protected void updateTable(String search) {
+        courseList.clear();
+
+        if (search.isEmpty())
+            courseList.addAll(CourseManager.getCourses());
+        else
+            courseList.addAll(CourseManager.searchCoursesByTitle(search));
+
+        loadTable();
+    }
+
+    private void loadTable() {
+        rowCourseMap.clear();
         table.clear();
 
-        for (Course c : CourseManager.searchCoursesByTitle(search)) {
-            table.addRow(new TableRowPreset(c));
-            System.out.println(c);
+        if (scrollPane.getVvalue() == 1.0)
+            scrollPane.setVvalue(0.0);
+
+        table.addRow(HeaderRowPreset.COURSE.getPreset());
+
+        for (int i = page * pageRowCount; i < Math.min((page+1) * pageRowCount, courseList.size()); i++) {
+            Course c = courseList.get(i);
+
+            TableRow cr = new TableRowPreset(c);
+
+            // manage hyperlinks
+            Hyperlink editLink = (Hyperlink) cr.get(4);
+            editLink.setOnAction(this::handleEdit);
+
+            rowCourseMap.put(cr, c);
+            table.addRow(cr);
         }
+
+        checkPageButtons();
     }
 
     @Override
     protected void handleSearch(ActionEvent event) {
-        // TODO: get search results for courses
         updateTable(searchField.getText());
     }
 
-    @Override
+    @FXML @Override
     protected void handleAdd(ActionEvent event) {
-
+        handleLoadEditor(event);
     }
 
-    @Override
-    protected void handleEdit(ActionEvent event) {
+    @FXML
+    private void handleNextPage(ActionEvent ignoredEvent) {
+        page++;
+        loadTable();
+    }
 
+    @FXML
+    private void handlePrevPage(ActionEvent ignoredEvent) {
+        page--;
+        loadTable();
+    }
+
+    private void checkPageButtons() {
+        boolean leftDisable = page <= 0;
+        boolean rightDisable = (page + 1) * pageRowCount >= courseList.size();
+
+        leftPageButton.setDisable(leftDisable);
+        rightPageButton.setDisable(rightDisable);
+        pageCounter.setText("Page " + (page + 1));
+    }
+
+    @FXML @Override
+    protected void handleEdit(ActionEvent event) {
+        if (!(event.getSource() instanceof Node))
+            throw new IllegalArgumentException("Source of event is object: " + event.getSource().getClass());
+
+        TableRow sourceR = table.getRow((Node) event.getSource());
+        handleLoadEditor(event, rowCourseMap.get(sourceR));
     }
 
     @Override
     protected void handleLoadEditor(ActionEvent event) {
-//        handleLoadEditor(event, null);
+        handleLoadEditor(event, null);
     }
 
-//    private void handleLoadEditor(ActionEvent event, Course c) {
-//
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/course_editor.fxml"));
-//            Parent content = loader.load();
-//
-//            StackPane contentArea = null;
-//            Parent parent = ((Node) event.getSource()).getParent();
-//            while (parent != null) {
-//                if (parent.getId() != null && parent.getId().equals("contentArea")) {
-//                    contentArea = (StackPane) parent;
-//                    break;
-//                }
-//                parent = parent.getParent();
-//            }
-//            if (contentArea == null) throw new RuntimeException("Could not find parent StackPane");
-//
-//            CourseEditorController controller = loader.getController();
-//            controller.loadCourse(c.getCourseCode(), c.sec, c.professorName, c.capacity,
-//                    c.lectureTime, c.lectureLocation, c.examDate, c.examLocation);
-//            controller.setParentAndRow(this, 0);
-//
-//            contentArea.getChildren().clear();
-//            contentArea.getChildren().add(content);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void handleLoadEditor(ActionEvent event, Course c) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/course_editor.fxml"));
+            Parent content = loader.load();
+
+            StackPane contentArea = null;
+            Parent parent = ((Node) event.getSource()).getParent();
+            while (parent != null) {
+                if (parent.getId() != null && parent.getId().equals("contentArea")) {
+                    contentArea = (StackPane) parent;
+                    break;
+                }
+                parent = parent.getParent();
+            }
+            if (contentArea == null) throw new RuntimeException("Could not find parent StackPane");
+
+            CourseEditorController controller = loader.getController();
+//            controller.loadCourse(c);
+            controller.setParentAndRow(this, 0);
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 //    @FXML private GridPane tableGrid;
 //
