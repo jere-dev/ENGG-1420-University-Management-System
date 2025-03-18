@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ca.uoguelph.backend.Admin;
 import ca.uoguelph.backend.CourseManager;
 import ca.uoguelph.backend.Database;
+import ca.uoguelph.backend.EventManager;
 import ca.uoguelph.backend.Faculty;
 import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.SubjectManager;
@@ -24,6 +25,7 @@ public class App extends Application {
         Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
         SubjectManager.loadSubjects();
         CourseManager.loadCourses();
+        EventManager.loadCourses();
 
         //hardcoded users
         Admin admin = new Admin("admin", "admin", "fuck@uoguelph.ca", "fucker", "default");
