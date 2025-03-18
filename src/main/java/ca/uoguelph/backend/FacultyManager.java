@@ -15,7 +15,7 @@ public class FacultyManager {
     {
         var arar = Database.loadStrings(3);
         for(var ar : arar){
-            ArrayList<Pair<String, String>> courses = Arrays.stream(ar.get(6).split(","))
+            ArrayList<Pair<String, String>> courses = Arrays.stream(ar.get(6).replace(" ", "").split(","))
                 .map(sc -> {
                     String[] parts = sc.split("\\*");
                     if (parts.length < 2) {
