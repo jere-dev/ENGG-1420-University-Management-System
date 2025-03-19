@@ -66,9 +66,9 @@ public class App extends Application {
         primaryStage.show();
 
         // add popup logging
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            DisplayError.createPopup("Error at " + t.toString(), e);
-        });
+//        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+//            DisplayError.createPopup("Error at " + t.toString(), e);
+//        });
     }
 
     public static void main(String[] args) {

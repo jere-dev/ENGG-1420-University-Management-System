@@ -1,5 +1,12 @@
 package ca.uoguelph.frontend.admin;
 
-public class SectionEditorController {
+import ca.uoguelph.frontend.objects.DisplayError;
+
+public class SectionEditorController implements DisplayError {
+    @Override
+    public void displayError(String err) {
+
+    }
+    
     // TODO: create section editor functionality
 }

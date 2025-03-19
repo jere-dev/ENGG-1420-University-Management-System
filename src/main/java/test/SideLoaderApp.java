@@ -26,7 +26,7 @@ public class SideLoaderApp extends Application {
         primaryStage.show();
 
         // add popup logging
-        Thread.setDefaultUncaughtExceptionHandler(DisplayError::createPopup);
+//        Thread.setDefaultUncaughtExceptionHandler(DisplayError::createPopup);
     }
 
     void loadScene(String fxmlName) {

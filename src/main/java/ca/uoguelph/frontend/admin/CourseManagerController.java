@@ -220,7 +220,7 @@ public final class CourseManagerController extends AbstractAdminListController i
 
             CourseEditorController controller = loader.getController();
 //            controller.loadCourse(c);
-            controller.setParentAndRow(this, 0);
+//            controller.setParentAndRow(this, 0);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
