@@ -1,18 +1,15 @@
 package ca.uoguelph.frontend;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import ca.uoguelph.backend.Admin;
 import ca.uoguelph.backend.CourseManager;
 import ca.uoguelph.backend.Database;
 import ca.uoguelph.backend.EventManager;
-import ca.uoguelph.backend.Faculty;
 import ca.uoguelph.backend.FacultyManager;
-import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.StudentManager;
 import ca.uoguelph.backend.SubjectManager;
-import ca.uoguelph.backend.User;
+import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -67,6 +64,11 @@ public class App extends Application {
         primaryStage.setResizable(true);
 
         primaryStage.show();
+
+        // add popup logging
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            DisplayError.createPopup("Error at " + t.toString(), e);
+        });
     }
 
     public static void main(String[] args) {
