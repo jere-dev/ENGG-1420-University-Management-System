@@ -63,10 +63,10 @@ public class StudentManagerController {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         // Assuming your Student class has getProgram(), getYear(), getCoursesEnrolled(), and getStatus()
-        programColumn.setCellValueFactory(new PropertyValueFactory<>("academicLevel")); //Adjust to your student class
+        programColumn.setCellValueFactory(new PropertyValueFactory<>("email")); //Adjust to your student class
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("currentSemester")); //Adjust to your student class
-        coursesColumn.setCellValueFactory(new PropertyValueFactory<>("thesisTitle")); //Adjust to your student class
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("progress"));//Adjust to your student class
+        coursesColumn.setCellValueFactory(new PropertyValueFactory<>("courses")); //Adjust to your student class
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("progress"+"%"));//Adjust to your student class
 
         // Load students into the table
         loadStudents();

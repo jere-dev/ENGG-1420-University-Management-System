@@ -88,10 +88,10 @@
                         <columns>
                             <TableColumn fx:id="idColumn" minWidth="120" prefWidth="140" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER-LEFT; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="Faculty ID" />
                             <TableColumn fx:id="nameColumn" minWidth="150" prefWidth="200" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER-LEFT; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="Name" />
-                            <TableColumn fx:id="departmentColumnTable" minWidth="150" prefWidth="180" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="Department" />
-                            <TableColumn fx:id="yearColumnTable" minWidth="80" prefWidth="100" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="Year" />
-                            <TableColumn fx:id="coursesColumnTable" minWidth="150" prefWidth="180" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="Courses Taught" />
-                            <TableColumn fx:id="statusColumnTable" minWidth="120" prefWidth="150" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="Status" />
+                            <TableColumn fx:id="departmentColumnTable" minWidth="135.42849731445312" prefWidth="135.42849731445312" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="degree" />
+                            <TableColumn fx:id="yearColumnTable" minWidth="80" prefWidth="240.57147216796875" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="research interest" />
+                            <TableColumn fx:id="coursesColumnTable" minWidth="122.857177734375" prefWidth="122.857177734375" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="office " />
+                            <TableColumn fx:id="statusColumnTable" minWidth="120" prefWidth="256.00006103515625" style="-fx-font-family: 'Graduate'; -fx-alignment: CENTER; -fx-background-color: #e8e8e8; -fx-text-fill: black;" text="email" />
                         </columns>
                         <columnResizePolicy>
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

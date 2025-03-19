@@ -65,7 +65,7 @@ public class FacultyManagerController {
         departmentColumnTable.setCellValueFactory(new PropertyValueFactory<>("degree"));
         yearColumnTable.setCellValueFactory(new PropertyValueFactory<>("researchInterest"));
         coursesColumnTable.setCellValueFactory(new PropertyValueFactory<>("officeLocation"));
-        statusColumnTable.setCellValueFactory(new PropertyValueFactory<>("profilePhoto"));
+        statusColumnTable.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         // Load faculties into the table
         loadFaculties();

@@ -2,7 +2,6 @@ package ca.uoguelph.frontend.admin;
 
 import ca.uoguelph.backend.Course;
 import ca.uoguelph.backend.CourseManager;
-import ca.uoguelph.frontend.objects.DisplayError;
 import ca.uoguelph.frontend.objects.controller.AbstractAdminListController;
 import ca.uoguelph.frontend.objects.table.ScaledTable;
 import ca.uoguelph.frontend.objects.table.row.HeaderRowPreset;
@@ -14,29 +13,23 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
-import java.rmi.NoSuchObjectException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 // TODO: add tabs to open multiple courses at once?
-public final class CourseManagerController extends AbstractAdminListController implements DisplayError {
+public final class CourseManagerController extends AbstractAdminListController {
     private final List<Course> courseList = new ArrayList<>();
     private final HashMap<TableRow, Course> rowCourseMap = new HashMap<>();
     private int page = 0;
-    private int pageRowCount = 40;
+    private final int pageRowCount = 100;
 
     @FXML private Button leftPageButton, rightPageButton;
-    @FXML private TextField pageText, rowCountText;
-    @FXML private VBox screenBox;
-    @FXML private Label errorLabel;
+    @FXML private Label pageCounter;
 
     @FXML private TextField searchField;
 
@@ -66,15 +59,15 @@ public final class CourseManagerController extends AbstractAdminListController i
         page = 0;
         updateTable("");
 
-        // dynamic searching
-        searchField.textProperty().addListener(
-                (obs, old, newText) -> updateTable(newText));
+        searchField.textProperty().addListener((obs, old, newText) -> {
+            page = 0;
+            updateTable(newText);
+        });
     }
 
     @Override
     protected void updateTable(String search) {
         courseList.clear();
-        page = 0;
 
         if (search.isEmpty())
             courseList.addAll(CourseManager.getCourses());
@@ -88,7 +81,8 @@ public final class CourseManagerController extends AbstractAdminListController i
         rowCourseMap.clear();
         table.clear();
 
-        updatePageButtons();
+        if (scrollPane.getVvalue() == 1.0)
+            scrollPane.setVvalue(0.0);
 
         table.addRow(HeaderRowPreset.COURSE.getPreset());
 
@@ -105,87 +99,38 @@ public final class CourseManagerController extends AbstractAdminListController i
             table.addRow(cr);
         }
 
-        if (scrollPane.getVvalue() == 1.0)
-            scrollPane.setVvalue(0.0);
+        checkPageButtons();
     }
 
-    private void updatePageButtons() {
+    @Override
+    protected void handleSearch(ActionEvent event) {
+        updateTable(searchField.getText());
+    }
+
+    @FXML @Override
+    protected void handleAdd(ActionEvent event) {
+        handleLoadEditor(event);
+    }
+
+    @FXML
+    private void handleNextPage(ActionEvent ignoredEvent) {
+        page++;
+        loadTable();
+    }
+
+    @FXML
+    private void handlePrevPage(ActionEvent ignoredEvent) {
+        page--;
+        loadTable();
+    }
+
+    private void checkPageButtons() {
         boolean leftDisable = page <= 0;
         boolean rightDisable = (page + 1) * pageRowCount >= courseList.size();
 
         leftPageButton.setDisable(leftDisable);
         rightPageButton.setDisable(rightDisable);
-        pageText.setPromptText(String.valueOf(page + 1));
-        rowCountText.setPromptText(pageRowCount + " courses per page");
-    }
-
-    @Override
-    protected void handleSearch(ActionEvent event) {updateTable(searchField.getText());}
-
-    @FXML @Override
-    protected void handleAdd(ActionEvent event) {handleLoadEditor(event);}
-
-    @FXML
-    private void handleNextPage(ActionEvent ignoredEvent) {
-        page++; loadTable();
-    }
-
-    @FXML
-    private void handlePrevPage(ActionEvent ignoredEvent) {
-        page--; loadTable();
-    }
-
-    @FXML
-    private void handleKeyPage(KeyEvent event) {
-        System.out.println(event.getCode());
-        if (event.getCode() != KeyCode.ENTER) return;
-
-        String userText = pageText.getText();
-        pageText.setPromptText(pageText.getText());
-        pageText.setText("");
-        screenBox.requestFocus();
-
-        if (userText.equals(String.valueOf(page))) return;
-
-        if (errorIf("Page not valid", () -> !Pattern.matches("[0-9]+", userText) ||
-                errorIf("Page does not exist", () -> (Integer.parseInt(userText)-1) * pageRowCount >= courseList.size() ||
-                        Integer.parseInt(userText) < 0))) {
-            pageText.setPromptText(String.valueOf(page));
-            return;
-        }
-
-        try {Thread.sleep(300);} catch (Exception ignored) {
-            System.err.println("CourseManager:158: thread-sleep failed\n-----");
-        }
-
-        page = Integer.parseInt(userText) - 1;
-        loadTable();
-    }
-
-    @FXML
-    private void handleKeyCount(KeyEvent event) {
-        if (event.getCode() != KeyCode.ENTER) return;
-
-        String text = rowCountText.getText();
-        rowCountText.setText("");
-        screenBox.requestFocus();
-
-        if (errorIf("Display count not valid", () -> !Pattern.matches("[0-9]+", text))
-                || errorIf("Display count too small", () -> Integer.parseInt(text) <= 5))
-            return;
-
-        try {Thread.sleep(300);} catch (Exception ignored) {
-            System.err.println("CourseManager:178: thread-sleep failed\n-----");
-        }
-
-        page = Math.min(page * pageRowCount / Integer.parseInt(text), courseList.size() - 1);
-        pageRowCount = Integer.parseInt(text);
-        loadTable();
-    }
-
-    @Override
-    public void displayError(String err) {
-        displayShortError(err, errorLabel, 2.0);
+        pageCounter.setText("Page " + (page + 1));
     }
 
     @FXML @Override
@@ -216,17 +161,16 @@ public final class CourseManagerController extends AbstractAdminListController i
                 }
                 parent = parent.getParent();
             }
-            if (contentArea == null) throw new NoSuchObjectException("Could not find parent StackPane");
+            if (contentArea == null) throw new RuntimeException("Could not find parent StackPane");
 
             CourseEditorController controller = loader.getController();
 //            controller.loadCourse(c);
-//            controller.setParentAndRow(this, 0);
+            controller.setParentAndRow(this, 0);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
-        } catch (Exception e) {
-            displayError(e.getClass().getName() + ": see terminal for more information");
-            log.error(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
