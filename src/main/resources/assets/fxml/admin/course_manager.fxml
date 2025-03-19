@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="659.0" prefWidth="1250.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.CourseManagerController">
     <content>
-        <VBox minHeight="655.0" minWidth="1050.0" prefHeight="657.0" prefWidth="1050.0" style="-fx-background-color: #F5F5F5; -fx-padding: 20;">
+        <VBox fx:id="screenBox" minHeight="655.0" minWidth="1050.0" prefHeight="657.0" prefWidth="1050.0" style="-fx-background-color: #F5F5F5; -fx-padding: 20;" styleClass="ignoreHighlight" stylesheets="@../../styles/styles.css">
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #941B0C;" text="Course List">
                 <font>
                     <Font name="Graduate" size="24.0" />
@@ -26,20 +31,18 @@
                         </font>
                     </Label>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Label style="-fx-font-size: 14px; -fx-text-fill: #333333;" text="Search:">
-                        <font>
-                            <Font name="Graduate" size="14.0" />
-                        </font>
-                    </Label>
                     <TextField fx:id="searchField" prefWidth="200.0" promptText="Search courses..." style="-fx-font-family: 'Graduate'; -fx-font-size: 12px;" />
-                    <Button onAction="#handleSearch" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: 'Graduate'; -fx-font-size: 12px;" text="⌕">
+                    <Button onAction="#handleSearch" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: 'Graduate'; -fx-font-size: 12px;" text="SEARCH">
                         <effect>
                             <DropShadow color="#00000033" radius="3" spread="0.05" />
                         </effect>
+                  <font>
+                     <Font size="14.0" />
+                  </font>
                     </Button>
                 </HBox>
 
-                <ScrollPane fx:id="scrollPane" fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                     <VBox.margin>
                         <Insets top="20" />
                     </VBox.margin>
@@ -50,9 +53,35 @@
                         <Insets top="15" />
                     </padding>
                     <Button fx:id="leftPageButton" onAction="#handlePrevPage" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C;" text="⮜" />
-                    <Label fx:id="pageCounter" style="-fx-font-family: 'Graduate'; -fx-font-size: 12px;" text="Page 1" />
+               <TextField fx:id="pageText" alignment="CENTER" onKeyPressed="#handleKeyPage" prefWidth="30.0" promptText="1">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+                  <padding>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+                  <font>
+                     <Font name="Graduate" size="12.0" />
+                  </font>
+               </TextField>
                     <Button fx:id="rightPageButton" onAction="#handleNextPage" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C;" text="⮞" />
+               <Label fx:id="errorLabel" prefWidth="400.0" textFill="RED" HBox.hgrow="ALWAYS">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+                  <padding>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+               </Label>
                     <Region HBox.hgrow="ALWAYS" />
+               <TextField fx:id="rowCountText" alignment="CENTER_RIGHT" onKeyPressed="#handleKeyCount" prefHeight="26.0" prefWidth="90.0" promptText="0 per page" styleClass="titleText" stylesheets="@../../styles/styles.css">
+                  <HBox.margin>
+                     <Insets top="5.0" />
+                  </HBox.margin>
+                  <padding>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </padding>
+               </TextField>
                     <Button onAction="#handleAdd" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-min-width: 120; -fx-min-height: 30;" text="ADD COURSE +">
                         <font>
                             <Font name="Graduate" size="12.0" />
