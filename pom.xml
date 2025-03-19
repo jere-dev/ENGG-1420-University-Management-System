@@ -71,6 +71,14 @@
             <version>2.24.3</version>
         </dependency>
 
+        <!-- Log4j Default Implementation -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -83,6 +91,15 @@
             <artifactId>view</artifactId>
             <version>11.12.7</version>
         </dependency>
+
+        <!-- SLF4J-to-Log4j12 bridge to use CalendarFX -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>2.0.16</version>
+            <scope>runtime</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -142,6 +159,13 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <!-- logger resources -->
+            <resource>
+                <directory>src/main/resources/logger</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>
