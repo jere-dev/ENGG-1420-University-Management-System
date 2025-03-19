@@ -72,6 +72,14 @@ public final class ScaledTable {
         }
     }
 
+    public int length() {
+        return rowCount;
+    }
+
+    public int width() {
+        return columnCount;
+    }
+
     public Insets padding() {
         return tableGrid.getPadding();
     }

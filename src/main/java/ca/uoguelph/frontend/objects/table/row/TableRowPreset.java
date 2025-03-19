@@ -5,7 +5,6 @@ import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.Subject;
 import ca.uoguelph.backend.login.LoginManager;
 import ca.uoguelph.backend.login.LoginState;
-import ca.uoguelph.frontend.admin.CourseManagerController;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -14,7 +13,7 @@ import javafx.scene.control.Label;
 import java.util.HashSet;
 import java.util.List;
 
-public class TableRowPreset extends TableRow {
+public final class TableRowPreset extends TableRow {
     /**
      * Converts a {@code Subject} object to a table row. Adds an edit button if the {@code LoginState} is an administrator.
      */
@@ -105,7 +104,7 @@ public class TableRowPreset extends TableRow {
     }
 
     /**
-     * Converts a {@code Student} object to a table row for a specified course type. Specific to when the {@LoginState} is a faculty member.
+     * Converts a {@code Student} object to a table row for a specified course type. Specific to when the {@code LoginState} is a faculty member.
      * @param st    student
      * @param c     course name of student
      */

@@ -1,8 +1,6 @@
 package ca.uoguelph.frontend.objects.table.row;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 
 public enum HeaderRowPreset {
     COURSE, SUBJECT, STUDENT, FACULTY, EVENT;
@@ -31,5 +29,15 @@ public enum HeaderRowPreset {
         }
 
         return preset;
+    }
+
+    public int presetRowCount() {
+        return switch (this) {
+            case COURSE -> courseRow.size();
+            case SUBJECT -> 0;
+            case STUDENT -> 0;
+            case FACULTY -> 0;
+            case EVENT -> 0;
+        };
     }
 }
