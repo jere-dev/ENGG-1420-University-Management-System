@@ -19,7 +19,7 @@ public class CourseManager {
         int i = 0;
         for(var ar : arar){
             i++;
-            if(i > 3000){break;}
+            if(i > 1000){break;}
             try {
                 ArrayList<Section> sections = mapper.readValue(ar.get(9), new TypeReference<ArrayList<Section>>(){});
                 courses.add(new Course(ar.get(0), ar.get(1), ar.get(2), Float.parseFloat(ar.get(3)), ar.get(4), ar.get(5), ar.get(6), ar.get(7), ar.get(8), sections));
