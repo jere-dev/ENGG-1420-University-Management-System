@@ -48,7 +48,7 @@ package ca.uoguelph.frontend.admin;
          table = new ScaledTable(scrollPane, 5);
  
          // Set column widths with updated proportions
-         table.setPercentWidth(0, 12); // Subject code
+         table.setPercentWidth(0, 20); // Subject code
          table.setPercentWidth(1, 12); // Course code  
          table.setPercentWidth(2, 46); // Title
          table.setPercentWidth(3, 20); // Credits

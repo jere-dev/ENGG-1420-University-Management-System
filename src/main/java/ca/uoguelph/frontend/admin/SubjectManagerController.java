@@ -78,35 +78,44 @@ public final class SubjectManagerController extends AbstractAdminListController 
     private void loadTable() {
         tableGrid.getChildren().clear();
         buttonMap.clear();
-        
+    
         // Add header
         addHeaderRow();
-        
+    
+        // Add a separator under the header
+        Separator headerSeparator = new Separator();
+        headerSeparator.setPadding(new Insets(5, 0, 5, 0)); // Add padding for spacing
+        tableGrid.add(headerSeparator, 0, 1, 3, 1); // Span across all columns
+    
         // Update pagination
         updatePageButtons();
-
+    
         // Calculate range for current page
         int startIndex = page * pageRowCount;
         int endIndex = Math.min((page + 1) * pageRowCount, subjectList.size());
-
+    
         // Add subjects for current page
         for (int i = startIndex; i < endIndex; i++) {
             Subject subject = subjectList.get(i);
-            int rowIndex = (i - startIndex) + 1;
-
+            int rowIndex = (i - startIndex) * 2 + 2; // Multiply by 2 to account for separators
+    
             Label nameLabel = new Label(subject.getName());
             Label codeLabel = new Label(subject.getCode());
             Button editButton = createStyledButton("✎");
-
+    
             nameLabel.setStyle("-fx-padding: 5; -fx-font-size: 13px;");
             codeLabel.setStyle("-fx-padding: 5; -fx-font-size: 13px;");
-
+    
+            // Add the row
             tableGrid.addRow(rowIndex, nameLabel, codeLabel, editButton);
             buttonMap.put(editButton, subject);
             editButton.setOnAction(this::handleEdit);
+    
+            // Add a separator under the row
+            Separator rowSeparator = new Separator();
+            rowSeparator.setPadding(new Insets(5, 0, 5, 0)); // Add padding for spacing
+            tableGrid.add(rowSeparator, 0, rowIndex + 1, 3, 1); // Span across all columns
         }
-        
-        
     }
 
     private void addHeaderRow() {
