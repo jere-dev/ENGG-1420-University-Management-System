@@ -66,7 +66,7 @@ public class StudentManagerController {
         programColumn.setCellValueFactory(new PropertyValueFactory<>("email")); //Adjust to your student class
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("currentSemester")); //Adjust to your student class
         coursesColumn.setCellValueFactory(new PropertyValueFactory<>("courses")); //Adjust to your student class
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("progress"+"%"));//Adjust to your student class
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("progress"));//Adjust to your student class
 
         // Load students into the table
         loadStudents();

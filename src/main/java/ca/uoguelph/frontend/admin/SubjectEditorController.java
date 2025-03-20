@@ -67,30 +67,19 @@ public class SubjectEditorController extends AbstractAdminEditorController {
         boolean isValid = true;
 
         if (name.isEmpty()) {
-            nameErrorLabel.setText("");
+            nameErrorLabel.setText("Name cannot be empty");
             isValid = false;
-        } else if (!name.matches("[a-zA-Z0-9\\s\\-]+")) {
-            nameErrorLabel.setText("Only letters, numbers, spaces and hyphens allowed");
+        } else if (!name.matches("[a-zA-Z0-9\\s\\-\\(\\)]+")) {
+            nameErrorLabel.setText("Only letters, numbers, spaces, brackets and hyphens allowed");
+            isValid = false;
+        } else if (!name.equals(this.name) && SubjectManager.getSubjectByName(name) != null) {
+            nameErrorLabel.setText("Subject name already exists");
             isValid = false;
         } else {
-            try {
-                // Don't check for duplicates if it's the same as original name
-                if (!name.equals(this.name)) {
-                    if (SubjectManager.getSubjectByName(name) != null) {
-                        nameErrorLabel.setText("Subject name already exists");
-                        isValid = false;
-                    } else {
-                        nameErrorLabel.setText("");
-                    }
-                } else {
-                    nameErrorLabel.setText("");
-                }
-            } catch (IllegalArgumentException e) {
-                nameErrorLabel.setText("");
-            }
+            nameErrorLabel.setText("");
         }
 
-        updateButtonStates(isValid && codeField.getText().matches("[A-Z0-9\\-]+"));
+        updateButtonStates(nameErrorLabel.getText().isEmpty() && codeErrorLabel.getText().isEmpty());
     }
 
     private void validateCode() {
@@ -98,35 +87,32 @@ public class SubjectEditorController extends AbstractAdminEditorController {
         boolean isValid = true;
 
         if (code.isEmpty()) {
-            codeErrorLabel.setText("");
+            codeErrorLabel.setText("Code cannot be empty");
             isValid = false;
         } else if (!code.matches("[A-Z0-9\\-]+")) {
             codeErrorLabel.setText("Only uppercase letters, numbers and hyphens allowed");
             isValid = false;
+        } else if (!code.equals(this.code) && SubjectManager.getSubject(code) != null) {
+            codeErrorLabel.setText("Subject code already exists");
+            isValid = false;
         } else {
-            try {
-                // Don't check for duplicates if it's the same as original code
-                if (!code.equals(this.code)) {
-                    if (SubjectManager.getSubject(code) != null) {
-                        codeErrorLabel.setText("Subject code already exists");
-                        isValid = false;
-                    } else {
-                        codeErrorLabel.setText("");
-                    }
-                } else {
-                    codeErrorLabel.setText("");
-                }
-            } catch (IllegalArgumentException e) {
-                codeErrorLabel.setText("");
-            }
+            codeErrorLabel.setText("");
         }
 
-        updateButtonStates(isValid && nameField.getText().matches("[A-Z0-9\\s\\-]+"));
+        updateButtonStates(nameErrorLabel.getText().isEmpty() && codeErrorLabel.getText().isEmpty());
     }
 
     private void updateButtonStates(boolean isValid) {
         if (saveButton != null) {
             saveButton.setDisable(!isValid);
+            // Make the button look disabled and prevent clicks
+            if (!isValid) {
+                saveButton.setStyle("-fx-opacity: 0.5; -fx-cursor: default;");
+                saveButton.setOnAction(null);
+            } else {
+                saveButton.setStyle("");
+                saveButton.setOnAction(this::handleSave);
+            }
         }
         if (deleteButton != null) {
             deleteButton.setDisable(name == null || name.isEmpty());
@@ -136,6 +122,12 @@ public class SubjectEditorController extends AbstractAdminEditorController {
     @FXML
     @Override
     protected void handleSave(ActionEvent event) {
+        // Check if the fields are valid before proceeding
+        if (!nameErrorLabel.getText().isEmpty() || !codeErrorLabel.getText().isEmpty()) {
+            System.err.println("Cannot save: Validation errors present.");
+            return;
+        }
+
         try {
             String subjectName = nameField.getText(),
                     subjectCode = codeField.getText();
