@@ -13,13 +13,16 @@ public class StudentManager {
     public static void loadStudents(){
         var arar = Database.loadStrings(2);
         for(var ar : arar){
-            ArrayList<Pair<String, String>> courses = Arrays.stream(ar.get(8).replace("", " ").split(","))
+            ArrayList<Pair<String, String>> courses = Arrays.stream(ar.get(8).split(","))
                 .map(sc -> {
-                    String[] parts = sc.split("\\*");
+                    String[] parts = sc.split("\\*", 2); // Split at first asterisk only
                     if (parts.length < 2) {
                         return new Pair<>("invalid-key", "invalid-value");//TODO: throw error instead
                     }
-                    return new Pair<>(parts[0], parts[1]);
+                    // Get the full course code (e.g., "ENGL") and number (e.g., "2740")
+                    String courseCode = (parts[0] + "*" + parts[1].substring(0, 4)).trim();
+                    String courseName = parts[1].substring(4).trim();
+                    return new Pair<>(courseCode, courseName);
                 })
                 .collect(Collectors.toCollection(() -> new ArrayList<>()));
             students.add(new Student(ar.get(0), ar.get(1), ar.get(2), ar.get(3), ar.get(4), ar.get(5), ar.get(6), ar.get(7), courses, ar.get(9), Float.parseFloat(ar.get(10)), ar.get(11)));

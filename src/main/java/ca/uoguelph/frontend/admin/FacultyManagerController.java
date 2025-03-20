@@ -24,33 +24,57 @@ public class FacultyManagerController {
     @FXML private TextField searchField;
     @FXML private Button leftPageButton, rightPageButton;
     @FXML private TextField pageText, rowCountText;
-    @FXML private ComboBox<String> departmentFilter;
-    @FXML private ComboBox<String> yearFilter;
+    @FXML private ScrollPane scrollPane;
+    @FXML private Label errorLabel;
 
     @FXML
     public void initialize() {
         setupGridPane();
         facultyList.addAll(FacultyManager.getFaculties());
         updateTable("");
-        searchField.textProperty().addListener((obs, old, newText) -> updateTable(newText.trim()));
+
+        // Setup scroll pane
+        if (scrollPane != null) {
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+            scrollPane.getStyleClass().add("edge-to-edge");
+        }
+
+        // Style the search field
+        searchField.setPromptText("Search by ID, Name or Email...");
+        searchField.setStyle("-fx-prompt-text-fill: #757575; -fx-background-radius: 3; " +
+                           "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
+                           "-fx-border-width: 1; -fx-background-color: white;");
+
+        // Enable dynamic search with small delay
+        searchField.textProperty().addListener((obs, old, newText) -> {
+            if (searchField.isFocused()) {
+                javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.millis(300));
+                pause.setOnFinished(e -> updateTable(newText.trim()));
+                pause.play();
+            }
+        });
     }
 
     private void setupGridPane() {
-        tableGrid.setHgap(10);
+        tableGrid.setHgap(20);
         tableGrid.setVgap(5);
-        tableGrid.setPadding(new Insets(10));
+        tableGrid.setPadding(new Insets(5, 15, 15, 15));
+        tableGrid.setStyle("-fx-background-color: white; -fx-background-radius: 3; " +
+                          "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
+                          "-fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 3, 0, 0, 0);");
 
-        // Add column constraints
+        // Column constraints (match Student Manager's layout proportions)
         ColumnConstraints idCol = new ColumnConstraints();
         idCol.setPercentWidth(15);
         ColumnConstraints nameCol = new ColumnConstraints();
-        nameCol.setPercentWidth(20);
+        nameCol.setPercentWidth(25);
         ColumnConstraints degreeCol = new ColumnConstraints();
         degreeCol.setPercentWidth(15);
         ColumnConstraints researchCol = new ColumnConstraints();
         researchCol.setPercentWidth(20);
         ColumnConstraints officeCol = new ColumnConstraints();
-        officeCol.setPercentWidth(15);
+        officeCol.setPercentWidth(10);
         ColumnConstraints emailCol = new ColumnConstraints();
         emailCol.setPercentWidth(15);
 
@@ -64,10 +88,30 @@ public class FacultyManagerController {
         if (search.isEmpty()) {
             facultyList.addAll(FacultyManager.getFaculties());
         } else {
-            facultyList.addAll(FacultyManager.getFacultiesByID(search));
-            if (facultyList.isEmpty()) {
-                facultyList.addAll(FacultyManager.getFacultiesByName(search));
-            }
+            // Normalize search text
+            String normalizedSearch = search.toLowerCase()
+                .replaceAll("\\s+", " ")
+                .replaceAll("\\.", " ")
+                .trim();
+
+            // Search with normalized comparison across multiple fields
+            facultyList.addAll(FacultyManager.getFaculties().stream()
+                .filter(f -> {
+                    String normalizedID = f.getID().toLowerCase()
+                        .replaceAll("\\s+", " ")
+                        .trim();
+                    String normalizedName = f.getName().toLowerCase()
+                        .replaceAll("\\s+", " ")
+                        .trim();
+                    String normalizedEmail = f.getEmail().toLowerCase()
+                        .replaceAll("\\s+", " ")
+                        .trim();
+                    
+                    return normalizedID.contains(normalizedSearch) || 
+                           normalizedName.contains(normalizedSearch) ||
+                           normalizedEmail.contains(normalizedSearch);
+                })
+                .toList());
         }
 
         loadTable();
@@ -89,7 +133,6 @@ public class FacultyManagerController {
         for (int i = startIndex; i < endIndex; i++) {
             Faculty faculty = facultyList.get(i);
             int rowIndex = (i - startIndex) * 2 + 2;
-
             addFacultyRow(faculty, rowIndex);
         }
 
@@ -106,13 +149,24 @@ public class FacultyManagerController {
             new Label("Email")
         };
 
+        String headerStyle = "-fx-font-weight: bold; -fx-font-size: 14px; " +
+                           "-fx-text-fill: #941B0C; -fx-padding: 12 5 12 5; " +
+                           "-fx-background-color: transparent;";
+        
         for (int i = 0; i < headers.length; i++) {
-            headers[i].getStyleClass().add("table-header");
+            headers[i].setStyle(headerStyle);
+            headers[i].setMaxWidth(Double.MAX_VALUE);
+            GridPane.setHgrow(headers[i], Priority.ALWAYS);
             tableGrid.add(headers[i], i, 0);
         }
     }
 
     private void addFacultyRow(Faculty faculty, int rowIndex) {
+        HBox rowContainer = new HBox();
+        rowContainer.setMaxWidth(Double.MAX_VALUE);
+        rowContainer.getStyleClass().add("table-row");
+        rowContainer.setStyle("-fx-background-color: transparent;");
+
         Label[] labels = {
             new Label(faculty.getID()),
             new Label(faculty.getName()),
@@ -122,52 +176,38 @@ public class FacultyManagerController {
             new Label(faculty.getEmail())
         };
 
-        String labelStyle = "-fx-padding: 5; -fx-font-size: 13px;";
-        for (int i = 0; i < labels.length; i++) {
-            labels[i].setStyle(labelStyle);
-            tableGrid.add(labels[i], i, rowIndex);
-        }
-
-        Button editButton = createStyledButton("✎");
-        tableGrid.add(editButton, 6, rowIndex);
-        buttonMap.put(editButton, faculty);
-        editButton.setOnAction(this::handleEdit);
-
-        Separator rowSeparator = new Separator();
-        rowSeparator.setPadding(new Insets(5, 0, 5, 0));
-        tableGrid.add(rowSeparator, 0, rowIndex + 1, 7, 1);
-    }
-
-    private Button createStyledButton(String text) {
-        Button button = new Button(text);
-        button.setMinWidth(60);
-        button.setMinHeight(30);
-        button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-size: 14px; -fx-font-family: 'Graduate';");
-        button.getStyleClass().add("action-button");
+        String labelStyle = "-fx-padding: 10 5 10 5; -fx-font-size: 13px; -fx-text-fill: #333333;";
         
-        // Add hover effect
-        button.setOnMouseEntered(e -> {
-            button.setStyle("-fx-background-color: #F6AA1C; -fx-text-fill: #941B0C; -fx-font-size: 14px; -fx-font-family: 'Graduate'; -fx-cursor: hand;");
-            button.setEffect(new javafx.scene.effect.DropShadow(3, 0, 0, javafx.scene.paint.Color.rgb(0, 0, 0, 0.2)));
-        });
-        
-        button.setOnMouseExited(e -> {
-            button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-size: 14px; -fx-font-family: 'Graduate';");
-            button.setEffect(null);
-        });
-        
-        button.setOnMousePressed(e -> 
-            button.setStyle("-fx-background-color: #7B1609; -fx-text-fill: #F6AA1C; -fx-font-size: 14px; -fx-font-family: 'Graduate';"));
-        
-        button.setOnMouseReleased(e -> {
-            if (button.isHover()) {
-                button.setStyle("-fx-background-color: #F6AA1C; -fx-text-fill: #941B0C; -fx-font-size: 14px; -fx-font-family: 'Graduate';");
-            } else {
-                button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-size: 14px; -fx-font-family: 'Graduate';");
+        rowContainer.setOnMouseEntered(e -> {
+            rowContainer.setStyle("-fx-background-color: #F6F6F6;");
+            for (Label label : labels) {
+                label.setStyle(labelStyle);
             }
         });
         
-        return button;
+        rowContainer.setOnMouseExited(e -> {
+            rowContainer.setStyle("-fx-background-color: transparent;");
+            for (Label label : labels) {
+                label.setStyle(labelStyle);
+            }
+        });
+        
+        tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1);
+        
+        for (int i = 0; i < labels.length; i++) {
+            labels[i].setStyle(labelStyle);
+            labels[i].setMaxWidth(Double.MAX_VALUE);
+            labels[i].setMaxHeight(Double.MAX_VALUE);
+            GridPane.setHgrow(labels[i], Priority.ALWAYS);
+            GridPane.setVgrow(labels[i], Priority.ALWAYS);
+            tableGrid.add(labels[i], i, rowIndex);
+        }
+
+        Separator rowSeparator = new Separator();
+        rowSeparator.setPadding(new Insets(0));
+        rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
+        rowSeparator.setMaxWidth(Double.MAX_VALUE);
+        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
     }
 
     @FXML
@@ -189,7 +229,6 @@ public class FacultyManagerController {
             
         if (selectedFaculty != null) {
             System.out.println("View details for: " + selectedFaculty.getName());
-            // TODO: Implement faculty details view
         } else {
             System.out.println("Please select a faculty member");
         }
@@ -198,14 +237,6 @@ public class FacultyManagerController {
     @FXML
     private void handleExportList() {
         System.out.println("Export list button clicked");
-        // TODO: Implement export functionality
-    }
-
-    private void handleEdit(ActionEvent event) {
-        Faculty faculty = buttonMap.get((Button) event.getSource());
-        if (faculty != null) {
-            System.out.println("Edit faculty: " + faculty.getName());
-        }
     }
 
     @FXML
@@ -270,5 +301,19 @@ public class FacultyManagerController {
         if (rowCountText != null) {
             rowCountText.setPromptText(pageRowCount + " rows per page");
         }
+    }
+
+    @FXML
+    private void handleAdd(ActionEvent event) {
+        System.out.println("Add Faculty clicked");
+    }
+
+    @FXML
+    private void handleSearch(ActionEvent event) {
+        String searchText = searchField.getText();
+        if (searchText.isEmpty()) {
+            // TODO: load default settings
+        }
+        updateTable(searchText);
     }
 }
