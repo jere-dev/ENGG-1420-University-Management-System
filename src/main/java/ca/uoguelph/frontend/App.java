@@ -10,12 +10,14 @@ import ca.uoguelph.backend.FacultyManager;
 import ca.uoguelph.backend.StudentManager;
 import ca.uoguelph.backend.SubjectManager;
 import ca.uoguelph.frontend.objects.DisplayError;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class App extends Application {
 
@@ -49,6 +51,13 @@ public class App extends Application {
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
         Parent root = loader.load();
+
+        // Add fade-in animation
+        root.setOpacity(0);
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), root);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.play();
 
         // Set up the scene and stage
         Scene scene = new Scene(root, 1280, 720);

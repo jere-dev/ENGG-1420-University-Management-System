@@ -65,11 +65,28 @@ public final class SubjectManagerController extends AbstractAdminListController 
         if (search.isEmpty()) {
             subjectList.addAll(SubjectManager.getSubjects());
         } else {
-            // Search by both name and code
-            subjectList.addAll(SubjectManager.searchByName(search));
-            if (subjectList.isEmpty()) {
-                subjectList.addAll(SubjectManager.searchByCode(search));
-            }
+            // Normalize search text
+            String normalizedSearch = search.toLowerCase()
+                .replaceAll("\\s+", " ")
+                .replaceAll("\\.", " ")
+                .trim();
+
+            // Search with normalized comparison
+            subjectList.addAll(SubjectManager.getSubjects().stream()
+                .filter(s -> {
+                    String normalizedName = s.getName().toLowerCase()
+                        .replaceAll("\\s+", " ")
+                        .replaceAll("\\.", " ")
+                        .trim();
+                    String normalizedCode = s.getCode().toLowerCase()
+                        .replaceAll("\\s+", " ")
+                        .replaceAll("\\.", " ")
+                        .trim();
+                    
+                    return normalizedName.contains(normalizedSearch) || 
+                           normalizedCode.contains(normalizedSearch);
+                })
+                .toList());
         }
 
         loadTable();

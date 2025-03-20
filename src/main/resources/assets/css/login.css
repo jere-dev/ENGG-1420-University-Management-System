@@ -1,0 +1,31 @@
+.loading-spinner {
+    -fx-border-color: #3498db;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50%;
+    -fx-padding: 10px;
+}
+
+.loading-spinner .arc {
+    -fx-stroke: #3498db;
+}
+
+.button:disabled {
+    -fx-opacity: 0.7;
+}
+
+.loading-dots {
+    -fx-text-fill:  #941B0C;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+@keyframes dots {
+    0% { -fx-text-fill: transparent; }
+    33% { -fx-text-fill:  #941B0C; }
+    66% { -fx-text-fill:  #941B0C; }
+    100% { -fx-text-fill:  #941B0C; }
+}
+
+.button .circle {
+    -fx-fill:  #941B0C;
+}
