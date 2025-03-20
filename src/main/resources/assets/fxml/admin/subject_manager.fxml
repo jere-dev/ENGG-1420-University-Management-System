@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="659.0" prefWidth="1250.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.SubjectManagerController">
     <content>
         <VBox fx:id="screenBox" minHeight="655.0" minWidth="1050.0" prefHeight="657.0" prefWidth="1050.0" style="-fx-background-color: #F5F5F5; -fx-padding: 20;" styleClass="ignoreHighlight" stylesheets="@../../styles/styles.css">
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #941B0C;" text="Subject List">
-                <font><Font name="Graduate" size="24.0" /></font>
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #941B0C;" text="Subject Directory">
+                <font><Font size="24.0" /></font>
                 <VBox.margin><Insets bottom="20" /></VBox.margin>
             </Label>
 
             <VBox prefHeight="561.0" prefWidth="1079.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" VBox.vgrow="ALWAYS">
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #941B0C;" text="Subject Directory">
-                        <font><Font name="Graduate" size="20.0" /></font>
+                        <font><Font size="20.0" /></font>
                     </Label>
                     <Region HBox.hgrow="ALWAYS" />
                     <TextField fx:id="searchField" prefWidth="200.0" promptText="Search subjects..." style="-fx-font-family: 'Graduate'; -fx-font-size: 12px;" />
@@ -28,6 +34,9 @@
 
                 <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                     <GridPane fx:id="tableGrid" style="-fx-background-color: transparent;" />
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
                 </ScrollPane>
 
                 <HBox alignment="CENTER_LEFT" spacing="15">

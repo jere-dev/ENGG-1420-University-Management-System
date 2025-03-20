@@ -21,14 +21,19 @@ import javafx.util.Duration;
 
 public class App extends Application {
 
-    private class backgroundLoad extends Thread{
-        public void run(){
+    private class backgroundLoad extends Thread {
+        public void run() {
             try {
+                // Load database first since other operations depend on it
+                Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
+                
+                // Load all managers in background
                 SubjectManager.loadSubjects();
                 CourseManager.loadCourses();
                 EventManager.loadCourses();
-            }
-            catch (Exception e) {
+                StudentManager.loadStudents();
+                FacultyManager.loadFaculty();
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -36,48 +41,29 @@ public class App extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Load the login screen FXML from the assets folder
-        Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
+        // Start background loading immediately
+        backgroundLoad dataLoader = new backgroundLoad();
+        dataLoader.setDaemon(true); // Makes thread close when app closes
+        dataLoader.start();
 
-        new backgroundLoad().start();
-        StudentManager.loadStudents();
-        FacultyManager.loadFaculty();
-
-        System.out.println(LocalDateTime.now().toString());
-
-        //TODO: add admin to excel sheet
-        Admin admin = new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
-
+        // Load UI elements immediately
         Image icon = new Image(getClass().getResourceAsStream("/assets/images/unilogoIcon.png"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/login.fxml"));
         Parent root = loader.load();
 
-        // Add fade-in animation
-        root.setOpacity(0);
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), root);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-        fadeIn.play();
+        //TODO: add admin to excel sheet (keeping this as it might be important)
+        Admin admin = new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
 
         // Set up the scene and stage
         Scene scene = new Scene(root, 1280, 720);
         primaryStage.setTitle("University Management System");
         primaryStage.setScene(scene);
-
-        // Set minimum window size
         primaryStage.setMinWidth(1350);
         primaryStage.setMinHeight(750);
         primaryStage.centerOnScreen();
         primaryStage.getIcons().add(icon);
-
         primaryStage.setResizable(true);
-
         primaryStage.show();
-
-        // add popup logging
-//        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-//            DisplayError.createPopup("Error at " + t.toString(), e);
-//        });
     }
 
     public static void main(String[] args) {

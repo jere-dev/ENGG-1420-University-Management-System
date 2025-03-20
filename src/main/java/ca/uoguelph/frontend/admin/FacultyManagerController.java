@@ -18,7 +18,7 @@ public class FacultyManagerController {
     private final List<Faculty> facultyList = new ArrayList<>();
     private final HashMap<Button, Faculty> buttonMap = new HashMap<>();
     private int page = 0;
-    private int pageRowCount = 40;
+    private int pageRowCount = 20;
 
     @FXML private GridPane tableGrid;
     @FXML private TextField searchField;

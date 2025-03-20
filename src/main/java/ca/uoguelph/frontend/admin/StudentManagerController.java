@@ -20,7 +20,7 @@ public class StudentManagerController {
     private final List<Student> studentList = new ArrayList<>();
     private final HashMap<Button, Student> buttonMap = new HashMap<>();
     private int page = 0;
-    private int pageRowCount = 40;
+    private int pageRowCount = 20;
 
     @FXML private GridPane tableGrid;
     @FXML private TextField searchField;

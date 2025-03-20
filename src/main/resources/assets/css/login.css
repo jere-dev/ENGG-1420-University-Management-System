@@ -1,12 +1,12 @@
 .loading-spinner {
-    -fx-border-color: #3498db;
+    -fx-border-color: #941B0C;
     -fx-border-width: 3px;
     -fx-border-radius: 50%;
     -fx-padding: 10px;
 }
 
 .loading-spinner .arc {
-    -fx-stroke: #3498db;
+    -fx-stroke: #941B0C;
 }
 
 .button:disabled {
@@ -28,4 +28,36 @@
 
 .button .circle {
     -fx-fill:  #941B0C;
+}
+
+.content-fade {
+    -fx-opacity: 1;
+    -fx-transition: opacity 0.3s;
+}
+
+.content-fade.loading {
+    -fx-opacity: 0;
+}
+
+.loading-container {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+    -fx-padding: 20;
+    -fx-background-color: transparent;
+}
+
+.loading-text {
+    -fx-text-fill: #941B0C;
+    -fx-font-size: 18px;
+}
+
+.dot {
+    -fx-fill: #941B0C;
+    -fx-radius: 4;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
+}
+
+.bouncing-dot {
+    -fx-translate-y: 0;
 }
