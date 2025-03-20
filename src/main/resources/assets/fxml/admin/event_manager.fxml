@@ -15,10 +15,11 @@
 
 <!-- ADMIN: Lists all events with the choice to add or edit any. -->
 
-<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="653.0" prefWidth="1253.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.EventManagerController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="653.0" prefWidth="1253.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.EventManagerController">
     <content>
         <VBox minHeight="678.0" minWidth="1224.0" prefHeight="678.0" prefWidth="1224.0" style="-fx-background-color: #EFEFEF; -fx-padding: 20;">
 
+            <!-- Title Label -->
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #941B0C;" text="Event Manager">
                 <VBox.margin>
                     <Insets bottom="20" />
@@ -28,7 +29,9 @@
                 </font>
             </Label>
 
+            <!-- Main Content Container -->
             <VBox style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" VBox.vgrow="ALWAYS">
+                <!-- Top Controls (Add Event, Filters, Search) -->
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <Button onAction="#handleAddEvent" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-size: 14px; -fx-min-width: 150px; -fx-min-height: 45px; -fx-font-weight: bold; -fx-background-radius: 5;" text="Add Event">
                         <font>
@@ -50,6 +53,7 @@
                     <ComboBox fx:id="sortOrderCombo" prefWidth="150.0" promptText="Sort by" />
                 </HBox>
 
+                <!-- Time Range Filter and Refresh Button -->
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <VBox.margin>
                         <Insets bottom="15" top="15" />
@@ -64,9 +68,24 @@
                     </Button>
                 </HBox>
 
-                <GridPane fx:id="tableGrid" VBox.vgrow="ALWAYS" styleClass="grid-pane">
-                    <!-- Table will be created programmatically -->
-                </GridPane>
+                <!-- ScrollPane with GridPane -->
+                <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <GridPane fx:id="tableGrid" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <!-- Table will be created programmatically -->
+                        </GridPane>
+                    </content>
+                </ScrollPane>
+
+                <!-- Bottom Controls -->
+                <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10 0 0 0;">
+                    <Button fx:id="leftPageButton" onAction="#handlePrevPage" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: System;" text="⮜" />
+                    <TextField fx:id="pageText" alignment="CENTER" onKeyPressed="#handleKeyPage" prefWidth="30.0" promptText="1" style="-fx-font-family: System;" />
+                    <Button fx:id="rightPageButton" onAction="#handleNextPage" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: System;" text="⮞" />
+                    <Label fx:id="errorLabel" prefWidth="400.0" style="-fx-font-family: System;" textFill="RED" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="rowCountText" alignment="CENTER" onKeyPressed="#handleKeyCount" prefWidth="90.0" promptText="40 per page" style="-fx-font-family: System;" />
+                </HBox>
             </VBox>
         </VBox>
     </content>

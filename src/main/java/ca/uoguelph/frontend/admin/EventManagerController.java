@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.geometry.Insets;
 
 import java.net.URL;
@@ -29,6 +27,11 @@ public class EventManagerController implements Initializable {
     @FXML private ComboBox<String> timeRangeFilter;
     @FXML private ComboBox<String> sortOrderCombo;
     @FXML private Button refreshButton;
+    @FXML private Button leftPageButton;
+    @FXML private Button rightPageButton;
+    @FXML private TextField pageText;
+    @FXML private TextField rowCountText;
+    @FXML private Label errorLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,36 +48,35 @@ public class EventManagerController implements Initializable {
                 pause.play();
             }
         });
+
+        pageText.setText("1");
+        rowCountText.setText(String.valueOf(pageRowCount));
     }
 
     private void setupGridPane() {
         tableGrid.setHgap(20);
-        tableGrid.setVgap(0); // Reduce vertical gap between rows
+        tableGrid.setVgap(5);
         tableGrid.setPadding(new Insets(5, 15, 15, 15));
         tableGrid.setStyle("-fx-background-color: white; -fx-background-radius: 3; " +
                           "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
                           "-fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 3, 0, 0, 0);");
 
+        // Make grid fill parent
         tableGrid.setMaxWidth(Double.MAX_VALUE);
         tableGrid.setMaxHeight(Double.MAX_VALUE);
         VBox.setVgrow(tableGrid, Priority.ALWAYS);
         HBox.setHgrow(tableGrid, Priority.ALWAYS);
-
-        // Column constraints
-        ColumnConstraints nameCol = new ColumnConstraints();
-        nameCol.setPercentWidth(25);
-        ColumnConstraints dateCol = new ColumnConstraints();
-        dateCol.setPercentWidth(15);
-        ColumnConstraints timeCol = new ColumnConstraints();
-        timeCol.setPercentWidth(15);
-        ColumnConstraints locationCol = new ColumnConstraints();
-        locationCol.setPercentWidth(20);
-        ColumnConstraints typeCol = new ColumnConstraints();
-        typeCol.setPercentWidth(15);
-        ColumnConstraints statusCol = new ColumnConstraints();
-        statusCol.setPercentWidth(10);
-
-        tableGrid.getColumnConstraints().addAll(nameCol, dateCol, timeCol, locationCol, typeCol, statusCol);
+        
+        // Column constraints with explicit percentages
+        double[] columnWidths = {25, 15, 15, 20, 15, 10}; 
+        tableGrid.getColumnConstraints().clear();
+        for (double width : columnWidths) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(width);
+            column.setHgrow(Priority.ALWAYS);
+            column.setFillWidth(true);
+            tableGrid.getColumnConstraints().add(column);
+        }
     }
 
     private void addHeaderRow() {
@@ -97,12 +99,16 @@ public class EventManagerController implements Initializable {
             GridPane.setHgrow(headers[i], Priority.ALWAYS);
             tableGrid.add(headers[i], i, 0);
         }
+
+        Separator headerSeparator = new Separator();
+        headerSeparator.setPadding(new Insets(5, 0, 5, 0));
+        tableGrid.add(headerSeparator, 0, 1, tableGrid.getColumnCount(), 1);
     }
 
     private void addEventRow(Event event, int rowIndex) {
+        // Create container for row highlighting
         HBox rowContainer = new HBox();
         rowContainer.setMaxWidth(Double.MAX_VALUE);
-        rowContainer.setPrefHeight(30); // Reduced from 35 to 30 to match SubjectManager
         rowContainer.getStyleClass().add("table-row");
         rowContainer.setStyle("-fx-background-color: transparent;");
 
@@ -115,9 +121,10 @@ public class EventManagerController implements Initializable {
             new Label(event.getStatus())
         };
 
-        String labelStyle = "-fx-padding: 5 5 5 5; -fx-font-size: 13px; " + 
+        String labelStyle = "-fx-padding: 10 5 10 5; -fx-font-size: 13px; " + 
                           "-fx-text-fill: #333333; -fx-font-family: System;";
-        
+
+        // Add hover effects
         rowContainer.setOnMouseEntered(e -> {
             rowContainer.setStyle("-fx-background-color: #F6F6F6;");
             for (Label label : labels) {
@@ -134,6 +141,7 @@ public class EventManagerController implements Initializable {
 
         tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1);
 
+        // Add labels to grid
         for (int i = 0; i < labels.length; i++) {
             labels[i].setStyle(labelStyle);
             labels[i].setMaxWidth(Double.MAX_VALUE);
@@ -143,13 +151,12 @@ public class EventManagerController implements Initializable {
             tableGrid.add(labels[i], i, rowIndex);
         }
 
-        if (rowIndex < eventList.size()) { // Only add separator if not last row
-            Separator rowSeparator = new Separator();
-            rowSeparator.setPadding(new Insets(0)); // Remove separator padding
-            rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
-            rowSeparator.setMaxWidth(Double.MAX_VALUE);
-            tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
-        }
+        // Add row separator
+        Separator rowSeparator = new Separator();
+        rowSeparator.setPadding(new Insets(0));
+        rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
+        rowSeparator.setMaxWidth(Double.MAX_VALUE);
+        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
     }
 
     private void loadSampleData() {
@@ -266,13 +273,15 @@ public class EventManagerController implements Initializable {
         }
         
         // Update the table
+        int startIndex = page * pageRowCount;
+        int endIndex = Math.min(startIndex + pageRowCount, filteredEvents.size());
+        
         tableGrid.getChildren().clear();
         addHeaderRow();
         
-        // Use proper row indexing
         int rowIndex = 1;
-        for (Event event : filteredEvents) {
-            addEventRow(event, rowIndex++);
+        for (int i = startIndex; i < endIndex; i++) {
+            addEventRow(filteredEvents.get(i), rowIndex++);
         }
     }
 
@@ -320,6 +329,68 @@ public class EventManagerController implements Initializable {
         
         // Reapply filters
         applyFilters();
+    }
+
+    @FXML
+    private void handlePrevPage(ActionEvent event) {
+        if (page > 0) {
+            page--;
+            pageText.setText(String.valueOf(page + 1));
+            updateTable(searchEvents.getText().trim());
+        }
+    }
+
+    @FXML
+    private void handleNextPage(ActionEvent event) {
+        int totalPages = (int) Math.ceil((double) eventList.size() / pageRowCount);
+        if (page < totalPages - 1) {
+            page++;
+            pageText.setText(String.valueOf(page + 1));
+            updateTable(searchEvents.getText().trim());
+        }
+    }
+
+    @FXML
+    private void handleKeyPage(javafx.scene.input.KeyEvent event) {
+        if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+            try {
+                int newPage = Integer.parseInt(pageText.getText()) - 1;
+                int totalPages = (int) Math.ceil((double) eventList.size() / pageRowCount);
+                if (newPage >= 0 && newPage < totalPages) {
+                    page = newPage;
+                    updateTable(searchEvents.getText().trim());
+                    errorLabel.setText("");
+                } else {
+                    errorLabel.setText("Invalid page number");
+                    pageText.setText(String.valueOf(page + 1));
+                }
+            } catch (NumberFormatException e) {
+                errorLabel.setText("Please enter a valid number");
+                pageText.setText(String.valueOf(page + 1));
+            }
+        }
+    }
+
+    @FXML
+    private void handleKeyCount(javafx.scene.input.KeyEvent event) {
+        if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+            try {
+                int newCount = Integer.parseInt(rowCountText.getText());
+                if (newCount > 0 && newCount <= 100) {
+                    pageRowCount = newCount;
+                    page = 0;
+                    pageText.setText("1");
+                    updateTable(searchEvents.getText().trim());
+                    errorLabel.setText("");
+                } else {
+                    errorLabel.setText("Please enter a number between 1 and 100");
+                    rowCountText.setText(String.valueOf(pageRowCount));
+                }
+            } catch (NumberFormatException e) {
+                errorLabel.setText("Please enter a valid number");
+                rowCountText.setText(String.valueOf(pageRowCount));
+            }
+        }
     }
 
     // Inner class for Event model
