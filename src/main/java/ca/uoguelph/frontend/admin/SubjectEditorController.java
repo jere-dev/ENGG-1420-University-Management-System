@@ -69,7 +69,7 @@ public class SubjectEditorController extends AbstractAdminEditorController {
         if (name.isEmpty()) {
             nameErrorLabel.setText("Name cannot be empty");
             isValid = false;
-        } else if (!name.matches("[a-zA-Z0-9\\s\\-\\(\\)]+")) {
+        } else if (!name.matches("[a-zA-Z0-9\\s\\-\\(\\)\\,]+")) {
             nameErrorLabel.setText("Only letters, numbers, spaces, brackets and hyphens allowed");
             isValid = false;
         } else if (!name.equals(this.name) && SubjectManager.getSubjectByName(name) != null) {

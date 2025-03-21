@@ -30,6 +30,10 @@ import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.FadeTransition;
+import javafx.scene.shape.Circle;
+import javafx.animation.ParallelTransition;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
 
 public class DashboardController {
     private static final Logger LOGGER = Logger.getLogger(DashboardController.class.getName());
@@ -47,9 +51,14 @@ public class DashboardController {
     private AnchorPane activeNav;
     private boolean isExpanded = false;  // Changed from true to false
     private Timeline sidebarAnimation;
+    private HBox loadingAnimation;
+    private Timeline dotAnimation;
 
     @FXML
     private void initialize() {
+        // Initialize loading animation first
+        setupLoadingAnimation();
+
         // Set up click handlers for navigation items
         navItems.getChildren().stream()
                 .filter(node -> node instanceof AnchorPane)
@@ -107,6 +116,7 @@ public class DashboardController {
                 universityLogo.setManaged(false);
             }
         });
+        
     }
 
     private void setupNavItem(AnchorPane nav) {
@@ -347,32 +357,115 @@ public class DashboardController {
         rotateBottom.play();
     }
 
+    private void setupLoadingAnimation() {
+        loadingAnimation = new HBox(10);  // Increased spacing for better visibility
+        loadingAnimation.setAlignment(Pos.CENTER);
+        loadingAnimation.getStyleClass().add("loading-container");
+
+        dotAnimation = new Timeline();
+        
+        for (int i = 0; i < 3; i++) {
+            Circle dot = new Circle(6);  // Slightly larger dots for better visibility
+            dot.getStyleClass().addAll("dot", "bouncing-dot");
+            loadingAnimation.getChildren().add(dot);
+            
+            // Create bounce animation for each dot with adjusted timing
+            KeyFrame[] frames = {
+                new KeyFrame(Duration.ZERO, new KeyValue(dot.translateYProperty(), 0)),
+                new KeyFrame(Duration.millis(250), new KeyValue(dot.translateYProperty(), -20)),
+                new KeyFrame(Duration.millis(500), new KeyValue(dot.translateYProperty(), 0))
+            };
+            
+            // Add frames with delay for each dot
+            for (KeyFrame frame : frames) {
+                dotAnimation.getKeyFrames().add(
+                    new KeyFrame(
+                        frame.getTime().add(Duration.millis(i * 150)),  // Shorter delay between dots
+                        frame.getValues().toArray(new KeyValue[0])
+                    )
+                );
+            }
+        }
+        
+        dotAnimation.setCycleCount(Timeline.INDEFINITE);
+        dotAnimation.setAutoReverse(false);
+    }
+
+    private URL getResource(String path) {
+        // Try different resource loading approaches
+        URL resource = getClass().getResource(path);
+        if (resource == null) {
+            resource = getClass().getClassLoader().getResource(path.substring(1));
+        }
+        if (resource == null) {
+            resource = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
+        }
+        LOGGER.info("Attempting to load resource: " + path);
+        LOGGER.info("Resource found at: " + (resource != null ? resource.toString() : "null"));
+        return resource;
+    }
+
     private void loadContent(String fxmlFile) {
         try {
-            String resourcePath = "/assets/fxml/" + fxmlFile;
-//            LOGGER.info("Loading resource: " + resourcePath);
-
-            // Try different ways to load the resource
-            URL resource = DashboardController.class.getResource(resourcePath);
-            if (resource == null) {
-                resource = DashboardController.class.getClassLoader().getResource(resourcePath.substring(1));
-            }
-            if (resource == null) {
-                LOGGER.severe("Resource not found: " + resourcePath);
-                LOGGER.info("Class loader: " + DashboardController.class.getClassLoader());
-                LOGGER.info("Working directory: " + System.getProperty("user.dir"));
-                throw new IOException("Cannot find resource: " + resourcePath);
-            }
-
-            LOGGER.info("Resource found at: " + resource.toString());
-            FXMLLoader loader = new FXMLLoader(resource);
-            Parent content = loader.load();
+            // Start loading animation with null check
             contentArea.getChildren().clear();
-            contentArea.getChildren().add(content);
+            if (loadingAnimation != null) {
+                contentArea.getChildren().add(loadingAnimation);
+                if (dotAnimation != null) {
+                    dotAnimation.play();
+                }
+            }
+
+            String resourcePath = "/assets/fxml/" + fxmlFile;
+            URL resource = getResource(resourcePath);
+            
+            if (resource == null) {
+                LOGGER.severe("Failed to find resource: " + resourcePath);
+                LOGGER.info("Working directory: " + System.getProperty("user.dir"));
+                LOGGER.info("Classloader: " + getClass().getClassLoader());
+                throw new IOException("Resource not found: " + resourcePath);
+            }
+
+            // Load the content in a background thread
+            Thread loadThread = new Thread(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(resource);
+                    Parent content = loader.load();
+                    content.setOpacity(0);
+                    
+                    javafx.application.Platform.runLater(() -> {
+                        if (dotAnimation != null) {
+                            dotAnimation.stop();
+                        }
+                        contentArea.getChildren().clear();
+                        contentArea.getChildren().add(content);
+
+                        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), content);
+                        fadeIn.setFromValue(0);
+                        fadeIn.setToValue(1);
+                        fadeIn.play();
+                    });
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error loading content", e);
+                    javafx.application.Platform.runLater(() -> {
+                        if (dotAnimation != null) {
+                            dotAnimation.stop();
+                        }
+                        DisplayError.createPopup("Error loading content", 
+                            String.format("Failed to load %s: %s", fxmlFile, e.getMessage()));
+                    });
+                }
+            });
+            
+            loadThread.start();
 
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error loading content", e);
-            DisplayError.createPopup("Error loading content", e.getMessage() + "\nResource path: " + fxmlFile);
+            LOGGER.log(Level.SEVERE, "Error in loadContent", e);
+            if (dotAnimation != null) {
+                dotAnimation.stop();
+            }
+            DisplayError.createPopup("Error loading content", 
+                String.format("Failed to load %s: %s", fxmlFile, e.getMessage()));
         }
     }
 
