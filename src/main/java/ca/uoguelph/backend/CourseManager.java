@@ -38,10 +38,33 @@ public class CourseManager {
         return course;
     }
     public static ArrayList<Course> getCourses(){return courses;}
-    public static ArrayList<Course> searchCoursesBySubjectCourseCode(String code){return courses.stream().filter(c -> (c.getSubjectCode()+c.getCourseCode()).contains(code)).collect(Collectors.toCollection(ArrayList::new));}
-    public static ArrayList<Course> searchCoursesBySubjectCode(String code){return courses.stream().filter(c -> c.getSubjectCode().contains(code)).collect(Collectors.toCollection(ArrayList::new));}
-    public static ArrayList<Course> searchCoursesByCourseCode(String code){return courses.stream().filter(c -> c.getCourseCode().contains(code)).collect(Collectors.toCollection(ArrayList::new));}
-    public static ArrayList<Course> searchCoursesByTitle(String title){return courses.stream().filter(c -> c.getTitle().contains(title)).collect(Collectors.toCollection(ArrayList::new));}
+    public static ArrayList<Course> searchCoursesBySubjectCourseCode(String code){
+        String searchTerm = code.toLowerCase();
+        return courses.stream()
+            .filter(c -> (c.getSubjectCode() + c.getCourseCode()).toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static ArrayList<Course> searchCoursesBySubjectCode(String code){
+        String searchTerm = code.toLowerCase();
+        return courses.stream()
+            .filter(c -> c.getSubjectCode().toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static ArrayList<Course> searchCoursesByCourseCode(String code){
+        String searchTerm = code.toLowerCase();
+        return courses.stream()
+            .filter(c -> c.getCourseCode().toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static ArrayList<Course> searchCoursesByTitle(String title){
+        String searchTerm = title.toLowerCase();
+        return courses.stream()
+            .filter(c -> c.getTitle().toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 //modify course
     //add course

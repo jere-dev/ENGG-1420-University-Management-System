@@ -19,19 +19,22 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.Set;
+import java.util.HashSet;
 
 // TODO: add tabs to open multiple courses at once?
 public final class CourseManagerController extends AbstractAdminListController implements DisplayError {
     private final List<Course> courseList = new ArrayList<>();
     private final HashMap<TableRow, Course> rowCourseMap = new HashMap<>();
     private int page = 0;
-    private int pageRowCount = 40;
+    private int pageRowCount = 20;
 
     @FXML
     private Button leftPageButton, rightPageButton;
@@ -47,34 +50,100 @@ public final class CourseManagerController extends AbstractAdminListController i
 
     @FXML
     private ScrollPane scrollPane;
-    private ScaledTable table;
+    private GridPane tableGrid; // Changed from ScaledTable to GridPane
+
+    private Button createStyledButton(String text) {
+        Button button = new Button(text);
+        button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; " + 
+                       "-fx-background-radius: 3; -fx-font-family: System; -fx-font-size: 13px;");
+
+        button.setOnMouseEntered(e -> {
+            button.setStyle("-fx-background-color: #F6AA1C; -fx-text-fill: #941B0C; " + 
+                          "-fx-background-radius: 3; -fx-font-family: System; -fx-font-size: 13px; -fx-cursor: hand;");
+            button.setEffect(new javafx.scene.effect.DropShadow(3, 0, 0, javafx.scene.paint.Color.rgb(0, 0, 0, 0.2)));
+        });
+        
+        button.setOnMouseExited(e -> {
+            button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; " + 
+                          "-fx-background-radius: 3; -fx-font-family: System; -fx-font-size: 13px;");
+            button.setEffect(null);
+        });
+        
+        button.setOnMousePressed(e -> 
+            button.setStyle("-fx-background-color: #7B1609; -fx-text-fill: #F6AA1C; " + 
+                          "-fx-background-radius: 3; -fx-font-family: System; -fx-font-size: 13px;"));
+        
+        button.setOnMouseReleased(e -> {
+            if (button.isHover()) {
+                button.setStyle("-fx-background-color: #F6AA1C; -fx-text-fill: #941B0C; " + 
+                              "-fx-background-radius: 3; -fx-font-family: System; -fx-font-size: 13px;");
+            } else {
+                button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; " + 
+                              "-fx-background-radius: 3; -fx-font-family: System; -fx-font-size: 13px;");
+            }
+        });
+        
+        return button;
+    }
 
     @FXML
     public void initialize() {
-        table = new ScaledTable(scrollPane, 5);
-
-        // Set column widths with updated proportions
-        table.setPercentWidth(0, 20); // Subject code
-        table.setPercentWidth(1, 12); // Course code
-        table.setPercentWidth(2, 46); // Title
-        table.setPercentWidth(3, 20); // Credits
-        table.setPercentWidth(4, 10); // Edit button
-
-        // Set styles for better visual appearance
-        scrollPane.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #dddddd; -fx-border-radius: 4;");
-
-        // Set grow priorities
-        table.setHGrow(2, Priority.ALWAYS);
-        table.setHGrow(3, Priority.SOMETIMES);
-
+        // Initialize and setup GridPane
+        tableGrid = new GridPane();
+        scrollPane.setContent(tableGrid);
+        setupGridPane();
+        
         courseList.addAll(CourseManager.getCourses());
-
-        page = 0;
         updateTable("");
 
-        // dynamic searching
-        searchField.textProperty().addListener(
-                (obs, old, newText) -> updateTable(newText));
+        // Setup scroll pane
+        if (scrollPane != null) {
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+            scrollPane.getStyleClass().add("edge-to-edge");
+        }
+
+        // Style the search field 
+        searchField.setPromptText("Search by Name or Code...");
+        searchField.setStyle("-fx-prompt-text-fill: #757575; -fx-background-radius: 3; " +
+                           "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
+                           "-fx-border-width: 1; -fx-background-color: white; " +
+                           "-fx-font-family: System; -fx-font-size: 13px;");
+
+        // Enable dynamic search
+        searchField.textProperty().addListener((obs, old, newText) -> {
+            if (searchField.isFocused()) {
+                javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.millis(300));
+                pause.setOnFinished(e -> updateTable(newText.trim()));
+                pause.play();
+            }
+        });
+    }
+
+    private void setupGridPane() {
+        tableGrid.setHgap(20);
+        tableGrid.setVgap(5);
+        tableGrid.setPadding(new javafx.geometry.Insets(5, 15, 15, 15));
+        tableGrid.setStyle("-fx-background-color: white; -fx-background-radius: 3; " +
+                          "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
+                          "-fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 3, 0, 0, 0);");
+
+        tableGrid.setMaxWidth(Double.MAX_VALUE);
+        tableGrid.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(tableGrid, Priority.ALWAYS);
+        javafx.scene.layout.HBox.setHgrow(tableGrid, Priority.ALWAYS);
+
+        // Column constraints
+        javafx.scene.layout.ColumnConstraints codeCol = new javafx.scene.layout.ColumnConstraints();
+        codeCol.setPercentWidth(15);
+        javafx.scene.layout.ColumnConstraints courseCol = new javafx.scene.layout.ColumnConstraints();
+        courseCol.setPercentWidth(15);
+        javafx.scene.layout.ColumnConstraints nameCol = new javafx.scene.layout.ColumnConstraints();
+        nameCol.setPercentWidth(50);
+        javafx.scene.layout.ColumnConstraints actionsCol = new javafx.scene.layout.ColumnConstraints();
+        actionsCol.setPercentWidth(20);
+
+        tableGrid.getColumnConstraints().addAll(codeCol, courseCol, nameCol, actionsCol);
     }
 
     @Override
@@ -82,37 +151,111 @@ public final class CourseManagerController extends AbstractAdminListController i
         courseList.clear();
         page = 0;
 
-        if (search.isEmpty())
+        if (search.isEmpty()) {
             courseList.addAll(CourseManager.getCourses());
-        else
-            courseList.addAll(CourseManager.searchCoursesByTitle(search));
+        } else {
+            // Search across all fields
+            Set<Course> results = new HashSet<>();
+            results.addAll(CourseManager.searchCoursesByTitle(search));
+            results.addAll(CourseManager.searchCoursesBySubjectCode(search));
+            results.addAll(CourseManager.searchCoursesByCourseCode(search));
+            courseList.addAll(results);
+        }
 
         loadTable();
     }
 
     private void loadTable() {
-        rowCourseMap.clear();
-        table.clear();
+        tableGrid.getChildren().clear();
+        
+        // Add headers
+        addHeaderRow();
 
-        updatePageButtons();
+        javafx.scene.control.Separator headerSeparator = new javafx.scene.control.Separator();
+        headerSeparator.setPadding(new javafx.geometry.Insets(5, 0, 5, 0));
+        tableGrid.add(headerSeparator, 0, 1, tableGrid.getColumnCount(), 1);
 
-        table.addRow(HeaderRowPreset.COURSE.getPreset());
+        int startIndex = page * pageRowCount;
+        int endIndex = Math.min((page + 1) * pageRowCount, courseList.size());
 
-        for (int i = page * pageRowCount; i < Math.min((page + 1) * pageRowCount, courseList.size()); i++) {
-            Course c = courseList.get(i);
-
-            TableRow cr = new TableRowPreset(c);
-
-            // manage hyperlinks
-            Hyperlink editLink = (Hyperlink) cr.get(4);
-            editLink.setOnAction(this::handleEdit);
-
-            rowCourseMap.put(cr, c);
-            table.addRow(cr);
+        for (int i = startIndex; i < endIndex; i++) {
+            Course course = courseList.get(i);
+            int rowIndex = (i - startIndex) * 2 + 2;
+            addCourseRow(course, rowIndex);
         }
 
-        if (scrollPane.getVvalue() == 1.0)
-            scrollPane.setVvalue(0.0);
+        updatePageButtons();
+    }
+
+    private void addHeaderRow() {
+        Label[] headers = {
+            new Label("Subject Code"),
+            new Label("Course Code"),
+            new Label("Course Name"),
+            new Label("Actions")
+        };
+
+        String headerStyle = "-fx-font-weight: bold; -fx-font-size: 14px; " +
+                           "-fx-text-fill: #941B0C; -fx-padding: 12 5 12 5; " +
+                           "-fx-font-family: System; -fx-background-color: transparent;";
+
+        for (int i = 0; i < headers.length; i++) {
+            headers[i].setStyle(headerStyle);
+            headers[i].setMaxWidth(Double.MAX_VALUE);
+            GridPane.setHgrow(headers[i], Priority.ALWAYS);
+            tableGrid.add(headers[i], i, 0);
+        }
+    }
+
+    private void addCourseRow(Course course, int rowIndex) {
+        javafx.scene.layout.HBox rowContainer = new javafx.scene.layout.HBox();
+        rowContainer.setMaxWidth(Double.MAX_VALUE);
+        rowContainer.getStyleClass().add("table-row");
+        rowContainer.setStyle("-fx-background-color: transparent;");
+
+        Label[] labels = {
+            new Label(course.getSubjectCode()),
+            new Label(course.getCourseCode()),
+            new Label(course.getTitle())
+        };
+
+        Button editButton = createStyledButton("Edit");
+        editButton.setOnAction(e -> handleLoadEditor(e, course));
+
+        String labelStyle = "-fx-padding: 10 5 10 5; -fx-font-size: 13px; " + 
+                          "-fx-text-fill: #333333; -fx-font-family: System;";
+        
+        rowContainer.setOnMouseEntered(e -> {
+            rowContainer.setStyle("-fx-background-color: #F6F6F6;");
+            for (Label label : labels) {
+                label.setStyle(labelStyle);
+            }
+        });
+        
+        rowContainer.setOnMouseExited(e -> {
+            rowContainer.setStyle("-fx-background-color: transparent;");
+            for (Label label : labels) {
+                label.setStyle(labelStyle);
+            }
+        });
+        
+        tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1);
+        
+        for (int i = 0; i < labels.length; i++) {
+            labels[i].setStyle(labelStyle);
+            labels[i].setMaxWidth(Double.MAX_VALUE);
+            labels[i].setMaxHeight(Double.MAX_VALUE);
+            GridPane.setHgrow(labels[i], Priority.ALWAYS);
+            GridPane.setVgrow(labels[i], Priority.ALWAYS);
+            tableGrid.add(labels[i], i, rowIndex);
+        }
+        tableGrid.add(editButton, 3, rowIndex);
+
+        javafx.scene.control.Separator rowSeparator = new javafx.scene.control.Separator();
+        rowSeparator.setPadding(new javafx.geometry.Insets(0));
+        rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
+        rowSeparator.setMaxWidth(Double.MAX_VALUE);
+        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
     }
 
     private void updatePageButtons() {
@@ -211,8 +354,10 @@ public final class CourseManagerController extends AbstractAdminListController i
         if (!(event.getSource() instanceof Node))
             throw new IllegalArgumentException("Source of event is object: " + event.getSource().getClass());
 
-        TableRow sourceR = table.getRow((Node) event.getSource());
-        handleLoadEditor(event, rowCourseMap.get(sourceR));
+        Node source = (Node) event.getSource();
+        int rowIndex = GridPane.getRowIndex(source);
+        Course course = courseList.get((page * pageRowCount) + ((rowIndex - 2) / 2));
+        handleLoadEditor(event, course);
     }
 
     @Override
