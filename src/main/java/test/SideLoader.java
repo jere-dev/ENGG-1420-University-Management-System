@@ -78,7 +78,7 @@ class SideLoader {
                 } else if (!savedFileName.isEmpty()) {
                     System.out.printf("Opening saved file %s\n", fileName = savedFileName);
                 } else {
-                    System.out.printf("Opening and saving default file %s\n", fileName = defaultFileName);
+                    System.out.printf("Opening default file %s\n", fileName = defaultFileName);
                 }
 
                 String finalFileName = fileName;

@@ -29,6 +29,7 @@ public class EventCalendarController {
         calendarView.setTime(LocalTime.now());
 
         rootPane.getChildren().add(calendarView);
+
         AnchorPane.setBottomAnchor(calendarView, 0.0);
         AnchorPane.setLeftAnchor(calendarView, 0.0);
         AnchorPane.setRightAnchor(calendarView, 0.0);

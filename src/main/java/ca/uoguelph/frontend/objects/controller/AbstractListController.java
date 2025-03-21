@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend.objects.controller;
 
+import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -17,6 +18,5 @@ public abstract class AbstractListController {
     /**
      * Handles the user searching for an entry in the table.
      */
-    @FXML
     protected abstract void handleSearch(ActionEvent event);
 }

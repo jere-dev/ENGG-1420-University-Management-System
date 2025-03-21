@@ -78,7 +78,7 @@ public interface DisplayError {
         e.printStackTrace(new PrintWriter(s));
         createPopup(title, s.toString());
 
-        log.error(String.valueOf(e));
+        log.error("", e);
     }
 
     /**
