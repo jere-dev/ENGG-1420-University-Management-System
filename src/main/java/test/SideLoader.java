@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -57,16 +58,17 @@ class SideLoader {
                 isRepeat = false;
                 continue;
             }
-            File savedFile = new File(SideLoader.class.getResource("/testresource/testpath.txt").getPath());
+            File savedFile;
             String savedFileName = "";
             try {
+                savedFile = new File(Objects.requireNonNull(SideLoader.class.getResource("/testresource/testpath.txt")).getPath());
                 if (new Scanner(savedFile).hasNextLine()) savedFileName = new Scanner(savedFile).nextLine();
             } catch (FileNotFoundException e) {
                 DisplayError.log.error("testing path not found\n", e);
                 break;
             }
 
-            try {;
+            try {
                 if (!fileName.isEmpty()){
                     System.out.printf("Opening and saving alternative file %s\n", fileName);
 
