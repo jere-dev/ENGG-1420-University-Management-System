@@ -36,9 +36,9 @@
                         <effect>
                             <DropShadow color="#00000033" radius="3" spread="0.05" />
                         </effect>
-                  <font>
-                     <Font size="14.0" />
-                  </font>
+                        <font>
+                            <Font size="14.0" />
+                        </font>
                     </Button>
                 </HBox>
 

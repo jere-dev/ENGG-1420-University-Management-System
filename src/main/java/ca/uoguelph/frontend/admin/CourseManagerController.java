@@ -24,6 +24,7 @@ import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 // TODO: add tabs to open multiple courses at once?
@@ -125,6 +126,7 @@ public final class CourseManagerController extends AbstractAdminListController i
         rowCountText.setPromptText(pageRowCount + " courses per page");
     }
 
+    @FXML
     @Override
     protected void handleSearch(ActionEvent event) {
         updateTable(searchField.getText());
@@ -213,6 +215,9 @@ public final class CourseManagerController extends AbstractAdminListController i
 
         TableRow sourceR = table.getRow((Node) event.getSource());
         handleLoadEditor(event, rowCourseMap.get(sourceR));
+
+        if (rowCourseMap.get(sourceR) == null)
+            throw new NoSuchElementException("Source of event " + event.getSource() + " is not mapped");
     }
 
     @Override
@@ -237,14 +242,14 @@ public final class CourseManagerController extends AbstractAdminListController i
             if (contentArea == null) throw new NoSuchObjectException("Could not find parent StackPane");
 
             CourseEditorController controller = loader.getController();
-//            controller.loadCourse(c);
-//            controller.setParentAndRow(this, 0);
+            if (c == null) controller.loadEmpty(this);
+            else controller.loadDetails(this, c);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
         } catch (Exception e) {
             displayError(e.getClass().getName() + ": see terminal for more information");
-            log.error(String.valueOf(e));
+            e.printStackTrace();
         }
     }
 

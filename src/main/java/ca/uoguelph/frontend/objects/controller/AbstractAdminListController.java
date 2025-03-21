@@ -1,5 +1,6 @@
 package ca.uoguelph.frontend.objects.controller;
 
+import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
