@@ -48,7 +48,7 @@ public class SideLoaderApp extends Application {
             primaryStage.setScene(scene);
         } catch (Exception e) {
             DisplayError.createPopup(Thread.currentThread(), e);
-            DisplayError.log.error(e);
+            DisplayError.log.error(String.valueOf(e));
         }
     }
 }
