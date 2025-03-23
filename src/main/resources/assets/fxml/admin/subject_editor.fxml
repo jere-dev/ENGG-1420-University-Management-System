@@ -13,44 +13,54 @@
 
 <!-- ADMIN: edit or delete one subject. -->
 
-<VBox prefHeight="530.0" prefWidth="554.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.SubjectEditorController">
-    <HBox spacing="10">
-      <ImageView fitHeight="60.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../images/unilogo.png" />
-         </image>
-      </ImageView>
+<VBox prefHeight="530.0" prefWidth="554.0" style="-fx-padding: 30; -fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.SubjectEditorController">
+    <HBox spacing="10" style="-fx-padding: 0 0 20 0;">
+        <ImageView fitHeight="60.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/unilogo.png" />
+            </image>
+        </ImageView>
     </HBox>
-   <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <children>
-         <AnchorPane prefHeight="427.0" prefWidth="520.0">
-            <children>
-               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="1.0" layoutX="3.0" layoutY="22.0" stroke="BLACK" strokeType="INSIDE" width="520.0" />
-               <Button layoutX="32.0" layoutY="142.0" onAction="#handleSave" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: F6AA1C; -fx-border-color: F6AA1C; -fx-border-radius: 8;" text="Save" textAlignment="CENTER">
-                  <font>
-                     <Font name="Roboto Regular" size="12.0" />
-                  </font>
-               </Button>
-               <Button layoutX="146.0" layoutY="141.0" onAction="#handleDelete" prefHeight="26.0" prefWidth="90.0" style="-fx-border-color: #941b0c; -fx-border-radius: 8; -fx-background-color: #941b0c;" text="Delete" textAlignment="CENTER" textFill="#f6aa13">
-                  <font>
-                     <Font name="Roboto Regular" size="12.0" />
-                  </font>
-               </Button>
-               <Label layoutX="3.0" layoutY="5.0" prefHeight="15.0" prefWidth="229.0" text="Subject Editor">
-                  <font>
-                     <Font name="Graduate" size="12.0" />
-                  </font>
-               </Label>
-               <HBox layoutX="17.0" layoutY="31.0" spacing="10">
-                  <TextField fx:id="nameField" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="234.0" promptText="Subject Name" style="-fx-border-color: gray; -fx-border-radius: 5;" />
-                  <Label fx:id="nameErrorLabel" text="" style="-fx-text-fill: red;" />
-               </HBox>
-               <HBox layoutX="17.0" layoutY="101.0" spacing="10">
-                  <TextField fx:id="codeField" prefHeight="28.0" prefWidth="234.0" promptText="Subject Code" style="-fx-border-color: gray; -fx-border-radius: 5;" />
-                  <Label fx:id="codeErrorLabel" text="" style="-fx-text-fill: red;" />
-               </HBox>
-            </children>
-         </AnchorPane>
-      </children>
-   </AnchorPane>
+    <AnchorPane prefHeight="450.0" prefWidth="520.0">
+        <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#941b0c" height="2.0" layoutX="3.0" layoutY="32.0" stroke="TRANSPARENT" strokeType="INSIDE" width="520.0" />
+            <Label layoutX="3.0" layoutY="8.0" prefHeight="15.0" prefWidth="229.0" text="Subject Editor" textFill="#941b0c">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <VBox layoutX="17.0" layoutY="50.0" spacing="25">
+                <VBox spacing="5">
+                    <Label text="Subject Name" textFill="#333333">
+                        <font>
+                            <Font size="13.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="nameField" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                    <Label fx:id="nameErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+                </VBox>
+                <VBox prefWidth="300.0" spacing="5">
+                    <Label text="Subject Code" textFill="#333333">
+                        <font>
+                            <Font size="13.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="codeField" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                    <Label fx:id="codeErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+                </VBox>
+                <HBox spacing="15" style="-fx-padding: 20 0 0 0;">
+                    <Button onAction="#handleSave" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F6AA1C; -fx-background-radius: 5; -fx-cursor: hand;" text="Save" textFill="#941b0c">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                    <Button onAction="#handleDelete" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #941b0c; -fx-background-radius: 5; -fx-cursor: hand;" text="Delete" textFill="#F6AA1C">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                </HBox>
+            </VBox>
+        </children>
+    </AnchorPane>
 </VBox>

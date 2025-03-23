@@ -1,7 +1,6 @@
 package ca.uoguelph.frontend.objects.controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 
 /**
  * Common methods that would be found in a list controller such as {@code SubjectListController} and {@code CourseCatalogController}.
@@ -17,6 +16,5 @@ public abstract class AbstractListController {
     /**
      * Handles the user searching for an entry in the table.
      */
-    @FXML
     protected abstract void handleSearch(ActionEvent event);
 }

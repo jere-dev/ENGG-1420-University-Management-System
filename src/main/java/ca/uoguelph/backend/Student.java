@@ -23,7 +23,7 @@ public class Student extends User {
         this.currentSemester = currentSemester;
         this.academicLevel = academicLevel;
         this.thesisTitle = thesisTitle;
-        this.progress = progress;
+        this.progress = (float)((int)(progress*100));
         this.courses =  courses;
     }
 

@@ -25,15 +25,11 @@ public final class TableRowPreset extends TableRow {
         Label nameLabel = new Label(sbj.getName()),
                 codeLabel = new Label(sbj.getCode());
 
-        // TODO: customize look
-
         // return right away if faculty or student
         if (LoginManager.getRole() == LoginState.FACULTY || LoginManager.getRole() == LoginState.STUDENT)
             return List.of(nameLabel, codeLabel);
 
         Button editButton = new Button("✎");
-
-        // TODO: customize
 
         return List.of(nameLabel, codeLabel, editButton);
     }
