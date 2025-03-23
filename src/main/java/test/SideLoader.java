@@ -3,14 +3,19 @@ package test;
 import ca.uoguelph.backend.*;
 import ca.uoguelph.backend.login.LoginManager;
 import ca.uoguelph.backend.login.LoginState;
+import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.application.Platform;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 class SideLoader {
-    private static final String defaultFileName = "admin/course_manager.fxml"; // <-- PAGE HERE
+    private static final String defaultFileName = "event_calendar.fxml"; // <-- PAGE HERE
     private static final LoginState defaultLoginState = LoginState.ADMIN; // <-- PERMISSION HERE
 
     private static SideLoaderApp loadedApp;
@@ -21,7 +26,7 @@ class SideLoader {
         Scanner sc = new Scanner(System.in);
         boolean isRepeat = true;
 
-        Database.loadExcelSheet(SideLoader.class.getResource("/database/UMS_Data.xlsx").getPath());
+        Database.loadExcelSheet(Objects.requireNonNull(SideLoader.class.getResource("/database/UMS_Data.xlsx")).getPath());
         SubjectManager.loadSubjects();
         CourseManager.loadCourses();
         StudentManager.loadStudents();
@@ -53,13 +58,29 @@ class SideLoader {
                 isRepeat = false;
                 continue;
             }
+            File savedFile;
+            String savedFileName = "";
+            try {
+                savedFile = new File(Objects.requireNonNull(SideLoader.class.getResource("/testresource/testpath.txt")).getPath());
+                if (new Scanner(savedFile).hasNextLine()) savedFileName = new Scanner(savedFile).nextLine();
+            } catch (FileNotFoundException e) {
+                DisplayError.log.error("testing path not found\n", e);
+                break;
+            }
 
-            if (fileName.isEmpty())
-                System.out.printf("Opening default file %s\n", fileName = defaultFileName);
-            else
-                System.out.printf("Opening alternative file %s\n", fileName);
-                
-            try {;
+            try {
+                if (!fileName.isEmpty()){
+                    System.out.printf("Opening and saving alternative file %s\n", fileName);
+
+                    PrintWriter pw = new PrintWriter(savedFile);
+                    pw.println(fileName);
+                    pw.close();
+                } else if (!savedFileName.isEmpty()) {
+                    System.out.printf("Opening saved file %s\n", fileName = savedFileName);
+                } else {
+                    System.out.printf("Opening default file %s\n", fileName = defaultFileName);
+                }
+
                 String finalFileName = fileName;
                 Platform.runLater(() -> {
                     loadedApp.loadScene(finalFileName);

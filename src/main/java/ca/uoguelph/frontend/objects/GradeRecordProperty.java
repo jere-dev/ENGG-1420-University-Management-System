@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.util.Arrays;
 
-public class GradeRecordProperty {
+public final class GradeRecordProperty {
     private final SimpleStringProperty courseName, courseCode, sectionNo;
     private final SimpleStringProperty professors;
     private final SimpleStringProperty finalGrade;

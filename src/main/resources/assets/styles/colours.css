@@ -6,3 +6,32 @@
     rust: #BC3908;
     orange-web: #F6AA1C;
 }
+
+.licorice-text {
+    -fx-text-fill: licorice;
+}
+
+.aubergine-text {
+    -fx-text-fill: aubergine;
+}
+
+.blood-text {
+    -fx-text-fill: penn-red;
+}
+
+.penn-text {
+    -fx-text-fill: penn-red;
+}
+
+.rust-text {
+    -fx-text-fill: rust;
+}
+
+.orange-text {
+    -fx-text-fill: orange-web;
+}
+
+.graduate-font {
+    -fx-font-family: 'Graduate';
+}
+

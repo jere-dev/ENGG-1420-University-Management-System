@@ -1,18 +1,21 @@
 package ca.uoguelph.frontend.objects.controller;
 
-import javafx.fxml.FXML;
-
-import java.awt.event.ActionEvent;
+import javafx.event.ActionEvent;
 
 public abstract class AbstractAdminEditorController{
 
     /**
      * Handles save and delete for a row on the table.
      */
+    protected void handleSave() {
+        handleSave(null);
+    }
 
-    @FXML
-    protected abstract void handleSave(javafx.event.ActionEvent event);
+    /**
+     * Handles save and delete for a row on the table.
+     */
+    protected abstract void handleSave(ActionEvent event);
 
-    @FXML
-    protected abstract void handleDelete(javafx.event.ActionEvent event);
+
+    protected abstract void handleDelete(ActionEvent event);
 }

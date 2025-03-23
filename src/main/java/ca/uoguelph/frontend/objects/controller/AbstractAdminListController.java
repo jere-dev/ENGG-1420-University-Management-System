@@ -1,7 +1,6 @@
 package ca.uoguelph.frontend.objects.controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 
 /**
  * An admin-specific interface that all management controllers must implement.
