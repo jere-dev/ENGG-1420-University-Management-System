@@ -2,7 +2,7 @@ package test;
 
 import ca.uoguelph.backend.*;
 import ca.uoguelph.backend.login.LoginManager;
-import ca.uoguelph.backend.login.LoginState;
+import ca.uoguelph.backend.login.UserRole;
 import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.application.Platform;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 class SideLoader {
     private static final String defaultFileName = "event_calendar.fxml"; // <-- PAGE HERE
-    private static final LoginState defaultLoginState = LoginState.ADMIN; // <-- PERMISSION HERE
+    private static final UserRole DEFAULT_USER_ROLE = UserRole.ADMIN; // <-- PERMISSION HERE
 
     private static SideLoaderApp loadedApp;
     static SideLoaderApp getLoadedApp() {return loadedApp;}
@@ -33,7 +33,7 @@ class SideLoader {
         FacultyManager.loadFaculty();
         EventManager.loadCourses();
 
-        String login = switch (defaultLoginState) {
+        String login = switch (DEFAULT_USER_ROLE) {
             case ADMIN -> "admin";
             case STUDENT -> "student";
             case FACULTY -> "faculty";
