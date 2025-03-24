@@ -17,6 +17,7 @@ import javafx.scene.control.ComboBox;
  */
 public class ComboBoxFilter implements ChangeListener<String> {
     private final ComboBox<String> box;
+    private final int maxVisibleRowCount;
     private final FilteredList<String> items;
 
     /**
@@ -27,9 +28,14 @@ public class ComboBoxFilter implements ChangeListener<String> {
      * @param items the filtered list containing items to be displayed in the combo box
      */
     public ComboBoxFilter(ComboBox<String> box, FilteredList<String> items) {
+        box.getEditor().textProperty().removeListener(this);
+
         this.box = box;
-        this.items = items;
         box.setItems(items);
+        maxVisibleRowCount = box.getVisibleRowCount();
+        this.items = items;
+
+        box.getEditor().textProperty().addListener(this);
     }
 
     /**
@@ -42,6 +48,17 @@ public class ComboBoxFilter implements ChangeListener<String> {
      */
     public ComboBoxFilter(ComboBox<String> box, ObservableList<String> items) {
         this(box, new FilteredList<>(items));
+    }
+
+    public void bypassListener(Runnable r) {
+        box.getEditor().textProperty().removeListener(this);
+        r.run();
+
+        // refresh selection and text value
+        box.setValue(box.getSelectionModel().getSelectedItem());
+        box.getEditor().textProperty().set(box.getEditor().textProperty().get());
+
+        box.getEditor().textProperty().addListener(this);
     }
 
     /**
@@ -58,31 +75,28 @@ public class ComboBoxFilter implements ChangeListener<String> {
      */
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String value) {
-        // If any item is selected we get the first word of that item.
-        String selected = box.getSelectionModel().getSelectedItem() != null
-                ? box.getSelectionModel().getSelectedItem() : null;
-
+//        System.out.println("change detected: " + oldValue + " | " + value + " | " + box.getSelectionModel().getSelectedItem());
         // remove listeners or otherwise cause stack overflow error
         box.getEditor().textProperty().removeListener(this);
 
-        // If an item is selected and the value of in the editor is the same
-        // as the selected item we don't filter the list.
-        if (value.equals(selected)) {
-            items.setPredicate(item -> true);
-        } else {
-            items.setPredicate(item -> {
-                if (item.toUpperCase().startsWith(value.toUpperCase())) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
+        // If the value of the text exists exactly in the filter then don't filter
+        if (!box.getItems().contains(value)) {
+            items.setPredicate(item -> item.toUpperCase().contains(value.toUpperCase()));
 
             box.getEditor().setText(value);
         }
 
+        // reset observable
+        box.getEditor().textProperty().set(box.getEditor().textProperty().get());
         box.getEditor().textProperty().addListener(this);
 
-        box.show();
+        // refresh and reset row count if more things appear
+        box.setVisibleRowCount(Math.min(box.getItems().size(), maxVisibleRowCount));
+        if (box.getVisibleRowCount() < box.getItems().size()) {
+            box.hide();
+        }
+
+        if (box.isFocused() && !box.isShowing())
+            box.show();
     }
 }

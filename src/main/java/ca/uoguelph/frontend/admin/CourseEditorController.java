@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
@@ -115,11 +117,18 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         sectionTable.setItems(obsEntryList);
 
         // add on-action events for editing sections
-//        sectionTable.setOnMouseClicked(e -> {
-//
-//            if (lastSelected != null && lastSelected.equals()&& e.isPrimaryButtonDown() && e.getClickCount() == 2)
-//                handleEditSection(sectionTable.getSelectionModel().getSelectedItem().getSection());
-//        });
+        sectionTable.setOnMouseReleased(me -> handleSectionOnAction(me.getButton() == MouseButton.PRIMARY));
+        sectionTable.setOnKeyReleased(ke -> handleSectionOnAction(
+                ke.getCode() == KeyCode.ENTER || ke.getCode() == KeyCode.SPACE));
+    }
+
+    private void handleSectionOnAction(boolean isAction) {
+        System.out.println("attempt is " + isAction);
+        SectionEntry ns = sectionTable.getSelectionModel().getSelectedItem();
+        if (lastSelected != null && lastSelected.equals(ns) && isAction)
+            handleEditSection(ns.getSection());
+
+        lastSelected = ns;
     }
 
     @FXML
