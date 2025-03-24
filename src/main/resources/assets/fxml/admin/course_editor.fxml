@@ -206,7 +206,6 @@
                                      <TableColumn id="termColumn" fx:id="termColumn" prefWidth="75.0" text="term" />
                                      <TableColumn id="instrColumn" fx:id="instrColumn" prefWidth="150.0" text="instructors" />
                                        <TableColumn id="seatsColumn" fx:id="seatsColumn" prefWidth="75.0" text="seats" />
-                                       <TableColumn id="linkColumn" fx:id="linkColumn" prefWidth="75.0" text="profile" />
                                    </columns>
                                     <columnResizePolicy>
                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

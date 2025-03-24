@@ -5,7 +5,6 @@ import ca.uoguelph.frontend.objects.DisplayError;
 import ca.uoguelph.frontend.objects.filter.ComboBoxFilter;
 import ca.uoguelph.frontend.objects.SectionEntry;
 import ca.uoguelph.frontend.objects.controller.AbstractAdminEditorController;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +19,6 @@ import javafx.scene.layout.StackPane;
 
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CourseEditorController extends AbstractAdminEditorController implements DisplayError {
     @FXML private Region rootLayout;
@@ -31,7 +29,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     @FXML private Button deleteButton, cancelButton, saveButton;
     @FXML private TableView<SectionEntry> sectionTable;
     @FXML private TableColumn<SectionEntry, String> codeColumn,
-            termColumn, instrColumn, seatsColumn, linkColumn;
+            termColumn, instrColumn, seatsColumn;
     @FXML private Label errorLabel;
 
     private Course originalCourse;
@@ -114,7 +112,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
+    private void handleCancel(ActionEvent ignored) {
         if (originalCourse == null) loadEmpty(null);
         else loadDetails(null, originalCourse);
     }
@@ -151,7 +149,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     }
 
     @FXML
-    private void handleAddSection(ActionEvent event) {
+    private void handleAddSection(ActionEvent ignored) {
         handleEditSection(null);
     }
 

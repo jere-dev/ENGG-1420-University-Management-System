@@ -54,7 +54,7 @@ public class ComboBoxFilter implements ChangeListener<String> {
      *
      * @param observable the observable string value (combo box editor text)
      * @param oldValue the previous text value
-     * @param newValue the new text value
+     * @param value the new text value
      */
     @Override
     public void changed(ObservableValue<? extends String> observable, String oldValue, String value) {
