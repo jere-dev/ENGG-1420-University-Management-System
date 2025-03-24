@@ -21,6 +21,8 @@ import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 
 public class CourseEditorController extends AbstractAdminEditorController implements DisplayError {
+    private CourseManagerController parentController;
+
     @FXML private Region rootLayout;
     @FXML private TextField courseNameField, courseCodeField, locationField,
             offeredField, departField, creditField;
@@ -36,8 +38,8 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     private final ObservableList<String> sbjCodeList = FXCollections.observableList(
             SubjectManager.getSubjects().stream().map(Subject::getCode).toList()
     );
-
-    private CourseManagerController parentController;
+    private ComboBoxFilter sbjFilter;
+    private SectionEntry lastSelected = null;
 
     public void loadEmpty(CourseManagerController parentCont) {
         parentController = parentCont;
@@ -62,7 +64,11 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         descArea.setText(c.getDescription()); descArea.setPromptText(c.getDescription());
         requisiteArea.setText(c.getRequisites()); requisiteArea.setPromptText(c.getRequisites());
 
-        sbjComboBox.getSelectionModel().select(c.getSubjectCode()); sbjComboBox.setPromptText(c.getSubjectCode());
+        // bypass listener so it doesn't open automatically
+        sbjFilter.bypassListener(() -> {
+            sbjComboBox.getSelectionModel().select(c.getSubjectCode());
+            sbjComboBox.setPromptText(c.getSubjectCode());
+        });
 
         if (parentController == null) parentController = parentCont;
         originalCourse = c;
@@ -79,7 +85,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         seatsColumn.setCellValueFactory(new PropertyValueFactory<>("seats"));
 
         // add filtering in combo box
-        sbjComboBox.getEditor().textProperty().addListener(new ComboBoxFilter(sbjComboBox, sbjCodeList));
+        sbjFilter = new ComboBoxFilter(sbjComboBox, sbjCodeList);
 
         // set save button to enable, delete button to disable if data is changed
         for (TextInputControl control : new TextInputControl[]{
@@ -107,8 +113,13 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         }
 
         sectionTable.setItems(obsEntryList);
-        sectionTable.getSelectionModel().selectedItemProperty().subscribe(sent ->
-                handleEditSection(sent.getSection()));
+
+        // add on-action events for editing sections
+//        sectionTable.setOnMouseClicked(e -> {
+//
+//            if (lastSelected != null && lastSelected.equals()&& e.isPrimaryButtonDown() && e.getClickCount() == 2)
+//                handleEditSection(sectionTable.getSelectionModel().getSelectedItem().getSection());
+//        });
     }
 
     @FXML
