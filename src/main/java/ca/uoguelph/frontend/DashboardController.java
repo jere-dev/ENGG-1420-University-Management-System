@@ -157,7 +157,7 @@ public class DashboardController {
 //        }
         if (label == null) return "dashboard_content.fxml";
 
-        return FXMLPath.getFXMLPath(switch (label.getText()) {
+        return FXMLPath.basic(switch (label.getText()) {
             case "SUBJECTS" -> FXMLPath.SUBJECTS;
             case "COURSES" -> FXMLPath.COURSES;
             case "STUDENT" -> FXMLPath.STUDENTS;
@@ -399,8 +399,8 @@ public class DashboardController {
         if (resource == null) {
             resource = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
         }
-        LOGGER.info("Attempting to load resource: " + path);
-        LOGGER.info("Resource found at: " + (resource != null ? resource.toString() : "null"));
+//        LOGGER.info("Attempting to load resource: " + path);
+//        LOGGER.info("Resource found at: " + (resource != null ? resource.toString() : "null"));
         return resource;
     }
 
@@ -415,7 +415,7 @@ public class DashboardController {
                 }
             }
 
-            String resourcePath = "/assets/fxml/" + fxmlFile;
+            String resourcePath = fxmlFile;
             URL resource = getResource(resourcePath);
             
             if (resource == null) {

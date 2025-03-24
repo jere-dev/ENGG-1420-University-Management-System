@@ -64,6 +64,8 @@ public interface DisplayError {
     /**
      * Creates a popup error window with the thread name that lists the error trace.
      * Meant for significant errors that requires a restrictive notification.
+     * @param e throwable to generate an error message from
+     * @param t originating thread
      */
     static void createPopup(Thread t, Throwable e) {
         createPopup("Error thrown in thread from " + t.getThreadGroup().getName(), e);
@@ -72,6 +74,8 @@ public interface DisplayError {
     /**
      * Creates a popup error window that lists the error trace.
      * Meant for significant errors that requires a restrictive notification.
+     * @param title title of popup window
+     * @param e throwable to generate an error message from
      */
     static void createPopup(String title, Throwable e) {
         StringWriter s = new StringWriter();
@@ -84,6 +88,8 @@ public interface DisplayError {
     /**
      * Creates a popup error window that lists the error trace.
      * Meant for significant errors that requires a restrictive notification.
+     * @param message   message to display as description
+     * @param title     title of window
      * @author  ASHRREAL
      */
     static void createPopup(String title, String message) {

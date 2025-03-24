@@ -9,17 +9,19 @@ public class SectionEntry {
             instructors = new SimpleStringProperty(),
             seats = new SimpleStringProperty();
 
-    public SectionEntry(String code, String term, String instructors, String seats) {
-        codeProperty().setValue(code);
-        termProperty().setValue(term);
-        instructorsProperty().setValue(instructors);
-        seatsProperty().setValue(seats);
-    }
+    private final Section section;
 
     public SectionEntry(Section sec) {
-        this(sec.getCode(), sec.getTerm(),
-                String.join(", ", sec.getInstructors()),
-                sec.getSeats());
+        codeProperty().setValue(sec.getCode());
+        termProperty().setValue(sec.getTerm());
+        instructorsProperty().setValue(String.join(", ", sec.getInstructors()));
+        seatsProperty().setValue(sec.getSeats());
+
+        section = sec;
+    }
+
+    public Section getSection() {
+        return section;
     }
 
     public String getCode() {

@@ -14,16 +14,13 @@ public class CourseManager {
 //load course
     public static void loadCourses(){
         var arar = Database.loadStrings(1);
-        int i = 0;
         for(var ar : arar){
-            i++;
-            if(i > 1000){break;}
             try {
                 ArrayList<Section> sections = mapper.readValue(ar.get(9), new TypeReference<ArrayList<Section>>(){});
                 courses.add(new Course(ar.get(0), ar.get(1), ar.get(2), Float.parseFloat(ar.get(3)), ar.get(4), ar.get(5), ar.get(6), ar.get(7), ar.get(8), sections));
                 
             } catch (Exception e) {
-                System.err.println("Json error at entry: " + i);
+                System.err.println("Json error at entry: " + ar);
                 e.printStackTrace();
             }
         }

@@ -4,7 +4,7 @@ import ca.uoguelph.backend.Course;
 import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.Subject;
 import ca.uoguelph.backend.login.LoginManager;
-import ca.uoguelph.backend.login.LoginState;
+import ca.uoguelph.backend.login.UserRole;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -28,7 +28,7 @@ public final class TableRowPreset extends TableRow {
         // TODO: customize look
 
         // return right away if faculty or student
-        if (LoginManager.getRole() == LoginState.FACULTY || LoginManager.getRole() == LoginState.STUDENT)
+        if (LoginManager.getRole() == UserRole.FACULTY || LoginManager.getRole() == UserRole.STUDENT)
             return List.of(nameLabel, codeLabel);
 
         Button editButton = new Button("✎");
@@ -47,7 +47,7 @@ public final class TableRowPreset extends TableRow {
     }
 
     public static List<Node> courseRow(Course c) {
-        if (LoginManager.getRole() != LoginState.ADMIN)
+        if (LoginManager.getRole() != UserRole.ADMIN)
             throw new IllegalStateException("Attempt to create course list for " + LoginManager.getRole());
 
         Label titleLabel = new Label(c.getTitle()),
@@ -87,7 +87,7 @@ public final class TableRowPreset extends TableRow {
     }
 
     private static List<Node> studentRowAdmin(Student st) {
-        if (LoginManager.getRole() != LoginState.ADMIN)
+        if (LoginManager.getRole() != UserRole.ADMIN)
             throw new IllegalStateException("Attempt to create administrator's list of students for " + LoginManager.getRole());
 
         Node[] labels = {
@@ -113,7 +113,7 @@ public final class TableRowPreset extends TableRow {
     }
 
     private static List<Node> studentRowFaculty(Student st, Course c) {
-        if (LoginManager.getRole() != LoginState.FACULTY)
+        if (LoginManager.getRole() != UserRole.FACULTY)
             throw new IllegalStateException("Attempt to create faculty's list of students for " + LoginManager.getRole());
 
         Node[] labels = {
