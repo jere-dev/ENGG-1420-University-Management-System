@@ -11,8 +11,18 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Database {
+    private static Database instance;
     private static FileInputStream file;
     private static XSSFWorkbook workbook;
+
+    private Database() {} // Private constructor
+
+    public static Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
 
     public static void loadExcelSheet(String path) {
         try {

@@ -233,4 +233,25 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     public void displayError(String err) {
         displayShortError(err, errorLabel, 2.0);
     }
+
+    public void disableEditing() {
+        courseNameField.setEditable(false);
+        courseCodeField.setEditable(false);
+        locationField.setEditable(false);
+        offeredField.setEditable(false);
+        departField.setEditable(false);
+        creditField.setEditable(false);
+        descArea.setEditable(false);
+        requisiteArea.setEditable(false);
+        sbjComboBox.setDisable(true);
+        
+        // Hide action buttons
+        saveButton.setVisible(false);
+        deleteButton.setVisible(false);
+        cancelButton.setVisible(false);
+        
+        // Disable section table editing
+        sectionTable.setOnMouseReleased(null);
+        sectionTable.setOnKeyReleased(null);
+    }
 }
