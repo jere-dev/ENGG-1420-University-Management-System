@@ -66,7 +66,7 @@ public class DashboardController {
 
         // Set initial state
         setActiveNav((AnchorPane)navItems.getChildren().get(0));
-        loadContent("dashboard_content.fxml");
+        loadContent("/assets/fxml/dashboard_content.fxml");
 
         // Start with bars
         transformToBar(menuIcon.getChildren().toArray(new Rectangle[0]));
@@ -416,6 +416,7 @@ public class DashboardController {
             }
 
             String resourcePath = fxmlFile;
+//            System.out.println(resourcePath);
             URL resource = getResource(resourcePath);
             
             if (resource == null) {

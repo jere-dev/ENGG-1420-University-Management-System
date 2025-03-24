@@ -6,7 +6,7 @@ import ca.uoguelph.backend.login.UserRole;
 public enum FXMLPath {
     LOGIN, DASHBOARD, DASHBOARD_CONTENT, SUBJECTS, COURSES, STUDENTS, FACULTY, EVENTS;
 
-    private static final String base = "assets/fxml/";
+    private static final String base = "/assets/fxml/";
 
     private static final String calendarPath = "event_calendar.fxml",
             dashboardPath = "dashboard.fxml", loginPath = "login.fxml",
