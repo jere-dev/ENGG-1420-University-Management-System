@@ -1,7 +1,6 @@
 package ca.uoguelph.frontend.user;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.scene.control.PasswordField;
 

@@ -3,9 +3,7 @@ package ca.uoguelph.backend;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 //TODO: modify excel sheet

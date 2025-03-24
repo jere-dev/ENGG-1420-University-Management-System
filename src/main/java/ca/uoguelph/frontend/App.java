@@ -1,7 +1,5 @@
 package ca.uoguelph.frontend;
 
-import java.time.LocalDateTime;
-
 import ca.uoguelph.backend.Admin;
 import ca.uoguelph.backend.CourseManager;
 import ca.uoguelph.backend.Database;
@@ -9,15 +7,12 @@ import ca.uoguelph.backend.EventManager;
 import ca.uoguelph.backend.FacultyManager;
 import ca.uoguelph.backend.StudentManager;
 import ca.uoguelph.backend.SubjectManager;
-import ca.uoguelph.frontend.objects.DisplayError;
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class App extends Application {
 
@@ -52,7 +47,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         //TODO: add admin to excel sheet (keeping this as it might be important)
-        Admin admin = new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
+        new Admin("admin", "admin", "Test@uoguelph.ca", "test", "default");
 
         // Set up the scene and stage
         Scene scene = new Scene(root, 1280, 720);

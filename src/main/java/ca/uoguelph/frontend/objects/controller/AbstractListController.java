@@ -1,8 +1,6 @@
 package ca.uoguelph.frontend.objects.controller;
 
-import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 
 /**
  * Common methods that would be found in a list controller such as {@code SubjectListController} and {@code CourseCatalogController}.

@@ -29,7 +29,6 @@ public class Database {
         int rowEnd = 0;
 
         int i = 0;
-        boolean end = false;
 
         for (Row row : sheet) {
             if (i == 0) {
