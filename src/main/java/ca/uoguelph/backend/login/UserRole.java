@@ -1,6 +1,6 @@
 package ca.uoguelph.backend.login;
 
-public enum LoginState {
+public enum UserRole {
     ADMIN, STUDENT, FACULTY;
 
     @Override
