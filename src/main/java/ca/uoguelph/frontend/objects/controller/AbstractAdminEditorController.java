@@ -2,7 +2,6 @@ package ca.uoguelph.frontend.objects.controller;
 
 import javafx.fxml.FXML;
 
-import java.awt.event.ActionEvent;
 
 public abstract class AbstractAdminEditorController{
 

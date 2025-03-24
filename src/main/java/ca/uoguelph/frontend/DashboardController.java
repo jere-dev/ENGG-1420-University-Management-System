@@ -31,7 +31,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.FadeTransition;
 import javafx.scene.shape.Circle;
-import javafx.animation.ParallelTransition;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
 

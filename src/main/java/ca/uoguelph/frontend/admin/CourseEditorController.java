@@ -17,7 +17,6 @@ import javafx.scene.layout.StackPane;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
