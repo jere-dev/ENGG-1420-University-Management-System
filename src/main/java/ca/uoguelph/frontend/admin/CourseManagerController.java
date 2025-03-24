@@ -295,7 +295,7 @@ public final class CourseManagerController extends AbstractAdminListController i
 
     @FXML
     private void handleKeyPage(KeyEvent event) {
-        System.out.println(event.getCode());
+//        System.out.println(event.getCode());
         if (event.getCode() != KeyCode.ENTER) return;
 
         String userText = pageText.getText();
