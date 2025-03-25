@@ -92,15 +92,12 @@ public class FacultyCourseCatalogController implements DisplayError {
         
         if (LoginManager.getCurrentUser() instanceof Faculty faculty) {
             ArrayList<Pair<String, String>> facultyCourses = faculty.getCourses();
-            System.out.println("Faculty ID: " + faculty.getID());
-            System.out.println("Number of courses: " + (facultyCourses != null ? facultyCourses.size() : "null"));
             
             if (facultyCourses != null && !facultyCourses.isEmpty()) {
                 int rowIndex = 1;
                 for (Pair<String, String> courseInfo : facultyCourses) {
                     String subjectCode = courseInfo.getKey();
                     String courseNumber = courseInfo.getValue();
-                    System.out.println("Processing course: Subject=" + subjectCode + ", Number=" + courseNumber);
                     
                     try {
                         Course course = CourseManager.getCourse(subjectCode, courseNumber);
@@ -111,7 +108,6 @@ public class FacultyCourseCatalogController implements DisplayError {
                             continue;
                         }
                         addCourseRow(course, subjectCode, courseNumber, rowIndex++);
-                        System.out.println("Added course row: " + fullCourseCode);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error loading course: " + subjectCode + "*" + courseNumber + " - " + e.getMessage());
                         if (searchTerm.isEmpty() || 
