@@ -15,8 +15,8 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 class SideLoader {
-    private static final String defaultFileName = "event_calendar.fxml"; // <-- PAGE HERE
-    private static final UserRole DEFAULT_USER_ROLE = UserRole.ADMIN; // <-- PERMISSION HERE
+    private static final String defaultFileName = "user/faculty_profile_student.fxml"; // <-- PAGE HERE
+    private static final UserRole DEFAULT_USER_ROLE = UserRole.STUDENT; // <-- PERMISSION HERE
 
     private static SideLoaderApp loadedApp;
     static SideLoaderApp getLoadedApp() {return loadedApp;}

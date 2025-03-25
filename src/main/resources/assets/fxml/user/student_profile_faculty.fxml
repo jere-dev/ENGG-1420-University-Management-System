@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<!-- FACULTY: View basic academic information of students in their courses. -->
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
-    <Label text="Student Academic Info" style="-fx-font-size: 16;"/>
-    <TableView>
+<!-- FACULTY: View basic academic information of students in their courses. Student name/id? -->
+
+<VBox prefHeight="455.0" prefWidth="483.0" spacing="10" style="-fx-padding: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="CENTER" prefHeight="32.0" prefWidth="178.0" style="-fx-font-size: 16; -fx-background-color: #E49b0f; -fx-background-radius: 6; -fx-padding: 3;" text="Student Information" textAlignment="CENTER" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font></Label>
+    <TableView style="-fx-background-radius: 10;">
         <columns>
-            <TableColumn text="Course"/>
-            <TableColumn text="Grade"/>
+            <TableColumn text="Name" />
+            <TableColumn text="ID" />
         </columns>
+      <columnResizePolicy>
+         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
     </TableView>
 </VBox>
