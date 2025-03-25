@@ -14,9 +14,19 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javafx.util.Pair;
 
 public class Database {
+    private static Database instance;
     private static FileInputStream file;
     private static XSSFWorkbook workbook;
     private static String Wpath;
+
+    private Database() {} // Private constructor
+
+    public static Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
 
     public static void loadExcelSheet(String path) {
         try {

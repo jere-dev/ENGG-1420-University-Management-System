@@ -34,9 +34,7 @@ public class Faculty extends User {
         this.researchInterest = researchInterest;
     }
 
-    public ArrayList<Pair<String, String>> getCourses() {
-        return courses;
-    }
+    public ArrayList<Pair<String, String>> getCourses() {return courses;}
 
     public String getOfficeLocation() {
         return officeLocation;

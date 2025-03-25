@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
@@ -21,6 +23,8 @@ import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 
 public class CourseEditorController extends AbstractAdminEditorController implements DisplayError {
+    private CourseManagerController parentController;
+
     @FXML private Region rootLayout;
     @FXML private TextField courseNameField, courseCodeField, locationField,
             offeredField, departField, creditField;
@@ -36,8 +40,8 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     private final ObservableList<String> sbjCodeList = FXCollections.observableList(
             SubjectManager.getSubjects().stream().map(Subject::getCode).toList()
     );
-
-    private CourseManagerController parentController;
+    private ComboBoxFilter sbjFilter;
+    private SectionEntry lastSelected = null;
 
     public void loadEmpty(CourseManagerController parentCont) {
         parentController = parentCont;
@@ -62,7 +66,11 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         descArea.setText(c.getDescription()); descArea.setPromptText(c.getDescription());
         requisiteArea.setText(c.getRequisites()); requisiteArea.setPromptText(c.getRequisites());
 
-        sbjComboBox.getSelectionModel().select(c.getSubjectCode()); sbjComboBox.setPromptText(c.getSubjectCode());
+        // bypass listener so it doesn't open automatically
+        sbjFilter.bypassListener(() -> {
+            sbjComboBox.getSelectionModel().select(c.getSubjectCode());
+            sbjComboBox.setPromptText(c.getSubjectCode());
+        });
 
         if (parentController == null) parentController = parentCont;
         originalCourse = c;
@@ -79,7 +87,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         seatsColumn.setCellValueFactory(new PropertyValueFactory<>("seats"));
 
         // add filtering in combo box
-        sbjComboBox.getEditor().textProperty().addListener(new ComboBoxFilter(sbjComboBox, sbjCodeList));
+        sbjFilter = new ComboBoxFilter(sbjComboBox, sbjCodeList);
 
         // set save button to enable, delete button to disable if data is changed
         for (TextInputControl control : new TextInputControl[]{
@@ -107,8 +115,20 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         }
 
         sectionTable.setItems(obsEntryList);
-        sectionTable.getSelectionModel().selectedItemProperty().subscribe(sent ->
-                handleEditSection(sent.getSection()));
+
+        // add on-action events for editing sections
+        sectionTable.setOnMouseReleased(me -> handleSectionOnAction(me.getButton() == MouseButton.PRIMARY));
+        sectionTable.setOnKeyReleased(ke -> handleSectionOnAction(
+                ke.getCode() == KeyCode.ENTER || ke.getCode() == KeyCode.SPACE));
+    }
+
+    private void handleSectionOnAction(boolean isAction) {
+        System.out.println("attempt is " + isAction);
+        SectionEntry ns = sectionTable.getSelectionModel().getSelectedItem();
+        if (lastSelected != null && lastSelected.equals(ns) && isAction)
+            handleEditSection(ns.getSection());
+
+        lastSelected = ns;
     }
 
     @FXML
@@ -212,5 +232,26 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     @Override
     public void displayError(String err) {
         displayShortError(err, errorLabel, 2.0);
+    }
+
+    public void disableEditing() {
+        courseNameField.setEditable(false);
+        courseCodeField.setEditable(false);
+        locationField.setEditable(false);
+        offeredField.setEditable(false);
+        departField.setEditable(false);
+        creditField.setEditable(false);
+        descArea.setEditable(false);
+        requisiteArea.setEditable(false);
+        sbjComboBox.setDisable(true);
+        
+        // Hide action buttons
+        saveButton.setVisible(false);
+        deleteButton.setVisible(false);
+        cancelButton.setVisible(false);
+        
+        // Disable section table editing
+        sectionTable.setOnMouseReleased(null);
+        sectionTable.setOnKeyReleased(null);
     }
 }

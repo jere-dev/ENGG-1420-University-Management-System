@@ -1,5 +1,6 @@
 package ca.uoguelph.backend;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javafx.util.Pair;
@@ -7,13 +8,21 @@ import javafx.util.Pair;
 public class Student extends User {
     private String address;
     private String telephone;
-    // TODO: figure out how to repersent tutition/payment status
+    // TODO: figure out how to repersent tuition
     private ArrayList<Pair<String, String>> courses; // TODO: store courses and sections together
     // TODO: figure out how to store grades
+    private ArrayList<GradeRecord> gradeRecordList;
     private String currentSemester;
     private String academicLevel;
     private String thesisTitle;
     private float progress;
+    private HashMap <String, String> Tuition;
+    private String tuition;
+    private String semester;
+
+    public ArrayList<GradeRecord> getGradeRecordList() {
+        return gradeRecordList;
+    }
 
     public Student(String Id, String name, String address, String telephone, String email, String academicLevel, String currentSemester, String profilePhoto,
                     ArrayList<Pair<String, String>> courses, String thesisTitle, float progress, String password) {
