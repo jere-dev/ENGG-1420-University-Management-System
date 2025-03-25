@@ -106,26 +106,16 @@ public class FacultyCourseCatalogController implements DisplayError {
                         Course course = CourseManager.getCourse(subjectCode, courseNumber);
                         String fullCourseCode = subjectCode + "*" + courseNumber;
                         if (!searchTerm.isEmpty() && 
-                        courseNumber = codeParts[1];
-                    } else {
-                        subjectCode = fullCourseCode;
-                        courseNumber = "0000"; // Default course number if not provided
-                        System.out.println("Using default format for: " + fullCourseCode);
-                    }
-                    
-                    try {
-                        Course course = CourseManager.getCourse(subjectCode, courseNumber);
-                        if (!searchTerm.isEmpty() && 
                             !fullCourseCode.toLowerCase().contains(searchTerm.toLowerCase()) &&
                             !course.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
                             continue;
                         }
                         addCourseRow(course, subjectCode, courseNumber, rowIndex++);
-                        System.out.println("Added course row: " + subjectCode + "*" + courseNumber);
+                        System.out.println("Added course row: " + fullCourseCode);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error loading course: " + subjectCode + "*" + courseNumber + " - " + e.getMessage());
                         if (searchTerm.isEmpty() || 
-                            fullCourseCode.toLowerCase().contains(searchTerm.toLowerCase())) {
+                            (subjectCode + "*" + courseNumber).toLowerCase().contains(searchTerm.toLowerCase())) {
                             addCourseRow(null, subjectCode, courseNumber, rowIndex++);
                         }
                     }
