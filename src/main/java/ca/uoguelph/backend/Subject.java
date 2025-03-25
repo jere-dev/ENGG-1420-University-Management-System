@@ -1,6 +1,6 @@
 package ca.uoguelph.backend;
 
-public class Subject {
+public class Subject extends RowData {
     private String code;
     private String name;
 

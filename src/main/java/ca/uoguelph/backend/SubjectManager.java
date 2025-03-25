@@ -3,15 +3,17 @@ package ca.uoguelph.backend;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-//TODO: modify excel sheet
 public class SubjectManager {
     private static ArrayList<Subject> subjects = new ArrayList<Subject>();
 
 //load subjects
     public static void loadSubjects(){
         var arar = Database.loadStrings(0);
-        for(var ar : arar){
-            subjects.add(new Subject(ar.get(1), ar.get(0)));
+        for(var pair : arar){
+            var ar = pair.getKey();
+            Subject subject = new Subject(ar.get(1), ar.get(0));
+            subject.setRowNum(pair.getValue());
+            subjects.add(subject);
         }
     }
 
@@ -80,12 +82,19 @@ public class SubjectManager {
     }
 
     // Edit Subject
+    public static void updateSheet(Subject subject){
+        ArrayList<String> t = new ArrayList<String>();
+        t.add(subject.getCode());
+        t.add(subject.getName());
+        Database.editRow(0, subject.getRowNum(), t);
+    }
     public static void editSubjectCode(Subject subject, String code) {
         // Check for duplicate code
         if (subjects.stream().anyMatch(s -> s.getCode().equals(code) && !s.equals(subject))) {
             throw new IllegalArgumentException("Subject code already exists");
         }
         subject.setCode(code);
+        updateSheet(subject);
     }
 
     public static void editSubjectName(Subject subject, String name) {
@@ -94,5 +103,6 @@ public class SubjectManager {
             throw new IllegalArgumentException("Subject name already exists");
         }
         subject.setName(name);
+        updateSheet(subject);
     }
 }

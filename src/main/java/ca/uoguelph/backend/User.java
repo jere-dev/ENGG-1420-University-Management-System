@@ -2,7 +2,7 @@ package ca.uoguelph.backend;
 
 import ca.uoguelph.backend.login.LoginManager;
 
-public class User {
+public class User extends RowData {
     private String id;
     private String password;
     private String email;

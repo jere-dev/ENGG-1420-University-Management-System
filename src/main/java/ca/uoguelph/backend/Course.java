@@ -2,7 +2,7 @@ package ca.uoguelph.backend;
 
 import java.util.ArrayList;
 
-public class Course {
+public class Course extends RowData {
     private String subjectCode;
     private String CourseCode;
     private String title;

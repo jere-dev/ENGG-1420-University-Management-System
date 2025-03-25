@@ -2,6 +2,7 @@ package ca.uoguelph.backend;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,27 +11,54 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javafx.util.Pair;
+
 public class Database {
     private static FileInputStream file;
     private static XSSFWorkbook workbook;
+    private static String Wpath;
 
     public static void loadExcelSheet(String path) {
         try {
             file = new FileInputStream(new File(path));
             workbook = new XSSFWorkbook(file);
+            Wpath = path;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<ArrayList<String>> loadStrings(int index) {
-        ArrayList<ArrayList<String>> returnArrayList = new ArrayList<ArrayList<String>>();
+    public static void editRow(int index, int rowNum, ArrayList<String> rowData) {
+        FileOutputStream outputStream;
+        XSSFSheet sheet = workbook.getSheetAt(index);
+        Row row = sheet.getRow(rowNum);
+        int cellIndex = 0;
+        for(String string : rowData){
+            row.getCell(cellIndex).setCellValue(string);
+            cellIndex++;
+        }
+        try {
+            outputStream = new FileOutputStream(Wpath);
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+            loadExcelSheet(Wpath);
+            System.out.println("runs");
+        } catch (Exception e) {
+            System.out.println("ERROR: Couldn't write to file");
+        }
+    }
+
+    public static ArrayList<Pair<ArrayList<String>, Integer>> loadStrings(int index) {
+        ArrayList<Pair<ArrayList<String>, Integer>> returnArrayList = new ArrayList<Pair<ArrayList<String>, Integer>>();
         XSSFSheet sheet = workbook.getSheetAt(index);
         int rowEnd = 0;
 
         int i = 0;
 
+        int rowNum = 0;
         for (Row row : sheet) {
+            rowNum++;
             if (i == 0) {
                 for (Cell cell : sheet.getRow(0)) {
                     rowEnd++;
@@ -55,7 +83,7 @@ public class Database {
                 j++;
             }
             if (0 != list.size()) {
-                returnArrayList.add(list);
+                returnArrayList.add(new Pair<ArrayList<String>,Integer>(list, rowNum));
             }
         }
 

@@ -2,7 +2,7 @@ package ca.uoguelph.backend;
 
 import java.util.ArrayList;
 
-public class Event {
+public class Event  extends RowData {
     private String name;
     private String code;
     private String description;
