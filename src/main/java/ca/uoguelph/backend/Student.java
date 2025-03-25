@@ -2,6 +2,7 @@ package ca.uoguelph.backend;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.util.Pair;
 

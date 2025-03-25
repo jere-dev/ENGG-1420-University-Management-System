@@ -1,19 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<!--
-FACULTY: View courses they teach and related student lists.
-Start here to view students that they teach.
--->
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="659.0" prefWidth="1250.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.user.FacultyCourseCatalogController">
+    <content>
+        <VBox fx:id="screenBox" minHeight="655.0" minWidth="1050.0" prefHeight="657.0" prefWidth="1050.0" style="-fx-background-color: #F5F5F5; -fx-padding: 20;" styleClass="ignoreHighlight">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #941B0C; -fx-font-family: System;" text="My Teaching Schedule">
+                <font>
+                    <Font name="System" size="24.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="20" />
+                </VBox.margin>
+            </Label>
 
-<VBox xmlns="http://javafx.com/javafx/17" spacing="10" style="-fx-padding: 10;">
-    <Label text="Courses Taught" style="-fx-font-size: 16;"/>
-    <TableView>
-        <columns>
-            <TableColumn text="Course Code"/>
-            <TableColumn text="Course Name"/>
-            <TableColumn text="Students Enrolled"/>
-        </columns>
-    </TableView>
-</VBox>
+            <VBox prefHeight="561.0" prefWidth="1079.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #941B0C; -fx-font-family: System;" text="Course Directory">
+                        <font>
+                            <Font name="System" size="20.0" />
+                        </font>
+                    </Label>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="searchField" prefWidth="200.0" promptText="Search by Name or Code..." style="-fx-prompt-text-fill: #757575; -fx-background-radius: 3; -fx-border-radius: 3; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-background-color: white; -fx-font-family: System; -fx-font-size: 13px;" />
+                    <Button fx:id="searchButton" onAction="#handleSearch" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: System; -fx-font-size: 13px;" text="SEARCH">
+                        <effect>
+                            <DropShadow color="#00000033" radius="3" spread="0.05" />
+                        </effect>
+                    </Button>
+                </HBox>
+
+                <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" styleClass="edge-to-edge" VBox.vgrow="ALWAYS">
+                    <GridPane fx:id="tableGrid" style="-fx-background-color: white; -fx-background-radius: 3; -fx-border-radius: 3; -fx-border-color: #E0E0E0; -fx-border-width: 1;">
+                        <padding>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="5.0" />
+                        </padding>
+                    </GridPane>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </ScrollPane>
+                
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <padding>
+                        <Insets top="15" />
+                    </padding>
+                    <Label fx:id="errorLabel" prefWidth="400.0" style="-fx-font-family: System;" textFill="RED" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>
