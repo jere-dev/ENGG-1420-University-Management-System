@@ -50,8 +50,8 @@ public class StudentProfileStudent {
 
     private Student currStudent;
 
-    @FXML
-    public void initialize() {
-        currStudent = StudentManager.getStudent(c);
-    }
+  //  @FXML
+   // public void initialize() {
+        //currStudent = StudentManager.getStudent(c);
+   // }
 }
