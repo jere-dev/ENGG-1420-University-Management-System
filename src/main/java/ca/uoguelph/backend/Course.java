@@ -14,7 +14,7 @@ public class Course {
     private String department;
     private ArrayList<Section> sections;
 
-    protected Course( ArrayList<Section> sections, String department, String Offered, String locations, String requisites, String description, float credits, String title, String CourseCode, String subjectCode){
+    protected Course(String subjectCode, String CourseCode, String title, float credits, String description, String requisites, String locations, String Offered, String department, ArrayList<Section> sections){
         this.sections = sections;
         this.department = department;
         this.Offered = Offered;

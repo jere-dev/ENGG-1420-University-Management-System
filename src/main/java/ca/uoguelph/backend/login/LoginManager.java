@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class LoginManager {
     private static final ArrayList<User> users = new ArrayList<>();
     private static User loginUser;
-    private static LoginState loginState;
+    private static UserRole userRole;
 
     public static void addUser(User user) {
         users.add(user);
@@ -32,10 +32,10 @@ public class LoginManager {
 
 
         // set user role
-        loginState = switch (getCurrentUser()) {
-            case Admin ignored -> LoginState.ADMIN;
-            case Faculty ignored1 -> LoginState.FACULTY;
-            case Student ignored2 -> LoginState.STUDENT;
+        userRole = switch (getCurrentUser()) {
+            case Admin ignored -> UserRole.ADMIN;
+            case Faculty ignored1 -> UserRole.FACULTY;
+            case Student ignored2 -> UserRole.STUDENT;
             default -> throw new IllegalStateException("Unexpected role: " + getCurrentUser());
         };
 
@@ -46,7 +46,7 @@ public class LoginManager {
     public static boolean logout() {
         if (loginUser == null) return false;
         loginUser = null;
-        loginState = null;
+        userRole = null;
         return true;
     }
 
@@ -54,7 +54,7 @@ public class LoginManager {
         return loginUser;
     }
 
-    public static LoginState getRole() {
-        return loginState;
+    public static UserRole getRole() {
+        return userRole;
     }
 }

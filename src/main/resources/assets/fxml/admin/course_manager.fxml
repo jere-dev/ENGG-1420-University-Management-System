@@ -2,53 +2,75 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!-- ADMIN: lists all courses with the choice to add or edit any. -->
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="AS_NEEDED" pannable="true" prefHeight="659.0" prefWidth="1250.0" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.CourseManagerController">
+    <content>
+        <VBox fx:id="screenBox" minHeight="655.0" minWidth="1050.0" prefHeight="657.0" prefWidth="1050.0" style="-fx-background-color: #F5F5F5; -fx-padding: 20;" styleClass="ignoreHighlight" stylesheets="@../../styles/styles.css">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #941B0C; -fx-font-family: System;" text="Course Manager">
+                <font>
+                    <Font name="System" size="24.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="20" />
+                </VBox.margin>
+            </Label>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.admin.CourseManagerController">
-   <children>
-      <GridPane layoutX="20.0" layoutY="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="170.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
-            <ColumnConstraints hgrow="ALWAYS" minWidth="100.0" prefWidth="200.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <ImageView fitHeight="60.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/unilogo.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </ImageView>
-            <TextField fx:id="searchField" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="197.0" promptText="Enter Subject" style="-fx-background-color: white; -fx-border-color: grey; -fx-border-radius: 5;" GridPane.columnIndex="2">
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-            </TextField>
-              <Button maxWidth="1.7976931348623157E308" onAction="#handleAdd" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: WHITE; -fx-border-color: Gray; -fx-border-radius: 5;" text="Create" textAlignment="CENTER" textFill="#9e9e9e" GridPane.columnIndex="1">
-               <font>
-                  <Font name="Roboto Regular" size="12.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-            </Button>
-         </children>
-      </GridPane>
-      <ScrollPane fx:id="scrollPane" hmax="2000.0" layoutX="20.0" layoutY="70.0" prefHeight="200.0" prefWidth="560.0" vmax="1000.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="90.0" />
-   </children>
-</AnchorPane>
+            <VBox prefHeight="561.0" prefWidth="1079.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" VBox.vgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #941B0C; -fx-font-family: System;" text="Course Directory">
+                        <font>
+                            <Font name="System" size="20.0" />
+                        </font>
+                    </Label>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="searchField" prefWidth="200.0" promptText="Search by Name or Code..." style="-fx-prompt-text-fill: #757575; -fx-background-radius: 3; -fx-border-radius: 3; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-background-color: white; -fx-font-family: System; -fx-font-size: 13px;" />
+                    <Button onAction="#handleSearch" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: System; -fx-font-size: 13px;" text="SEARCH">
+                        <effect>
+                            <DropShadow color="#00000033" radius="3" spread="0.05" />
+                        </effect>
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+                    </Button>
+                </HBox>
+
+                <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" styleClass="edge-to-edge" VBox.vgrow="ALWAYS">
+                    <GridPane fx:id="tableGrid" style="-fx-background-color: white; -fx-background-radius: 3; -fx-border-radius: 3; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 3, 0, 0, 0);">
+                        <padding>
+                            <Insets bottom="15" left="15" right="15" top="5" />
+                        </padding>
+                    </GridPane>
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </ScrollPane>
+
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <padding>
+                        <Insets top="15" />
+                    </padding>
+                    <Button fx:id="leftPageButton" onAction="#handlePrevPage" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: System;" text="⮜" />
+                    <TextField fx:id="pageText" alignment="CENTER" onKeyPressed="#handleKeyPage" prefWidth="30.0" promptText="1" style="-fx-font-family: System; -fx-font-size: 13px;" />
+                    <Button fx:id="rightPageButton" onAction="#handleNextPage" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-font-family: System;" text="⮞" />
+                    <Label fx:id="errorLabel" prefWidth="400.0" textFill="RED" style="-fx-font-family: System;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="rowCountText" alignment="CENTER" onKeyPressed="#handleKeyCount" prefWidth="90.0" promptText="40 courses per page" style="-fx-font-family: System; -fx-font-size: 13px;" />
+                    <Button onAction="#handleAdd" style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; -fx-min-width: 120; -fx-min-height: 30; -fx-font-family: System; -fx-font-size: 13px;" text="ADD COURSE +">
+                        <effect>
+                            <DropShadow color="#00000033" radius="3" spread="0.05" />
+                        </effect>
+                    </Button>
+                </HBox>
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

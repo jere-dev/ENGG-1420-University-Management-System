@@ -25,17 +25,16 @@ public class Student extends User {
         return gradeRecordList;
     }
 
-    public Student(String Id, String password, String email, String name, String profilePhoto, String address,
-                   String telephone, String currentSemester, String academicLevel,
-                   String thesisTitle, float progress, HashMap string) {
+    public Student(String Id, String name, String address, String telephone, String email, String academicLevel, String currentSemester, String profilePhoto,
+                    ArrayList<Pair<String, String>> courses, String thesisTitle, float progress, String password) {
         super(Id, password, email, name, profilePhoto);
         this.address = address;
         this.telephone = telephone;
         this.currentSemester = currentSemester;
         this.academicLevel = academicLevel;
         this.thesisTitle = thesisTitle;
-        this.progress = progress;
-        this.courses =  new ArrayList<Pair<String, String>>();
+        this.progress = (float)((int)(progress*100));
+        this.courses =  courses;
     }
 
     public String getAddress() {

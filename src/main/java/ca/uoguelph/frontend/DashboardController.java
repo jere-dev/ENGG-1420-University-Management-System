@@ -8,6 +8,7 @@ import java.util.logging.Level;
 
 import ca.uoguelph.backend.*;
 import ca.uoguelph.backend.login.LoginManager;
+import ca.uoguelph.frontend.objects.DisplayError;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,12 +17,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
-import javafx.stage.StageStyle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;  // Add this import
 import javafx.animation.RotateTransition;
@@ -32,13 +30,16 @@ import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.FadeTransition;
+import javafx.scene.shape.Circle;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
 
 public class DashboardController {
     private static final Logger LOGGER = Logger.getLogger(DashboardController.class.getName());
 
     @FXML private VBox sideNav;
     @FXML private VBox navItems;
-    @FXML private StackPane contentArea;
+    @FXML private StackPane contentArea; // TODO: make contentArea visible to all controllers in order to clear content effectively
     @FXML private Label dashboardLabel;
     @FXML private Label userNameLabel;
     @FXML private Label userRoleLabel;
@@ -49,9 +50,14 @@ public class DashboardController {
     private AnchorPane activeNav;
     private boolean isExpanded = false;  // Changed from true to false
     private Timeline sidebarAnimation;
+    private HBox loadingAnimation;
+    private Timeline dotAnimation;
 
     @FXML
     private void initialize() {
+        // Initialize loading animation first
+        setupLoadingAnimation();
+
         // Set up click handlers for navigation items
         navItems.getChildren().stream()
                 .filter(node -> node instanceof AnchorPane)
@@ -60,16 +66,16 @@ public class DashboardController {
 
         // Set initial state
         setActiveNav((AnchorPane)navItems.getChildren().get(0));
-        loadContent("dashboard_content.fxml");
+        loadContent("/assets/fxml/dashboard_content.fxml");
 
         // Start with bars
         transformToBar(menuIcon.getChildren().toArray(new Rectangle[0]));
-        
+
         // Trigger initial collapse
         sideNav.setPrefWidth(60.0);
         universityLogo.setVisible(false);
         universityLogo.setManaged(false);
-        
+
         // Initially hide labels and show collapsed lines
         navItems.getChildren().forEach(node -> {
             if (node instanceof AnchorPane) {
@@ -90,7 +96,7 @@ public class DashboardController {
                 });
             }
         });
-        
+
         // Hide user info labels
         userNameLabel.setVisible(false);
         userRoleLabel.setVisible(false);
@@ -100,7 +106,7 @@ public class DashboardController {
         clip.widthProperty().bind(sideNav.widthProperty());
         clip.heightProperty().bind(sideNav.heightProperty());
         sideNav.setClip(clip);
-        
+
         // Initialize the sidebar animation
         sidebarAnimation = new Timeline();
         sidebarAnimation.setOnFinished(e -> {
@@ -109,6 +115,7 @@ public class DashboardController {
                 universityLogo.setManaged(false);
             }
         });
+        
     }
 
     private void setupNavItem(AnchorPane nav) {
@@ -117,7 +124,7 @@ public class DashboardController {
                 nav.setStyle("-fx-background-color: #7B1609; -fx-cursor: hand;");
             }
         });
-        
+
         nav.setOnMouseExited(e -> {
             if (nav != activeNav) {
                 nav.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
@@ -136,7 +143,7 @@ public class DashboardController {
                 .filter(node -> node instanceof Label)
                 .findFirst()
                 .orElse(null);
-        
+
 //        if (label != null) {
 //            switch (label.getText()) {
 //                case "DASHBOARD": return "dashboard_content.fxml";
@@ -150,7 +157,7 @@ public class DashboardController {
 //        }
         if (label == null) return "dashboard_content.fxml";
 
-        return FXMLPath.getFXMLPath(switch (label.getText()) {
+        return FXMLPath.basic(switch (label.getText()) {
             case "SUBJECTS" -> FXMLPath.SUBJECTS;
             case "COURSES" -> FXMLPath.COURSES;
             case "STUDENT" -> FXMLPath.STUDENTS;
@@ -172,16 +179,16 @@ public class DashboardController {
     private void toggleNavigation(ActionEvent event) {
         double expandedWidth = 200.0;
         double collapsedWidth = 60.0;
-        
+
         sidebarAnimation.stop();
-        
+
         if (isExpanded) {
             // First fade out the text and logo
             universityLogo.setVisible(true); // Keep logo visible during animation
             universityLogo.setManaged(true);
             fadeTransition(universityLogo, false);
             toggleVisibility(false);
-            
+
             // Then animate the width after a short delay
             Timeline delayedCollapse = new Timeline(
                 new KeyFrame(Duration.millis(150),
@@ -194,10 +201,10 @@ public class DashboardController {
             universityLogo.setVisible(true);
             universityLogo.setManaged(true);
             universityLogo.setOpacity(0);
-            
+
             // Animate the width
             animateSidebar(sideNav.getPrefWidth(), expandedWidth, 250);
-            
+
             // Fade in elements after width animation starts
             Timeline delayedShow = new Timeline(
                 new KeyFrame(Duration.millis(100),
@@ -209,7 +216,7 @@ public class DashboardController {
             );
             delayedShow.play();
         }
-        
+
         toggleMenuIcon();
         isExpanded = !isExpanded;
     }
@@ -247,7 +254,7 @@ public class DashboardController {
                 });
             }
         });
-        
+
         fadeTransition(userNameLabel, visible);
         fadeTransition(userRoleLabel, visible);
     }
@@ -272,18 +279,18 @@ public class DashboardController {
                 });
             }
         });
-        
+
         userNameLabel.setVisible(visible);
         userRoleLabel.setVisible(visible);
     }
 
     private void fadeTransition(Node node, boolean visible) {
         if (node == null) return;
-        
+
         FadeTransition fade = new FadeTransition(Duration.millis(200), node);
         fade.setFromValue(node.getOpacity());
         fade.setToValue(visible ? 1.0 : 0.0);
-        
+
         // Keep node visible during fade out
         if (!visible) {
             fade.setOnFinished(e -> {
@@ -294,7 +301,7 @@ public class DashboardController {
             node.setVisible(true);
             node.setManaged(true);
         }
-        
+
         fade.play();
     }
 
@@ -318,13 +325,13 @@ public class DashboardController {
     private void transformToCross(Rectangle[] bars) {
         // Middle bar fade out
         bars[1].setOpacity(0);
-        
+
         // Rotate top bar
         RotateTransition rotateTop = new RotateTransition(Duration.millis(300), bars[0]);
         rotateTop.setToAngle(45);
         rotateTop.setOnFinished(e -> bars[0].setTranslateY(6));
         rotateTop.play();
-        
+
         // Rotate bottom bar
         RotateTransition rotateBottom = new RotateTransition(Duration.millis(300), bars[2]);
         rotateBottom.setToAngle(-45);
@@ -335,13 +342,13 @@ public class DashboardController {
     private void transformToBar(Rectangle[] bars) {
         // Restore middle bar
         bars[1].setOpacity(1);
-        
+
         // Reset top bar
         RotateTransition rotateTop = new RotateTransition(Duration.millis(300), bars[0]);
         rotateTop.setToAngle(0);
         rotateTop.setOnFinished(e -> bars[0].setTranslateY(0));
         rotateTop.play();
-        
+
         // Reset bottom bar
         RotateTransition rotateBottom = new RotateTransition(Duration.millis(300), bars[2]);
         rotateBottom.setToAngle(0);
@@ -349,49 +356,117 @@ public class DashboardController {
         rotateBottom.play();
     }
 
+    private void setupLoadingAnimation() {
+        loadingAnimation = new HBox(10);  // Increased spacing for better visibility
+        loadingAnimation.setAlignment(Pos.CENTER);
+        loadingAnimation.getStyleClass().add("loading-container");
+
+        dotAnimation = new Timeline();
+        
+        for (int i = 0; i < 3; i++) {
+            Circle dot = new Circle(6);  // Slightly larger dots for better visibility
+            dot.getStyleClass().addAll("dot", "bouncing-dot");
+            loadingAnimation.getChildren().add(dot);
+            
+            // Create bounce animation for each dot with adjusted timing
+            KeyFrame[] frames = {
+                new KeyFrame(Duration.ZERO, new KeyValue(dot.translateYProperty(), 0)),
+                new KeyFrame(Duration.millis(250), new KeyValue(dot.translateYProperty(), -20)),
+                new KeyFrame(Duration.millis(500), new KeyValue(dot.translateYProperty(), 0))
+            };
+            
+            // Add frames with delay for each dot
+            for (KeyFrame frame : frames) {
+                dotAnimation.getKeyFrames().add(
+                    new KeyFrame(
+                        frame.getTime().add(Duration.millis(i * 150)),  // Shorter delay between dots
+                        frame.getValues().toArray(new KeyValue[0])
+                    )
+                );
+            }
+        }
+        
+        dotAnimation.setCycleCount(Timeline.INDEFINITE);
+        dotAnimation.setAutoReverse(false);
+    }
+
+    private URL getResource(String path) {
+        // Try different resource loading approaches
+        URL resource = getClass().getResource(path);
+        if (resource == null) {
+            resource = getClass().getClassLoader().getResource(path.substring(1));
+        }
+        if (resource == null) {
+            resource = Thread.currentThread().getContextClassLoader().getResource(path.substring(1));
+        }
+//        LOGGER.info("Attempting to load resource: " + path);
+//        LOGGER.info("Resource found at: " + (resource != null ? resource.toString() : "null"));
+        return resource;
+    }
+
     private void loadContent(String fxmlFile) {
         try {
-            String resourcePath = "/assets/fxml/" + fxmlFile;
-//            LOGGER.info("Loading resource: " + resourcePath);
-            
-            // Try different ways to load the resource
-            URL resource = DashboardController.class.getResource(resourcePath);
-            if (resource == null) {
-                resource = DashboardController.class.getClassLoader().getResource(resourcePath.substring(1));
-            }
-            if (resource == null) {
-                LOGGER.severe("Resource not found: " + resourcePath);
-                LOGGER.info("Class loader: " + DashboardController.class.getClassLoader());
-                LOGGER.info("Working directory: " + System.getProperty("user.dir"));
-                throw new IOException("Cannot find resource: " + resourcePath);
-            }
-            
-            LOGGER.info("Resource found at: " + resource.toString());
-            FXMLLoader loader = new FXMLLoader(resource);
-            Parent content = loader.load();
+            // Start loading animation with null check
             contentArea.getChildren().clear();
-            contentArea.getChildren().add(content);
+            if (loadingAnimation != null) {
+                contentArea.getChildren().add(loadingAnimation);
+                if (dotAnimation != null) {
+                    dotAnimation.play();
+                }
+            }
+
+            String resourcePath = fxmlFile;
+//            System.out.println(resourcePath);
+            URL resource = getResource(resourcePath);
             
+            if (resource == null) {
+                LOGGER.severe("Failed to find resource: " + resourcePath);
+                LOGGER.info("Working directory: " + System.getProperty("user.dir"));
+                LOGGER.info("Classloader: " + getClass().getClassLoader());
+                throw new IOException("Resource not found: " + resourcePath);
+            }
+
+            // Load the content in a background thread
+            Thread loadThread = new Thread(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(resource);
+                    Parent content = loader.load();
+                    content.setOpacity(0);
+                    
+                    javafx.application.Platform.runLater(() -> {
+                        if (dotAnimation != null) {
+                            dotAnimation.stop();
+                        }
+                        contentArea.getChildren().clear();
+                        contentArea.getChildren().add(content);
+
+                        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), content);
+                        fadeIn.setFromValue(0);
+                        fadeIn.setToValue(1);
+                        fadeIn.play();
+                    });
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error loading content", e);
+                    javafx.application.Platform.runLater(() -> {
+                        if (dotAnimation != null) {
+                            dotAnimation.stop();
+                        }
+                        DisplayError.createPopup("Error loading content", 
+                            String.format("Failed to load %s: %s", fxmlFile, e.getMessage()));
+                    });
+                }
+            });
+            
+            loadThread.start();
+
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error loading content", e);
-            showErrorDialog("Error loading content", e.getMessage() + "\nResource path: " + fxmlFile);
+            LOGGER.log(Level.SEVERE, "Error in loadContent", e);
+            if (dotAnimation != null) {
+                dotAnimation.stop();
+            }
+            DisplayError.createPopup("Error loading content", 
+                String.format("Failed to load %s: %s", fxmlFile, e.getMessage()));
         }
-    }
-    private void showErrorDialog(String title, String message) {
-        Stage dialog = new Stage();
-        dialog.initStyle(StageStyle.UTILITY);
-        VBox root = new VBox(10);
-        root.setStyle("-fx-padding: 10; -fx-background-color: white;");
-        
-        Label titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-font-weight: bold;");
-        Label messageLabel = new Label(message);
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> dialog.close());
-        
-        root.getChildren().addAll(titleLabel, messageLabel, closeButton);
-        dialog.setScene(new Scene(root));
-        dialog.show();
     }
 
     public void setUserInfo() {

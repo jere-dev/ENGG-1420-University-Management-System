@@ -10,11 +10,12 @@ public class Faculty extends User {
     private ArrayList<Pair<String, String>> courses;
     private String officeLocation;
 
-    public Faculty(String id, String password, String email, String name, String profilePhoto, String degree, String researchInterest, String officeLocation){
+    public Faculty(String id, String name, String degree, String researchInterest, String email, String officeLocation, ArrayList<Pair<String, String>> courses, String password, String profilePhoto){
         super(id, password, email, name, profilePhoto);
         this.degree = degree;
         this.researchInterest = researchInterest;
         this.officeLocation = officeLocation;
+        this.courses = courses;
     }
 
     public String getDegree() {

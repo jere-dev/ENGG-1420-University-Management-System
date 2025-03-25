@@ -5,6 +5,11 @@
     -fx-background-size: cover;
 }
 
+.label {
+    -fx-font-family: "Graduate";
+    -fx-padding: 5px;
+}
+
 .buttonDefault {
     -fx-background-color: "#5E0B0C";
     -fx-font-family: "Graduate";
@@ -14,6 +19,17 @@
     -fx-border-radius: 5px;
 }
 
+.titleText {
+    -fx-font-family: "Graduate";
+    -fx-font-size: 12px;
+}
+
 .buttonDefault:hover {
     -fx-background-color: "#3E090A";
+}
+
+.ignoreHighlight {}
+
+.ignoreHighlight:focused {
+    -fx-background-color: "lightgrey";
 }

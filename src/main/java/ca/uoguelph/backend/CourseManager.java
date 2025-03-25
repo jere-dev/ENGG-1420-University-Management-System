@@ -3,9 +3,28 @@ package ca.uoguelph.backend;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 //TODO: modify excel sheet
 public class CourseManager {
     private static ArrayList<Course> courses = new ArrayList<Course>();
+    private static ObjectMapper mapper = new ObjectMapper();
+
+//load course
+    public static void loadCourses(){
+        var arar = Database.loadStrings(1);
+        for(var ar : arar){
+            try {
+                ArrayList<Section> sections = mapper.readValue(ar.get(9), new TypeReference<ArrayList<Section>>(){});
+                courses.add(new Course(ar.get(0), ar.get(1), ar.get(2), Float.parseFloat(ar.get(3)), ar.get(4), ar.get(5), ar.get(6), ar.get(7), ar.get(8), sections));
+                
+            } catch (Exception e) {
+                System.err.println("Json error at entry: " + ar);
+                e.printStackTrace();
+            }
+        }
+    }
 
 //get course
     public static Course getCourse(String subjectCode, String courseCode){
@@ -14,16 +33,39 @@ public class CourseManager {
         return course;
     }
     public static ArrayList<Course> getCourses(){return courses;}
-    public static ArrayList<Course> searchCoursesBySubjectCourseCode(String code){return courses.stream().filter(c -> (c.getSubjectCode()+c.getCourseCode()).contains(code)).collect(Collectors.toCollection(ArrayList::new));}
-    public static ArrayList<Course> searchCoursesBySubjectCode(String code){return courses.stream().filter(c -> c.getSubjectCode().contains(code)).collect(Collectors.toCollection(ArrayList::new));}
-    public static ArrayList<Course> searchCoursesByCourseCode(String code){return courses.stream().filter(c -> c.getCourseCode().contains(code)).collect(Collectors.toCollection(ArrayList::new));}
-    public static ArrayList<Course> searchCoursesByTitle(String title){return courses.stream().filter(c -> c.getTitle().contains(title)).collect(Collectors.toCollection(ArrayList::new));}
+    public static ArrayList<Course> searchCoursesBySubjectCourseCode(String code){
+        String searchTerm = code.toLowerCase();
+        return courses.stream()
+            .filter(c -> (c.getSubjectCode() + c.getCourseCode()).toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static ArrayList<Course> searchCoursesBySubjectCode(String code){
+        String searchTerm = code.toLowerCase();
+        return courses.stream()
+            .filter(c -> c.getSubjectCode().toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static ArrayList<Course> searchCoursesByCourseCode(String code){
+        String searchTerm = code.toLowerCase();
+        return courses.stream()
+            .filter(c -> c.getCourseCode().toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static ArrayList<Course> searchCoursesByTitle(String title){
+        String searchTerm = title.toLowerCase();
+        return courses.stream()
+            .filter(c -> c.getTitle().toLowerCase().contains(searchTerm))
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 //modify course
     //add course
     public static void addCourse(String subjectCode, String courseCode, String title, float credits, String description, String requisites, String locations, String offered, String department, ArrayList<Section> sections){
         //TODO: make sure Course ID is unque in conjunction with subject ID
-        courses.add(new Course(sections, department, offered, locations, requisites, description, credits, title, courseCode, subjectCode));
+        courses.add(new Course(subjectCode, courseCode, title, credits, description, requisites, locations, offered, department, sections));
     }
     //edit course
     //TODO: edit sections

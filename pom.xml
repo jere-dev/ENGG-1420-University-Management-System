@@ -71,19 +71,37 @@
             <version>2.24.3</version>
         </dependency>
 
+        <!-- Log4J Default Implementation -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.24.3</version>
+        </dependency>
+
+        <!-- SLF4J 1.7.x to Log4J implementation -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-reload4j</artifactId>
+            <version>2.0.16</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.3</version>
         </dependency>
 
+        <!-- CalendarFX -->
         <!-- https://mvnrepository.com/artifact/com.calendarfx/view -->
         <dependency>
             <groupId>com.calendarfx</groupId>
             <artifactId>view</artifactId>
             <version>11.12.7</version>
+            <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -142,6 +160,13 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <!-- logger resources -->
+            <resource>
+                <directory>src/main/resources/testresource</directory>
                 <includes>
                     <include>**/*</include>
                 </includes>

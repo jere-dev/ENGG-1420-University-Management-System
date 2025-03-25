@@ -1,99 +1,161 @@
 package ca.uoguelph.frontend.admin;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.geometry.Insets;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventManagerController implements Initializable {
+    private final List<Event> eventList = new ArrayList<>();
+    private int page = 0;
+    private int pageRowCount = 20;
 
-    // Table and table columns
-    @FXML
-    private TableView<Event> eventsTable;
-
-    @FXML
-    private TableColumn<Event, String> eventNameColumn;
-
-    @FXML
-    private TableColumn<Event, LocalDate> dateColumn;
-
-    @FXML
-    private TableColumn<Event, LocalTime> timeColumn;
-
-    @FXML
-    private TableColumn<Event, String> locationColumn;
-
-    @FXML
-    private TableColumn<Event, String> typeColumn;
-
-    @FXML
-    private TableColumn<Event, String> statusColumn;
-
-    // Filter and search components
-    @FXML
-    private ComboBox<String> eventTypeFilter;
-
-    @FXML
-    private TextField searchEvents;
-
-    @FXML
-    private ComboBox<String> sortOrderCombo;
-
-    @FXML
-    private ComboBox<String> timeRangeFilter;
-    
-    // Buttons
-    @FXML
-    private Button refreshButton;
-
-    // Sample data for demonstration
-    private ObservableList<Event> eventList = FXCollections.observableArrayList();
+    @FXML private GridPane tableGrid;
+    @FXML private TextField searchEvents;
+    @FXML private ComboBox<String> eventTypeFilter;
+    @FXML private ComboBox<String> timeRangeFilter;
+    @FXML private ComboBox<String> sortOrderCombo;
+    @FXML private Button refreshButton;
+    @FXML private Button leftPageButton;
+    @FXML private Button rightPageButton;
+    @FXML private TextField pageText;
+    @FXML private TextField rowCountText;
+    @FXML private Label errorLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize table columns
-        eventNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        // Enable table selection
-        eventsTable.getSelectionModel().setCellSelectionEnabled(false);
-        eventsTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-        // Initialize filter combo boxes
-        eventTypeFilter.setItems(FXCollections.observableArrayList(
-                "All Types", "Academic", "Sports", "Club", "Special", "Conference"));
-        eventTypeFilter.setValue("All Types");
-
-        sortOrderCombo.setItems(FXCollections.observableArrayList(
-                "Date (Ascending)", "Date (Descending)", "Name (A-Z)", "Name (Z-A)", "Event Type"));
-        sortOrderCombo.setValue("Date (Ascending)");
-
-        timeRangeFilter.setItems(FXCollections.observableArrayList(
-                "All Events", "Today", "This Week", "This Month", "Next Month", "Past Events"));
-        timeRangeFilter.setValue("All Events");
-
-        // Load sample data
+        setupGridPane();
+        setupFilters();
         loadSampleData();
+        updateTable("");
 
-        // Set up listeners for filters
-        setupFilterListeners();
+        // Setup search field behavior
+        searchEvents.textProperty().addListener((obs, old, newText) -> {
+            if (searchEvents.isFocused()) {
+                javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.millis(300));
+                pause.setOnFinished(e -> updateTable(newText.trim()));
+                pause.play();
+            }
+        });
+
+        pageText.setText("1");
+        rowCountText.setText(String.valueOf(pageRowCount));
+    }
+
+    private void setupGridPane() {
+        tableGrid.setHgap(20);
+        tableGrid.setVgap(5);
+        tableGrid.setPadding(new Insets(5, 15, 15, 15));
+        tableGrid.setStyle("-fx-background-color: white; -fx-background-radius: 3; " +
+                          "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
+                          "-fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 3, 0, 0, 0);");
+
+        // Make grid fill parent
+        tableGrid.setMaxWidth(Double.MAX_VALUE);
+        tableGrid.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(tableGrid, Priority.ALWAYS);
+        HBox.setHgrow(tableGrid, Priority.ALWAYS);
+        
+        // Column constraints with explicit percentages
+        double[] columnWidths = {25, 15, 15, 20, 15, 10}; 
+        tableGrid.getColumnConstraints().clear();
+        for (double width : columnWidths) {
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(width);
+            column.setHgrow(Priority.ALWAYS);
+            column.setFillWidth(true);
+            tableGrid.getColumnConstraints().add(column);
+        }
+    }
+
+    private void addHeaderRow() {
+        Label[] headers = {
+            new Label("Event Name"),
+            new Label("Date"),
+            new Label("Time"),
+            new Label("Location"),
+            new Label("Type"),
+            new Label("Status")
+        };
+
+        String headerStyle = "-fx-font-weight: bold; -fx-font-size: 14px; " +
+                           "-fx-text-fill: #941B0C; -fx-padding: 12 5 12 5; " +
+                           "-fx-font-family: System; -fx-background-color: transparent;";
+
+        for (int i = 0; i < headers.length; i++) {
+            headers[i].setStyle(headerStyle);
+            headers[i].setMaxWidth(Double.MAX_VALUE);
+            GridPane.setHgrow(headers[i], Priority.ALWAYS);
+            tableGrid.add(headers[i], i, 0);
+        }
+
+        Separator headerSeparator = new Separator();
+        headerSeparator.setPadding(new Insets(5, 0, 5, 0));
+        tableGrid.add(headerSeparator, 0, 1, tableGrid.getColumnCount(), 1);
+    }
+
+    private void addEventRow(Event event, int rowIndex) {
+        // Create container for row highlighting
+        HBox rowContainer = new HBox();
+        rowContainer.setMaxWidth(Double.MAX_VALUE);
+        rowContainer.getStyleClass().add("table-row");
+        rowContainer.setStyle("-fx-background-color: transparent;");
+
+        Label[] labels = {
+            new Label(event.getName()),
+            new Label(event.getDate().toString()),
+            new Label(event.getTime().toString()),
+            new Label(event.getLocation()),
+            new Label(event.getType()),
+            new Label(event.getStatus())
+        };
+
+        String labelStyle = "-fx-padding: 10 5 10 5; -fx-font-size: 13px; " + 
+                          "-fx-text-fill: #333333; -fx-font-family: System;";
+
+        // Add hover effects
+        rowContainer.setOnMouseEntered(e -> {
+            rowContainer.setStyle("-fx-background-color: #F6F6F6;");
+            for (Label label : labels) {
+                label.setStyle(labelStyle);
+            }
+        });
+        
+        rowContainer.setOnMouseExited(e -> {
+            rowContainer.setStyle("-fx-background-color: transparent;");
+            for (Label label : labels) {
+                label.setStyle(labelStyle);
+            }
+        });
+
+        tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1);
+
+        // Add labels to grid
+        for (int i = 0; i < labels.length; i++) {
+            labels[i].setStyle(labelStyle);
+            labels[i].setMaxWidth(Double.MAX_VALUE);
+            labels[i].setMaxHeight(Double.MAX_VALUE);
+            GridPane.setHgrow(labels[i], Priority.ALWAYS);
+            GridPane.setVgrow(labels[i], Priority.ALWAYS);
+            tableGrid.add(labels[i], i, rowIndex);
+        }
+
+        // Add row separator
+        Separator rowSeparator = new Separator();
+        rowSeparator.setPadding(new Insets(0));
+        rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
+        rowSeparator.setMaxWidth(Double.MAX_VALUE);
+        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
     }
 
     private void loadSampleData() {
@@ -110,23 +172,36 @@ public class EventManagerController implements Initializable {
                 LocalTime.of(9, 0), "Science Building", "Conference", "Pending"));
 
         // Set the items to the table
-        eventsTable.setItems(eventList);
+        updateTable("");
     }
 
-    private void setupFilterListeners() {
-        // Add listeners to filter components
+    private void setupFilters() {
+        // Initialize filter combo boxes
+        eventTypeFilter.setItems(FXCollections.observableArrayList(
+                "All Types", "Academic", "Sports", "Club", "Special", "Conference"));
+        eventTypeFilter.setValue("All Types");
+
+        sortOrderCombo.setItems(FXCollections.observableArrayList(
+                "Date (Ascending)", "Date (Descending)", "Name (A-Z)", "Name (Z-A)", "Event Type"));
+        sortOrderCombo.setValue("Date (Ascending)");
+
+        timeRangeFilter.setItems(FXCollections.observableArrayList(
+                "All Events", "Today", "This Week", "This Month", "Next Month", "Past Events"));
+        timeRangeFilter.setValue("All Events");
+
+        // Set up listeners for filters
         eventTypeFilter.setOnAction(event -> applyFilters());
         timeRangeFilter.setOnAction(event -> applyFilters());
         sortOrderCombo.setOnAction(event -> applyFilters());
-
-        searchEvents.textProperty().addListener((observable, oldValue, newValue) -> {
-            applyFilters();
-        });
     }
 
     private void applyFilters() {
+        updateTable(searchEvents.getText().trim());
+    }
+
+    private void updateTable(String searchText) {
         // Create a new filtered list
-        ObservableList<Event> filteredEvents = FXCollections.observableArrayList(eventList);
+        List<Event> filteredEvents = new ArrayList<>(eventList);
         
         // Apply event type filter
         String selectedType = eventTypeFilter.getValue();
@@ -166,7 +241,6 @@ public class EventManagerController implements Initializable {
         }
         
         // Apply search filter
-        String searchText = searchEvents.getText();
         if (searchText != null && !searchText.isEmpty()) {
             String lowerCaseSearch = searchText.toLowerCase();
             filteredEvents.removeIf(event -> 
@@ -198,7 +272,16 @@ public class EventManagerController implements Initializable {
         }
         
         // Update the table
-        eventsTable.setItems(filteredEvents);
+        int startIndex = page * pageRowCount;
+        int endIndex = Math.min(startIndex + pageRowCount, filteredEvents.size());
+        
+        tableGrid.getChildren().clear();
+        addHeaderRow();
+        
+        int rowIndex = 1;
+        for (int i = startIndex; i < endIndex; i++) {
+            addEventRow(filteredEvents.get(i), rowIndex++);
+        }
     }
 
     @FXML
@@ -209,26 +292,12 @@ public class EventManagerController implements Initializable {
 
     @FXML
     private void handleEditEvent(ActionEvent event) {
-        Event selectedEvent = eventsTable.getSelectionModel().getSelectedItem();
-        if (selectedEvent != null) {
-            System.out.println("Edit Event clicked for: " + selectedEvent.getName());
-            // Add logic to open a dialog to edit the selected event
-        } else {
-            System.out.println("No event selected for editing");
-            // Show an alert that no event is selected
-        }
+        // Add logic to open a dialog to edit the selected event
     }
 
     @FXML
     private void handleEventDetails(ActionEvent event) {
-        Event selectedEvent = eventsTable.getSelectionModel().getSelectedItem();
-        if (selectedEvent != null) {
-            System.out.println("View Details clicked for: " + selectedEvent.getName());
-            // Add logic to display detailed information about the selected event
-        } else {
-            System.out.println("No event selected to view details");
-            // Show an alert that no event is selected
-        }
+        // Add logic to display detailed information about the selected event
     }
 
     @FXML
@@ -241,7 +310,7 @@ public class EventManagerController implements Initializable {
     private void handleRefreshEvents(ActionEvent event) {
         System.out.println("Refresh clicked");
         // Store the selected item before refresh
-        Event selectedEvent = eventsTable.getSelectionModel().getSelectedItem();
+        Event selectedEvent = null;
         
         // Clear and reload data
         eventList.clear();
@@ -251,7 +320,7 @@ public class EventManagerController implements Initializable {
         if (selectedEvent != null) {
             for (Event e : eventList) {
                 if (e.getName().equals(selectedEvent.getName())) {
-                    eventsTable.getSelectionModel().select(e);
+                    // Restore selection
                     break;
                 }
             }
@@ -259,6 +328,68 @@ public class EventManagerController implements Initializable {
         
         // Reapply filters
         applyFilters();
+    }
+
+    @FXML
+    private void handlePrevPage(ActionEvent event) {
+        if (page > 0) {
+            page--;
+            pageText.setText(String.valueOf(page + 1));
+            updateTable(searchEvents.getText().trim());
+        }
+    }
+
+    @FXML
+    private void handleNextPage(ActionEvent event) {
+        int totalPages = (int) Math.ceil((double) eventList.size() / pageRowCount);
+        if (page < totalPages - 1) {
+            page++;
+            pageText.setText(String.valueOf(page + 1));
+            updateTable(searchEvents.getText().trim());
+        }
+    }
+
+    @FXML
+    private void handleKeyPage(javafx.scene.input.KeyEvent event) {
+        if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+            try {
+                int newPage = Integer.parseInt(pageText.getText()) - 1;
+                int totalPages = (int) Math.ceil((double) eventList.size() / pageRowCount);
+                if (newPage >= 0 && newPage < totalPages) {
+                    page = newPage;
+                    updateTable(searchEvents.getText().trim());
+                    errorLabel.setText("");
+                } else {
+                    errorLabel.setText("Invalid page number");
+                    pageText.setText(String.valueOf(page + 1));
+                }
+            } catch (NumberFormatException e) {
+                errorLabel.setText("Please enter a valid number");
+                pageText.setText(String.valueOf(page + 1));
+            }
+        }
+    }
+
+    @FXML
+    private void handleKeyCount(javafx.scene.input.KeyEvent event) {
+        if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+            try {
+                int newCount = Integer.parseInt(rowCountText.getText());
+                if (newCount > 0 && newCount <= 100) {
+                    pageRowCount = newCount;
+                    page = 0;
+                    pageText.setText("1");
+                    updateTable(searchEvents.getText().trim());
+                    errorLabel.setText("");
+                } else {
+                    errorLabel.setText("Please enter a number between 1 and 100");
+                    rowCountText.setText(String.valueOf(pageRowCount));
+                }
+            } catch (NumberFormatException e) {
+                errorLabel.setText("Please enter a valid number");
+                rowCountText.setText(String.valueOf(pageRowCount));
+            }
+        }
     }
 
     // Inner class for Event model

@@ -14,7 +14,7 @@ public class Section {
     private ArrayList<String> instructors;
     private String code;
     private String title;
-    private String seats;
+    private String seats; // TODO: change "seats" to capacity
 
     public String getTerm() { return term; }
     protected void setTerm(String term) { this.term = term; }

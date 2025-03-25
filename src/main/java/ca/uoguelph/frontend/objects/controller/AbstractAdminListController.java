@@ -1,7 +1,6 @@
 package ca.uoguelph.frontend.objects.controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 
 /**
  * An admin-specific interface that all management controllers must implement.
@@ -13,13 +12,11 @@ public abstract class AbstractAdminListController extends AbstractListController
     /**
      * Handles adding an entry to the list.
      */
-    @FXML
     protected abstract void handleAdd(ActionEvent event);
 
     /**
      * Handles editing an entry on the list.
      */
-    @FXML
     protected abstract void handleEdit(ActionEvent event);
 
 

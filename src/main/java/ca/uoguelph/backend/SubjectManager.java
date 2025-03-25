@@ -7,6 +7,14 @@ import java.util.stream.Collectors;
 public class SubjectManager {
     private static ArrayList<Subject> subjects = new ArrayList<Subject>();
 
+//load subjects
+    public static void loadSubjects(){
+        var arar = Database.loadStrings(0);
+        for(var ar : arar){
+            subjects.add(new Subject(ar.get(1), ar.get(0)));
+        }
+    }
+
     // Get Subjects
     public static Subject getSubject(String code) {
         Subject subject = subjects.stream()
