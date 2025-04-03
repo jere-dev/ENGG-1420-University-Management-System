@@ -13,11 +13,12 @@ import javafx.scene.control.Label;
 import java.util.HashSet;
 import java.util.List;
 
-public final class TableRowPreset extends TableRow {
+@Deprecated(forRemoval = true)
+public final class OldTableRowPreset extends TableRow {
     /**
      * Converts a {@code Subject} object to a table row. Adds an edit button if the {@code LoginState} is an administrator.
      */
-    public TableRowPreset(Subject sbj) {
+    public OldTableRowPreset(Subject sbj) {
         super(subjectRow(sbj));
     }
 
@@ -42,7 +43,7 @@ public final class TableRowPreset extends TableRow {
      * Converts a {@code Course} object to a table row. Specific to when the {@code LoginState} is an administrator.
      * @param c the course
      */
-    public TableRowPreset(Course c) {
+    public OldTableRowPreset(Course c) {
         super(courseRow(c));
     }
 
@@ -82,7 +83,7 @@ public final class TableRowPreset extends TableRow {
     /**
      * Converts a {@code Student} object to a table row. Specific to only when the {@code LoginState} is an administrator.
      */
-    public TableRowPreset(Student st) {
+    public OldTableRowPreset(Student st) {
         super(studentRowAdmin(st));
     }
 
@@ -108,7 +109,7 @@ public final class TableRowPreset extends TableRow {
      * @param st    student
      * @param c     course name of student
      */
-    public TableRowPreset(Student st, Course c) {
+    public OldTableRowPreset(Student st, Course c) {
         super(studentRowFaculty(st, c));
     }
 
