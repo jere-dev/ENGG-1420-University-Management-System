@@ -52,7 +52,6 @@ import java.util.ArrayList;
  * @see SectionEntry
  * @see AbstractAdminEditorController
  * @see DisplayError
- * @author 180Sai
  */
 public class CourseEditorController extends AbstractAdminEditorController implements DisplayError {
     private CourseManagerController parentController;
