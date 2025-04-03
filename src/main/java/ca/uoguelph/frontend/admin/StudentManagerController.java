@@ -2,8 +2,12 @@ package ca.uoguelph.frontend.admin;
 
 import ca.uoguelph.backend.Student;
 import ca.uoguelph.backend.StudentManager;
+import ca.uoguelph.frontend.admin.StudentEditorController;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
@@ -60,9 +64,9 @@ public class StudentManagerController {
     }
 
     private void setupGridPane() {
-        tableGrid.setHgap(20); // Reduced from 40 to 20
+        tableGrid.setHgap(20);
         tableGrid.setVgap(5);
-        tableGrid.setPadding(new Insets(5, 15, 15, 15));  // Increased padding
+        tableGrid.setPadding(new Insets(5, 15, 15, 15));
         tableGrid.setStyle("-fx-background-color: white; -fx-background-radius: 3; " +
                           "-fx-border-radius: 3; -fx-border-color: #E0E0E0; " +
                           "-fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 3, 0, 0, 0);");
@@ -73,20 +77,24 @@ public class StudentManagerController {
         VBox.setVgrow(tableGrid, Priority.ALWAYS);
         HBox.setHgrow(tableGrid, Priority.ALWAYS);
 
+        // Adjust percentages for Action column
         ColumnConstraints idCol = new ColumnConstraints();
-        idCol.setPercentWidth(15);
+        idCol.setPercentWidth(13); // Adjust
         ColumnConstraints nameCol = new ColumnConstraints();
-        nameCol.setPercentWidth(20);
+        nameCol.setPercentWidth(17); // Adjust
         ColumnConstraints emailCol = new ColumnConstraints();
         emailCol.setPercentWidth(25);
         ColumnConstraints semesterCol = new ColumnConstraints();
-        semesterCol.setPercentWidth(15);
+        semesterCol.setPercentWidth(13); // Adjust
         ColumnConstraints progressCol = new ColumnConstraints();
         progressCol.setPercentWidth(10);
         ColumnConstraints coursesCol = new ColumnConstraints();
-        coursesCol.setPercentWidth(15);
+        coursesCol.setPercentWidth(12); // Adjust
+        ColumnConstraints actionCol = new ColumnConstraints(); // New Action Column
+        actionCol.setPercentWidth(10); // Adjust width
 
-        tableGrid.getColumnConstraints().addAll(idCol, nameCol, emailCol, semesterCol, progressCol, coursesCol);
+        tableGrid.getColumnConstraints().clear(); // Clear existing
+        tableGrid.getColumnConstraints().addAll(idCol, nameCol, emailCol, semesterCol, progressCol, coursesCol, actionCol);
     }
 
     private void updateTable(String search) {
@@ -133,7 +141,7 @@ public class StudentManagerController {
 
         Separator headerSeparator = new Separator();
         headerSeparator.setPadding(new Insets(5, 0, 5, 0));
-        tableGrid.add(headerSeparator, 0, 1, 7, 1);
+        tableGrid.add(headerSeparator, 0, 1, tableGrid.getColumnConstraints().size(), 1); // Span all columns
 
         int startIndex = page * pageRowCount;
         int endIndex = Math.min((page + 1) * pageRowCount, studentList.size());
@@ -155,7 +163,8 @@ public class StudentManagerController {
             new Label("Email"),
             new Label("Current Semester"),
             new Label("Progress"),
-            new Label("Courses")
+            new Label("Courses"),
+            new Label("Actions") // Add Actions header
         };
 
         String headerStyle = "-fx-font-weight: bold; -fx-font-size: 14px; " +
@@ -216,11 +225,26 @@ public class StudentManagerController {
             tableGrid.add(labels[i], i, rowIndex);
         }
 
+        // --- Add Edit Button ---
+        Button editButton = createStyledButton("Edit"); // Use existing styled button method
+        editButton.setOnAction(event -> handleEdit(student, event)); // Pass student to handler
+        buttonMap.put(editButton, student); // Map button if needed elsewhere
+
+        // Add button(s) to an HBox for layout in the cell
+        HBox actionBox = new HBox(editButton);
+        actionBox.setPadding(new Insets(5)); // Padding around the button
+        actionBox.setAlignment(javafx.geometry.Pos.CENTER);
+        GridPane.setHalignment(actionBox, javafx.geometry.HPos.CENTER);
+        GridPane.setValignment(actionBox, javafx.geometry.VPos.CENTER);
+
+        // Add the actionBox to the last column
+        tableGrid.add(actionBox, labels.length, rowIndex);
+
         Separator rowSeparator = new Separator();
         rowSeparator.setPadding(new Insets(0));
         rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
         rowSeparator.setMaxWidth(Double.MAX_VALUE);
-        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
+        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1); // Span all columns
     }
 
     private String formatCourses(List<Pair<String, String>> courses) {
@@ -274,15 +298,61 @@ public class StudentManagerController {
         return button;
     }
 
-    private void handleEdit(ActionEvent event) {
-        Student student = buttonMap.get((Button) event.getSource());
-        if (student != null) {
-            System.out.println("Edit student: " + student.getName());
+    private void handleEdit(Student student, ActionEvent event) {
+        if (student == null) {
+            System.err.println("ERROR: Cannot edit null student.");
+            if (errorLabel != null) errorLabel.setText("Error: No student selected for editing.");
+            return;
+        }
+        System.out.println("Edit student button clicked for: " + student.getName() + " (ID: " + student.getID() + ")");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/student_editor.fxml"));
+            Parent content = loader.load();
+
+            StudentEditorController controller = loader.getController();
+            if (controller == null) {
+                System.err.println("ERROR: StudentEditorController is NULL.");
+                if (errorLabel != null) errorLabel.setText("Error: Could not load student editor controller.");
+                return;
+            }
+
+            // Load the selected student's data into the editor
+            controller.loadStudent(
+                student.getID(),
+                student.getName(),
+                student.getEmail(),
+                student.getCurrentSemester(),
+                String.valueOf(student.getProgress()), // Pass progress as string
+                student.getCourses()
+            );
+            System.out.println("DEBUG: StudentEditorController load method called successfully for editing.");
+
+            // Find the content area to replace
+            StackPane contentArea = (StackPane) ((Node) event.getSource()).getScene().lookup("#contentArea");
+            if (contentArea == null) {
+                System.err.println("ERROR: Could not find contentArea.");
+                if (errorLabel != null) errorLabel.setText("Error: Could not find main content area.");
+                return;
+            }
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+            System.out.println("DEBUG: Student Editor UI loaded for editing!");
+
+        } catch (NullPointerException npe) {
+             System.err.println("ERROR: Could not find student_editor.fxml. Ensure the path is correct.");
+             if (errorLabel != null) errorLabel.setText("Error: Student editor file not found.");
+             npe.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("ERROR: Failed to load Student Editor for editing.");
+            if (errorLabel != null) errorLabel.setText("Error loading editor: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleRefreshStudents() {
+    public void handleRefreshStudents() {
         updateTable("");
     }
 
@@ -386,6 +456,44 @@ public class StudentManagerController {
     @FXML
     private void handleAdd(ActionEvent event) {
         System.out.println("Add Student clicked");
-        // TODO: Implement add student functionality
+        try {
+            // Assuming the editor FXML path is similar to faculty editor
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/student_editor.fxml"));
+            Parent content = loader.load();
+
+            // Assuming StudentEditorController exists and has a similar load method
+            StudentEditorController controller = loader.getController();
+            if (controller == null) {
+                System.err.println("ERROR: StudentEditorController is NULL.");
+                 if (errorLabel != null) errorLabel.setText("Error: Could not load student editor controller.");
+                return;
+            }
+
+            // Call a method to load an empty student form
+            // Adjust method name and parameters based on StudentEditorController implementation
+            controller.loadStudent("", "", "", "", "", new ArrayList<>()); // Example parameters
+            System.out.println("DEBUG: StudentEditorController load method called successfully for new student.");
+
+            // Find the content area to replace
+            StackPane contentArea = (StackPane) ((Node) event.getSource()).getScene().lookup("#contentArea");
+            if (contentArea == null) {
+                System.err.println("ERROR: Could not find contentArea.");
+                 if (errorLabel != null) errorLabel.setText("Error: Could not find main content area.");
+                return;
+            }
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+            System.out.println("DEBUG: Student Editor UI added to scene!");
+
+        } catch (NullPointerException npe) {
+             System.err.println("ERROR: Could not find student_editor.fxml. Please ensure the path is correct.");
+             if (errorLabel != null) errorLabel.setText("Error: Student editor file not found.");
+             npe.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("ERROR: Failed to load Student Editor.");
+             if (errorLabel != null) errorLabel.setText("Error loading student editor: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
