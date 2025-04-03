@@ -13,12 +13,15 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EventManagerController implements Initializable {
     private final List<Event> eventList = new ArrayList<>();
+    private final HashMap<Button, Event> buttonMap = new HashMap<>();
     private int page = 0;
     private int pageRowCount = 20;
+    private boolean viewOnlyMode = false; // Flag for view-only mode
 
     @FXML private GridPane tableGrid;
     @FXML private TextField searchEvents;
@@ -31,6 +34,8 @@ public class EventManagerController implements Initializable {
     @FXML private TextField pageText;
     @FXML private TextField rowCountText;
     @FXML private Label errorLabel;
+    @FXML private Button addEventButton; // Assuming an FXML ID like this
+    @FXML private HBox topControlsHBox; // Assuming an FXML ID for the HBox containing add/filters
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,6 +55,9 @@ public class EventManagerController implements Initializable {
 
         pageText.setText("1");
         rowCountText.setText(String.valueOf(pageRowCount));
+
+        // Initial setup based on default mode (not view-only)
+        updateTopControlsVisibility();
     }
 
     private void setupGridPane() {
@@ -66,15 +74,59 @@ public class EventManagerController implements Initializable {
         VBox.setVgrow(tableGrid, Priority.ALWAYS);
         HBox.setHgrow(tableGrid, Priority.ALWAYS);
         
-        // Column constraints with explicit percentages
-        double[] columnWidths = {25, 15, 15, 20, 15, 10}; 
-        tableGrid.getColumnConstraints().clear();
-        for (double width : columnWidths) {
-            ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(width);
-            column.setHgrow(Priority.ALWAYS);
-            column.setFillWidth(true);
-            tableGrid.getColumnConstraints().add(column);
+        // Setup columns based on mode
+        setupColumns();
+    }
+
+    // Method to set view-only mode
+    public void setViewOnlyMode(boolean viewOnly) {
+        this.viewOnlyMode = viewOnly;
+        // Re-setup based on the new mode
+        setupColumns();
+        updateTopControlsVisibility();
+        loadTable(); // Use loadTable which calls updateTable internally
+    }
+
+    // Helper to show/hide Add Event button and potentially filters
+    private void updateTopControlsVisibility() {
+        if (addEventButton != null) {
+            addEventButton.setVisible(!viewOnlyMode);
+            addEventButton.setManaged(!viewOnlyMode);
+        }
+        // Optionally hide filters too if needed in view-only
+        // if (topControlsHBox != null) {
+        //     topControlsHBox.getChildren().forEach(node -> {
+        //         if (!(node instanceof Button && ((Button)node).getText().equals("Add Event"))) {
+        //             node.setVisible(!viewOnlyMode);
+        //             node.setManaged(!viewOnlyMode);
+        //         }
+        //     });
+        // }
+    }
+
+    // Extracted column setup logic
+    private void setupColumns() {
+        tableGrid.getColumnConstraints().clear(); // Clear previous constraints
+
+        ColumnConstraints nameCol = new ColumnConstraints();
+        nameCol.setPercentWidth(viewOnlyMode ? 24 : 22);
+        ColumnConstraints dateCol = new ColumnConstraints();
+        dateCol.setPercentWidth(viewOnlyMode ? 14 : 13);
+        ColumnConstraints timeCol = new ColumnConstraints();
+        timeCol.setPercentWidth(viewOnlyMode ? 14 : 13);
+        ColumnConstraints locationCol = new ColumnConstraints();
+        locationCol.setPercentWidth(viewOnlyMode ? 24 : 22);
+        ColumnConstraints typeCol = new ColumnConstraints();
+        typeCol.setPercentWidth(viewOnlyMode ? 17 : 15);
+        ColumnConstraints statusCol = new ColumnConstraints();
+        statusCol.setPercentWidth(viewOnlyMode ? 7 : 10); // Adjusted status width
+
+        tableGrid.getColumnConstraints().addAll(nameCol, dateCol, timeCol, locationCol, typeCol, statusCol);
+
+        if (!viewOnlyMode) {
+            ColumnConstraints actionCol = new ColumnConstraints();
+            actionCol.setPercentWidth(5);
+            tableGrid.getColumnConstraints().add(actionCol);
         }
     }
 
@@ -86,6 +138,7 @@ public class EventManagerController implements Initializable {
             new Label("Location"),
             new Label("Type"),
             new Label("Status")
+            // Action header added conditionally below
         };
 
         String headerStyle = "-fx-font-weight: bold; -fx-font-size: 14px; " +
@@ -99,9 +152,18 @@ public class EventManagerController implements Initializable {
             tableGrid.add(headers[i], i, 0);
         }
 
+        // Add Actions header only if not view-only
+        if (!viewOnlyMode) {
+            Label actionHeader = new Label("Actions");
+            actionHeader.setStyle(headerStyle);
+            actionHeader.setMaxWidth(Double.MAX_VALUE);
+            GridPane.setHgrow(actionHeader, Priority.ALWAYS);
+            tableGrid.add(actionHeader, headers.length, 0); // Add to the end
+        }
+
         Separator headerSeparator = new Separator();
         headerSeparator.setPadding(new Insets(5, 0, 5, 0));
-        tableGrid.add(headerSeparator, 0, 1, tableGrid.getColumnCount(), 1);
+        tableGrid.add(headerSeparator, 0, 1, tableGrid.getColumnConstraints().size(), 1);
     }
 
     private void addEventRow(Event event, int rowIndex) {
@@ -138,7 +200,7 @@ public class EventManagerController implements Initializable {
             }
         });
 
-        tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1);
+        // tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1); // REMOVE: Don't add the HBox container directly
 
         // Add labels to grid
         for (int i = 0; i < labels.length; i++) {
@@ -146,8 +208,22 @@ public class EventManagerController implements Initializable {
             labels[i].setMaxWidth(Double.MAX_VALUE);
             labels[i].setMaxHeight(Double.MAX_VALUE);
             GridPane.setHgrow(labels[i], Priority.ALWAYS);
-            GridPane.setVgrow(labels[i], Priority.ALWAYS);
+            GridPane.setVgrow(labels[i], Priority.SOMETIMES); // CHANGE: From ALWAYS to SOMETIMES
             tableGrid.add(labels[i], i, rowIndex);
+        }
+
+        // Add Edit button only if not view-only
+        if (!viewOnlyMode) {
+            Button editButton = createStyledButton("Edit");
+            editButton.setOnAction(actionEvent -> handleEdit(event, actionEvent)); // Pass event to handler
+            buttonMap.put(editButton, event); // Map button to event
+
+            HBox actionBox = new HBox(editButton);
+            actionBox.setPadding(new Insets(5, 5, 5, 5));
+            actionBox.setAlignment(javafx.geometry.Pos.CENTER);
+            GridPane.setHalignment(actionBox, javafx.geometry.HPos.CENTER);
+            GridPane.setValignment(actionBox, javafx.geometry.VPos.CENTER);
+            tableGrid.add(actionBox, labels.length, rowIndex); // Add to the last (Actions) column
         }
 
         // Add row separator
@@ -155,7 +231,7 @@ public class EventManagerController implements Initializable {
         rowSeparator.setPadding(new Insets(0));
         rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
         rowSeparator.setMaxWidth(Double.MAX_VALUE);
-        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
+        tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnConstraints().size(), 1);
     }
 
     private void loadSampleData() {
@@ -276,11 +352,12 @@ public class EventManagerController implements Initializable {
         int endIndex = Math.min(startIndex + pageRowCount, filteredEvents.size());
         
         tableGrid.getChildren().clear();
-        addHeaderRow();
-        
-        int rowIndex = 1;
+        addHeaderRow(); // Adds header at row 0, separator at row 1
+
+        // Correct row index calculation starts data rows at index 2
         for (int i = startIndex; i < endIndex; i++) {
-            addEventRow(filteredEvents.get(i), rowIndex++);
+            int gridRowIndex = (i - startIndex) * 2 + 2; // Use same logic as other controllers
+            addEventRow(filteredEvents.get(i), gridRowIndex);
         }
     }
 
@@ -292,7 +369,14 @@ public class EventManagerController implements Initializable {
 
     @FXML
     private void handleEditEvent(ActionEvent event) {
-        // Add logic to open a dialog to edit the selected event
+        // This might be redundant now if the row button handles it.
+        // Keep or remove based on whether there's a separate Edit button outside the table.
+        System.out.println("Edit Event button (outside table) clicked - Check if needed");
+        // Potentially find the selected event and call handleEdit
+        // Event selectedEvent = findSelectedEvent(); // Implement findSelectedEvent logic
+        // if (selectedEvent != null) {
+        //     handleEdit(selectedEvent, event);
+        // }
     }
 
     @FXML
@@ -390,6 +474,70 @@ public class EventManagerController implements Initializable {
                 rowCountText.setText(String.valueOf(pageRowCount));
             }
         }
+    }
+
+    // New handleEdit method for the row button
+    private void handleEdit(Event event, ActionEvent actionEvent) {
+        if (event == null) {
+            System.err.println("ERROR: Cannot edit null event.");
+            if (errorLabel != null) errorLabel.setText("Error: No event selected for editing.");
+            return;
+        }
+        System.out.println("Edit button clicked for event: " + event.getName());
+
+        // TODO: Implement loading the Event Editor FXML
+        // Similar to StudentManagerController.handleEdit or FacultyManagerController.handleEdit
+        // Requires an EventEditorController and event_editor.fxml
+        try {
+            // Example: (Replace with actual FXML path and controller)
+            // FXMLLoader loader = new FXMLLoader(getClass().getResource("/assets/fxml/admin/event_editor.fxml"));
+            // Parent content = loader.load();
+            // EventEditorController controller = loader.getController();
+            // if (controller != null) {
+            //     controller.loadEvent(event); // Assuming a loadEvent method exists
+            // }
+            // StackPane contentArea = (StackPane) ((Node) actionEvent.getSource()).getScene().lookup("#contentArea");
+            // if (contentArea != null) {
+            //     contentArea.getChildren().clear();
+            //     contentArea.getChildren().add(content);
+            // } else {
+            //     System.err.println("Could not find content area");
+            // }
+            if (errorLabel != null) errorLabel.setText("Edit functionality for event '" + event.getName() + "' not fully implemented yet.");
+
+        } catch (Exception e) {
+            System.err.println("ERROR: Failed to load Event Editor.");
+            if (errorLabel != null) errorLabel.setText("Error loading editor: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // --- Add createStyledButton Method --- (Copied/Adapted from other managers)
+    private Button createStyledButton(String text) {
+        Button button = new Button(text);
+        // Style to match Faculty/Student managers
+        button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: white; -fx-font-size: 12px;");
+        button.setMinWidth(40);
+        button.setMinHeight(25);
+
+        // Hover/Press effects
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #B73A2C; -fx-text-fill: white; -fx-font-size: 12px; -fx-cursor: hand;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: white; -fx-font-size: 12px;"));
+        button.setOnMousePressed(e -> button.setStyle("-fx-background-color: #7B1609; -fx-text-fill: white; -fx-font-size: 12px;"));
+        button.setOnMouseReleased(e -> {
+            if (button.isHover()) {
+                button.setStyle("-fx-background-color: #B73A2C; -fx-text-fill: white; -fx-font-size: 12px;");
+            } else {
+                button.setStyle("-fx-background-color: #941B0C; -fx-text-fill: white; -fx-font-size: 12px;");
+            }
+        });
+
+        return button;
+    }
+
+    private void loadTable() {
+        // This method should ideally just trigger an update based on current filters/search
+        updateTable(searchEvents.getText() != null ? searchEvents.getText().trim() : "");
     }
 
     // Inner class for Event model
