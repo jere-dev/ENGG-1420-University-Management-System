@@ -4,7 +4,6 @@ import ca.uoguelph.frontend.objects.table.row.TableRow;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
@@ -12,52 +11,44 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Encapsulates the features of JavaFX {@code GridPane} to display a table of interactive content inside a JavaFX container object.
- * <p>
- * A {@code TablePane} receives {@code TableRow} objects including JavaFX nodes and dynamically
- * updates when {@code TableRow} objects are added, edited, or removed. However, dynamic updates do not exist
- * for objects inside a {@code TableRow} that are added, edited, or removed.
+ * An abstract base class representing a table layout using a {@code GridPane}.
+ * This class provides functionality for managing rows and columns in a table format,
+ * with configurable constraints for each column.
  *
- * @see TableRow
- * @author Eric Cao
+ * @param <T> The type of Region used as the base for this table
+ * @author 180Sai
  */
-public final class ScaledTable {
-    public final GridPane tableGrid; // TODO: remove
-    private final int columnCount;
-    private int rowCount = 0;
+public abstract class ScaledTable<T extends Region> {
+    protected final GridPane tableGrid = new GridPane();
+    protected final int columnCount;
+    protected int rowCount = 0;
 
-    private final ColumnConstraints[] constraints;
+    protected final ColumnConstraints[] constraints;
 
-    private final List<TableRow> rowList = new ArrayList<>();
+    protected final List<TableRow> rowList = new ArrayList<>();
 
-    public ScaledTable(ScrollPane pane, int columnCount) {
-        if (!pane.isFitToWidth()) pane.setFitToWidth(true); // if user has not set option then it is automatically done
-
+    /**
+     * Constructs a new Table with the specified region and column count.
+     *
+     * @param region The region to use as the base for this table
+     * @param columnCount The number of columns in the table
+     */
+    protected ScaledTable(T region, int columnCount) {
         this.columnCount = columnCount;
-
-        tableGrid = new GridPane();
-        tableGrid.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        tableGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
-
-        setHGap(8); setVGap(8);
 
         // constraints
         for (int i = 0; i < columnCount; i++)
             tableGrid.getColumnConstraints().add(new ColumnConstraints());
 
+        tableGrid.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        tableGrid.setPrefWidth(Region.USE_COMPUTED_SIZE);
+
+        setHGap(8); setVGap(8);
+
         constraints = tableGrid.getColumnConstraints().toArray(new ColumnConstraints[0]);
-
-        pane.setContent(tableGrid);
     }
 
-    public ScaledTable(ScrollPane pane, TableRow[] rows) {
-        this(pane, rows[0].size());
-        for (TableRow row : rows) {
-            addRow(row);
-        }
-    }
-
-    private void configure(TableRow row) {
+    protected void configure(TableRow row) {
         for (Node node : row) if (tableGrid.getChildren().contains(node)) {
             TableMemberConfig config = row.configure(node);
             config.setFinal();
@@ -72,13 +63,10 @@ public final class ScaledTable {
         }
     }
 
-    public int length() {
-        return rowCount;
-    }
+    public int length() { return rowCount; }
 
-    public int width() {
-        return columnCount;
-    }
+    public int width() { return columnCount; }
+
 
     public Insets padding() {
         return tableGrid.getPadding();
@@ -96,9 +84,7 @@ public final class ScaledTable {
         return tableGrid.getVgap();
     }
 
-    public void setVGap(double vGap) {
-        tableGrid.setVgap(vGap);
-    }
+    public void setVGap(double vGap) {tableGrid.setVgap(vGap);}
 
     public int columnOf(Node node) {
         return GridPane.getColumnIndex(node);
@@ -115,6 +101,8 @@ public final class ScaledTable {
     public void setGridLinesVisible(boolean isVisible) {
         tableGrid.setGridLinesVisible(isVisible);
     }
+
+    public TableRow getRow(int i) { return rowList.get(i); }
 
     public TableRow getRow(Node node) { return rowList.get(rowOf(node)); }
 
@@ -218,6 +206,11 @@ public final class ScaledTable {
         constraints[column].setHalignment(hPos);
     }
 
+    /**
+     * Adds a row to the table.
+     *
+     * @param row The TableRow to add
+     */
     public void addRow(TableRow row) {
         Node[] nodes = new Node[columnCount];
         row.toArray(nodes);
@@ -241,6 +234,26 @@ public final class ScaledTable {
         rowCount++;
     }
 
+    /**
+     * Removes a row from the table.
+     *
+     * @param row The TableRow to remove
+     */
+    public void removeRow(TableRow row) {
+        int removedRow = rowList.indexOf(row);
+
+        tableGrid.getChildren().removeAll(row);
+        rowList.remove(row);
+
+        for (Node n : tableGrid.getChildren()) if (rowOf(n) > removedRow) {
+            GridPane.setRowIndex(n, GridPane.getColumnIndex(n));
+        }
+        rowCount--;
+    }
+
+    /**
+     * Clears all rows from the table.
+     */
     public void clear() {
         tableGrid.getChildren().clear();
         rowList.clear();

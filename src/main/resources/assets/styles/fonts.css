@@ -1,0 +1,38 @@
+@font-face {
+    src: url("../font/Bree_Serif/BreeSerif-Regular.ttf");
+}
+
+@font-face {
+    src: url("../font/Atkinson_Hyperlegible_Next/AtkinsonHyperlegibleNext-VariableFont_wght.ttf");
+}
+
+/* If I understood how the CSS language in JavaFX works, I would use it a hell of a lot more. - Eric */
+
+* {
+    licorice: #220921;
+    aubergine: #411219;
+    blood-red: #621708;
+    penn-red: #921B0C;
+    rust: #BC3908;
+    orange-web: #F6AA1C;
+}
+
+.graduate-font {
+    -fx-font-family: 'Graduate';
+    -fx-text-fill: aubergine;
+}
+
+.system-font {
+    -fx-font-family: 'System';
+    -fx-text-fill: rust;
+}
+
+.bree-font {
+    -fx-font-family: 'Bree Serif';
+    -fx-text-fill: orange-web;
+}
+
+.atkinson-font {
+    -fx-font-family: 'Atkinson Hyperlegible Next';
+    -fx-text-fill: penn-red;
+}
