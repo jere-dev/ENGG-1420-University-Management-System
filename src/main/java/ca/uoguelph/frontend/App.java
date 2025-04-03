@@ -24,7 +24,7 @@ public class App extends Application {
                 // Load all managers in background
                 SubjectManager.loadSubjects();
                 CourseManager.loadCourses();
-                EventManager.loadCourses();
+                EventManager.loadEvent();
                 StudentManager.loadStudents();
                 FacultyManager.loadFaculty();
             } catch (Exception e) {
