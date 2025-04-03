@@ -6,50 +6,75 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
 
+import java.util.function.Function;
+
 /**
- * A {@code ChangeListener} implementation that filters items in a {@code ComboBox} based on user input.
- * This class provides real-time filtering of combo box items as the user types, showing only items
- * that start with the entered text (case-insensitive comparison).
+ * A {@link ChangeListener} implementation that provides real-time filtering for items in a {@link ComboBox}
+ * as the user types. The filter matches items based on whether they contain the input text (case-insensitive),
+ * while maintaining the original list of items.
  *
- * <p>The filter maintains the original list of items while displaying only matching items in the
- * combo box dropdown. When an item is selected and matches the current input exactly, the filter
- * is temporarily disabled to show all items.
+ * <p>Key features:
+ * <ul>
+ *   <li>Dynamic filtering as the user types</li>
+ *   <li>Case-insensitive matching</li>
+ *   <li>Preservation of original item list</li>
+ *   <li>Automatic dropdown management</li>
+ *   <li>Bypass capability for programmatic changes</li>
+ * </ul>
+ *
+ * <p>When an exact match exists between the input text and an item, the filter is temporarily disabled
+ * to show all items. The dropdown visibility and row count are automatically adjusted based on the
+ * number of matching items.
+ *
+ * @param <T> the type of elements in the ComboBox
+ * @author  180Sai
  */
-public class ComboBoxFilter implements ChangeListener<String> {
-    private final ComboBox<String> box;
+public class ComboBoxFilter<T> implements ChangeListener<String> {
+    private final ComboBox<T> box;
+    private final Function<T, String> searchTerm;
     private final int maxVisibleRowCount;
-    private final FilteredList<String> items;
+    private final FilteredList<T> items;
 
     /**
-     * Constructs an {@code InputFilter} with the specified combo box and filtered list.
-     * The combo box will display items from the provided filtered list.
+     * Constructs a {@code ComboBoxFilter} with the specified combo box, filtered list, and search term function.
      *
-     * @param box the combo box to which this filter will be applied
-     * @param items the filtered list containing items to be displayed in the combo box
+     * @param box the combo box to filter
+     * @param items the pre-filtered list of items (will be wrapped in a FilteredList)
+     * @param searchTerm function that extracts the searchable string from each item
      */
-    public ComboBoxFilter(ComboBox<String> box, FilteredList<String> items) {
+    public ComboBoxFilter(ComboBox<T> box, FilteredList<T> items, Function<T, String> searchTerm) {
         box.getEditor().textProperty().removeListener(this);
 
         this.box = box;
         box.setItems(items);
         maxVisibleRowCount = box.getVisibleRowCount();
+
         this.items = items;
+        this.searchTerm = searchTerm;
 
         box.getEditor().textProperty().addListener(this);
     }
 
     /**
-     * Constructs an {@code InputFilter} with the specified combo box and observable list.
-     * The observable list is wrapped in a {@code FilteredList} object to filter items in the {@code ComboBox}.
+     * Constructs a {@code ComboBoxFilter} with the specified combo box, observable list, and search term function.
+     * The observable list will be automatically wrapped in a {@link FilteredList}.
      *
-     * @param box the combo box to which this filter will be applied
-     * @param items the observable list containing items to be filtered
-     * @throws NullPointerException if either parameter is null
+     * @param box the combo box to filter
+     * @param items the observable list of items to filter
+     * @param searchTerm function that extracts the searchable string from each item
      */
-    public ComboBoxFilter(ComboBox<String> box, ObservableList<String> items) {
-        this(box, new FilteredList<>(items));
+    public ComboBoxFilter(ComboBox<T> box, ObservableList<T> items, Function<T, String> searchTerm) {
+        this(box, new FilteredList<>(items), searchTerm);
     }
 
+    /**
+     * Temporarily bypasses the filter listener to execute the given action without triggering filtering.
+     * This is useful for programmatic changes that shouldn't invoke the filter logic.
+     *
+     * <p>After executing the action, the listener is re-enabled and the combo box state is refreshed.
+     *
+     * @param r the action to execute while the listener is disabled
+     */
     public void bypassListener(Runnable r) {
         box.getEditor().textProperty().removeListener(this);
         r.run();
@@ -62,14 +87,18 @@ public class ComboBoxFilter implements ChangeListener<String> {
     }
 
     /**
-     * Invoked when the text in the combo box editor changes and performs the following:
-     * <ul>
-     *   <li>If an item is selected and matches the current input exactly, perform no filtering.</li>
-     *   <li>Otherwise, filter items to show only those starting with the input text (case-insensitive).</li>
-     *   <li>Show the dropdown with filtered results.</li>
-     * </ul>
+     * Handles text changes in the combo box editor by:
+     * <ol>
+     *   <li>Removing the listener to prevent recursion</li>
+     *   <li>Applying the filter if no exact match exists</li>
+     *   <li>Restoring the listener</li>
+     *   <li>Adjusting dropdown visibility and row count</li>
+     * </ol>
      *
-     * @param observable the observable string value (combo box editor text)
+     * <p>The filter shows items containing the input text (case-insensitive). If all items are filtered out,
+     * the dropdown is hidden. Otherwise, it's shown with an appropriate number of visible rows.
+     *
+     * @param observable the observed text property
      * @param oldValue the previous text value
      * @param value the new text value
      */
@@ -80,8 +109,8 @@ public class ComboBoxFilter implements ChangeListener<String> {
         box.getEditor().textProperty().removeListener(this);
 
         // If the value of the text exists exactly in the filter then don't filter
-        if (!box.getItems().contains(value)) {
-            items.setPredicate(item -> item.toUpperCase().contains(value.toUpperCase()));
+        if (box.getItems().stream().noneMatch(item -> searchTerm.apply(item).equals(value))) {
+            items.setPredicate(item -> searchTerm.apply(item).toUpperCase().contains(value.toUpperCase()));
 
             box.getEditor().setText(value);
         }
