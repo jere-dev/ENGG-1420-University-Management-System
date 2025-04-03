@@ -2,7 +2,7 @@ package ca.uoguelph.frontend.admin;
 
 import ca.uoguelph.backend.*;
 import ca.uoguelph.frontend.objects.DisplayError;
-import ca.uoguelph.frontend.objects.filter.ComboBoxFilter;
+import ca.uoguelph.frontend.objects.filter.ComboBoxStringFilter;
 import ca.uoguelph.frontend.objects.SectionEntry;
 import ca.uoguelph.frontend.objects.controller.AbstractAdminEditorController;
 import javafx.collections.FXCollections;
@@ -22,6 +22,38 @@ import javafx.scene.layout.StackPane;
 import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 
+/**
+ * Controller class for managing course editing operations in the admin interface.
+ * Provides functionality for creating, viewing, editing, and deleting courses,
+ * including their associated sections.
+ *
+ * <p>Key features include:
+ * <ul>
+ *   <li>Full CRUD operations for courses</li>
+ *   <li>Section management through embedded table view</li>
+ *   <li>Form validation and error handling</li>
+ *   <li>Integration with backend CourseManager</li>
+ *   <li>Two modes of operation: create new or edit existing</li>
+ * </ul>
+ *
+ * <p>The controller implements {@link DisplayError} for consistent error reporting
+ * and extends {@link AbstractAdminEditorController} for common admin editor functionality.
+ *
+ * <p>Layout is defined in corresponding FXML file and includes:
+ * <ul>
+ *   <li>Form fields for all course attributes</li>
+ *   <li>Filterable subject code selection</li>
+ *   <li>Section management table</li>
+ *   <li>Action buttons (Save, Delete, Cancel)</li>
+ * </ul>
+ *
+ * @see Course
+ * @see CourseManager
+ * @see SectionEntry
+ * @see AbstractAdminEditorController
+ * @see DisplayError
+ * @author 180Sai
+ */
 public class CourseEditorController extends AbstractAdminEditorController implements DisplayError {
     private CourseManagerController parentController;
 
@@ -40,7 +72,9 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     private final ObservableList<String> sbjCodeList = FXCollections.observableList(
             SubjectManager.getSubjects().stream().map(Subject::getCode).toList()
     );
-    private ComboBoxFilter sbjFilter;
+
+    // wrap ComboBox in filter
+    private ComboBoxStringFilter sbjFilter;
     private SectionEntry lastSelected = null;
 
     public void loadEmpty(CourseManagerController parentCont) {
@@ -87,7 +121,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
         seatsColumn.setCellValueFactory(new PropertyValueFactory<>("seats"));
 
         // add filtering in combo box
-        sbjFilter = new ComboBoxFilter(sbjComboBox, sbjCodeList);
+        sbjFilter = new ComboBoxStringFilter(sbjComboBox, sbjCodeList);
 
         // set save button to enable, delete button to disable if data is changed
         for (TextInputControl control : new TextInputControl[]{
@@ -123,7 +157,7 @@ public class CourseEditorController extends AbstractAdminEditorController implem
     }
 
     private void handleSectionOnAction(boolean isAction) {
-        System.out.println("attempt is " + isAction);
+//        System.out.println("attempt is " + isAction);
         SectionEntry ns = sectionTable.getSelectionModel().getSelectedItem();
         if (lastSelected != null && lastSelected.equals(ns) && isAction)
             handleEditSection(ns.getSection());
@@ -192,8 +226,8 @@ public class CourseEditorController extends AbstractAdminEditorController implem
 
             SectionEditorController controller = loader.getController();
             // TODO: connect to section editor
-//            if (sec == null) controller.loadEmpty(this);
-//            else controller.loadSection(this, c);
+            if (sec == null) controller.loadCourse(this, originalCourse);
+            else controller.loadSection(this, originalCourse, sec);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(content);

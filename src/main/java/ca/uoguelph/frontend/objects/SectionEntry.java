@@ -3,6 +3,11 @@ package ca.uoguelph.frontend.objects;
 import ca.uoguelph.backend.Section;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * A class to wrap the fields of a {@code Section} with {@code SimpleStringProperty}.
+ *
+ * @author 180Sai
+ */
 public class SectionEntry {
     private final SimpleStringProperty code = new SimpleStringProperty(),
             term = new SimpleStringProperty(),

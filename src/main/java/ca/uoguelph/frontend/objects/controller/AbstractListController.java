@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 
 /**
  * Common methods that would be found in a list controller such as {@code SubjectListController} and {@code CourseCatalogController}.
- * @author  180Sai
+ * @author 180Sai
  */
 public abstract class AbstractListController {
     /**

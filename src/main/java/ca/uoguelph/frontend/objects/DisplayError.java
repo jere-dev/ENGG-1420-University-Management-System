@@ -25,7 +25,7 @@ import java.util.function.BooleanSupplier;
  * <p>
  * By implementing this function, the controller is guaranteed to verify and
  * display errors to a user elsewhere than the terminal.
- * @author  180Sai
+ * @author 180Sai
  */
 public interface DisplayError {
     Logger log = LogManager.getLogger(DisplayError.class);
