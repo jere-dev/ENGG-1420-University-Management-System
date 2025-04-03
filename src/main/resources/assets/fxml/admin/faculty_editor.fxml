@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="530.0" prefWidth="554.0" style="-fx-padding: 30; -fx-background-color: white;"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ca.uoguelph.frontend.admin.FacultyEditorController">
+
+    <HBox spacing="10" style="-fx-padding: 0 0 20 0;">
+        <ImageView fitHeight="60.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../images/unilogo.png" />
+            </image>
+        </ImageView>
+    </HBox>
+
+    <AnchorPane prefHeight="450.0" prefWidth="520.0">
+        <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#941b0c" height="2.0" layoutX="3.0" layoutY="32.0" stroke="TRANSPARENT" strokeType="INSIDE" width="520.0" />
+            <Label layoutX="3.0" layoutY="8.0" prefHeight="15.0" prefWidth="229.0" text="Faculty Editor" textFill="#941b0c">
+                <font><Font size="16.0" /></font>
+            </Label>
+
+            <!-- Faculty Name -->
+            <VBox layoutX="223.0" layoutY="50.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="Faculty Name" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="nameField" prefHeight="40.0" prefWidth="236.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="nameErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Faculty ID -->
+            <VBox layoutX="223.0" layoutY="119.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="ID" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="idField" prefHeight="40.0" prefWidth="233.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="idErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Faculty Password -->
+            <VBox layoutX="433.0" layoutY="50.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="Faculty Password" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="passwordField" prefHeight="40.0" prefWidth="295.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="passwordErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Office Location -->
+            <VBox layoutX="433.0" layoutY="119.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="Office Location" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="officeLocationField" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="officeLocationErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Email -->
+            <VBox layoutX="17.0" layoutY="188.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="Email" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="emailField" prefHeight="40.0" prefWidth="217.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="emailErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Research Interest -->
+            <VBox layoutX="223.0" layoutY="188.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="Research Interest" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="researchInterestField" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="researchInterestErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Degree -->
+            <VBox layoutX="433.0" layoutY="188.0" prefHeight="86.0" prefWidth="171.0" spacing="5">
+                <Label text="Degree" textFill="#333333">
+                    <font><Font size="13.0" /></font>
+                </Label>
+                <TextField fx:id="degreeField" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-radius: 5;" />
+                <Label fx:id="degreeErrorLabel" style="-fx-text-fill: #941b0c;" text="" />
+            </VBox>
+
+            <!-- Buttons: Save & Delete -->
+            <HBox layoutX="16.0" layoutY="312.0" spacing="15" style="-fx-padding: 20 0 0 0;">
+                <Button onAction="#handleSave" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F6AA1C; -fx-background-radius: 5; -fx-cursor: hand;" text="Save" textFill="#941b0c">
+                    <font><Font size="14.0" /></font>
+                </Button>
+                <Button onAction="#handleDelete" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #941b0c; -fx-background-radius: 5; -fx-cursor: hand;" text="Delete" textFill="#F6AA1C">
+                    <font><Font size="14.0" /></font>
+                </Button>
+            </HBox>
+        </children>
+    </AnchorPane>
+</VBox>
