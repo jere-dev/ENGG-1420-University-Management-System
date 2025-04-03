@@ -70,6 +70,8 @@
                            <Font name="Roboto Regular" size="13.0" />
                         </font>
                      </Label>
+                     <Label text="Password:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                     <TextField fx:id="passwordField" editable="false" style="-fx-font-family: 'Roboto'" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                      <TextField fx:id="lastNameField" editable="false" style="-fx-font-family: 'Roboto'" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="2">
                         <font>
@@ -91,7 +93,7 @@
                      <TextField fx:id="emailField" style="-fx-font-family: 'Roboto'" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      <AnchorPane GridPane.columnIndex="2" GridPane.rowIndex="4">
                         <children>
-                           <Button layoutX="0.0" layoutY="3.0" style="-fx-background-color: #E49B0F; -fx-text-fill: white; -fx-font-size: 11;" text="CHANGE PASSWORD">
+                           <Button fx:id="handleEditProfile" layoutX="0.0" layoutY="3.0" style="-fx-background-color: #E49B0F; -fx-text-fill: white; -fx-font-size: 11;" text="CHANGE PASSWORD">
                               <font>
                                  <Font name="Roboto Medium" size="11.0" />
                               </font>

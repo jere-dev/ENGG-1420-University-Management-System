@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class EventManager {
     private static ArrayList<Event> events = new ArrayList<Event>();
 //load course
-    public static void loadCourses(){
+    public static void loadEvent(){
         var arar = Database.loadStrings(4);
         for(var pair : arar){
             var ar = pair.getKey();

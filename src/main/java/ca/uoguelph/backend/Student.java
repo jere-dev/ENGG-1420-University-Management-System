@@ -36,7 +36,11 @@ public class Student extends User {
         this.progress = (float)((int)(progress*100));
         this.courses =  courses;
     }
-
+    //i made this so admin can whatever
+    public void updateContactDetails(String address, String telephone) {
+        this.address = address;
+        this.telephone = telephone;
+    }
     public String getAddress() {
         return address;
     }

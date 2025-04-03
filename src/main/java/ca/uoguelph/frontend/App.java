@@ -15,17 +15,16 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
-
     private class backgroundLoad extends Thread {
         public void run() {
             try {
                 // Load database first since other operations depend on it
                 Database.loadExcelSheet(getClass().getResource("/database/UMS_Data.xlsx").getPath());
-                
+
                 // Load all managers in background
                 SubjectManager.loadSubjects();
                 CourseManager.loadCourses();
-                EventManager.loadCourses();
+                EventManager.loadEvent();
                 StudentManager.loadStudents();
                 FacultyManager.loadFaculty();
             } catch (Exception e) {
@@ -33,7 +32,7 @@ public class App extends Application {
             }
         }
     }
-    
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Start background loading immediately
