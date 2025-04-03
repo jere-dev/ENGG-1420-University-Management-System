@@ -68,7 +68,7 @@
                     <Region HBox.hgrow="ALWAYS" />
                     <TextField fx:id="rowCountText" alignment="CENTER" onKeyPressed="#handleKeyCount" 
                                prefWidth="90.0" promptText="40 per page"/>
-                    <Button onAction="#handleAdd" 
+                    <Button fx:id="addFacultyButton" onAction="#handleAdd"
                             style="-fx-background-color: #941B0C; -fx-text-fill: #F6AA1C; 
                                   -fx-min-width: 120; -fx-min-height: 30;" 
                             text="ADD FACULTY +">
