@@ -7,4 +7,4 @@ public class Main {
         System.out.println(LocalDateTime.now().toString());
         App.launch(App.class, args);
     }
- }
+}

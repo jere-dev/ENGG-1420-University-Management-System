@@ -51,6 +51,7 @@ public class Database {
             outputStream = new FileOutputStream(Wpath);
             workbook.write(outputStream);
             workbook.close();
+            outputStream.flush();
             outputStream.close();
             loadExcelSheet(Wpath);
             System.out.println("runs");
