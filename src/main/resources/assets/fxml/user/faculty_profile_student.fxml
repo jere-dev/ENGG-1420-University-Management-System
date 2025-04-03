@@ -10,13 +10,13 @@
 
 <!-- STUDENT: View profiles of faculty teaching their courses. -->
 
-<VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.user.FacultyProfileStudentController">
+<VBox prefHeight="365.0" prefWidth="459.0" spacing="20" style="-fx-padding: 20; -fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.uoguelph.frontend.user.FacultyProfileStudentController">
     <HBox spacing="10" style="-fx-alignment: center-left;">
         <Text style="-fx-font-size: 24; -fx-font-weight: bold; -fx-fill: #333333;" text="Faculty Profile" />
     </HBox>
 
-    <HBox spacing="20" style="-fx-alignment: center-left;">
-        <ImageView fitHeight="100" fitWidth="100" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);">
+    <HBox prefHeight="169.0" prefWidth="440.0" spacing="20" style="-fx-alignment: center-left;">
+        <ImageView fitHeight="145.0" fitWidth="146.0">
             <image>
                 <Image url="@../../images/Default_pfp.jpg" />
             </image>

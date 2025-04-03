@@ -14,6 +14,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class StudentManagerController {
     private final List<Student> studentList = new ArrayList<>();
@@ -176,7 +177,10 @@ public class StudentManagerController {
         rowContainer.setMaxWidth(Double.MAX_VALUE);
         rowContainer.getStyleClass().add("table-row");
         rowContainer.setStyle("-fx-background-color: transparent;");
-        
+
+        Button editButton = createStyledButton("Edit");
+        editButton.setOnAction(event -> handlingEdit(student));
+
         Label[] labels = {
             new Label(student.getID()),
             new Label(student.getName()),
@@ -202,10 +206,10 @@ public class StudentManagerController {
                 label.setStyle(labelStyle);
             }
         });
-        
+
         // Add the row container to the grid
         tableGrid.add(rowContainer, 0, rowIndex, tableGrid.getColumnCount(), 1);
-        
+
         // Add labels to the row container
         for (int i = 0; i < labels.length; i++) {
             labels[i].setStyle(labelStyle);
@@ -221,7 +225,9 @@ public class StudentManagerController {
         rowSeparator.setStyle("-fx-background-color: #E0E0E0;");
         rowSeparator.setMaxWidth(Double.MAX_VALUE);
         tableGrid.add(rowSeparator, 0, rowIndex + 1, tableGrid.getColumnCount(), 1);
+
     }
+
 
     private String formatCourses(List<Pair<String, String>> courses) {
         if (courses == null || courses.isEmpty()) {
@@ -279,6 +285,47 @@ public class StudentManagerController {
         if (student != null) {
             System.out.println("Edit student: " + student.getName());
         }
+    }
+
+    private void handlingEdit(Student student){
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Edit Student");
+        dialog.setHeaderText("Editing " + student.getName());
+
+        // Set the button types
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        // Create fields for address & telephone
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField addressField = new TextField(student.getAddress());
+        TextField phoneField = new TextField(student.getTelephone());
+
+        grid.add(new Label("Address:"), 0, 0);
+        grid.add(addressField, 1, 0);
+        grid.add(new Label("Phone:"), 0, 1);
+        grid.add(phoneField, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Converting to pair af
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                return new Pair<>(addressField.getText(), phoneField.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(newDetails -> {
+            // Using the new updateContactDetails method
+            student.updateContactDetails(newDetails.getKey(), newDetails.getValue());
+            updateTable(searchField.getText()); // Refresh table
+        });
     }
 
     @FXML
@@ -388,4 +435,6 @@ public class StudentManagerController {
         System.out.println("Add Student clicked");
         // TODO: Implement add student functionality
     }
+
+
 }

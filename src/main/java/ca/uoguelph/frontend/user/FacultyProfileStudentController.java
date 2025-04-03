@@ -33,7 +33,7 @@ public class FacultyProfileStudentController {
     //private Button backButton;
 
     private Faculty faculty;
-
+    @FXML
     private void initialize(){
         //run when file load lol
     }
@@ -50,7 +50,7 @@ public class FacultyProfileStudentController {
             facultyImageView.setImage(new Image(faculty.getProfilePhoto()));
         }
         else{
-            facultyImageView.setImage(new Image("Default_pfp.jpg"));
+            facultyImageView.setImage(new Image(getClass().getResource("/images/Default_pfp.jpg").toString()));
         }
        ArrayList<Pair<String, String>> facultyCoursesTaught = new ArrayList<>();//make a new array list
 
