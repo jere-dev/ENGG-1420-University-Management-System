@@ -32,7 +32,7 @@
                   <left>
                      <VBox BorderPane.alignment="CENTER">
                         <children>
-                           <Label style="-fx-font-size: 20px;" stylesheets="@../../styles/colours.css" text="Course Name">
+                           <Label style="-fx-font-size: 20px;" stylesheets="@../../styles/fonts.css" text="Course Name">
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                               </padding>
@@ -61,7 +61,7 @@
                   <children>
                      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                         <children>
-                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 14px;" stylesheets="@../../styles/colours.css" text="subject code" wrapText="true">
+                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 14px;" stylesheets="@../../styles/fonts.css" text="subject code" wrapText="true">
                               <font>
                                  <Font size="14.0" />
                               </font>
@@ -74,7 +74,7 @@
                      </VBox>
                      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                         <children>
-                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 14px;" stylesheets="@../../styles/colours.css" text="course code" wrapText="true">
+                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 14px;" stylesheets="@../../styles/fonts.css" text="course code" wrapText="true">
                               <font>
                                  <Font size="14.0" />
                               </font>
@@ -95,7 +95,7 @@
                                  <Insets left="5.0" right="5.0" />
                               </padding>
                               <stylesheets>
-                                 <URL value="@../../styles/colours.css" />
+                                 <URL value="@../../styles/fonts.css" />
                                  <URL value="@../../styles/styles.css" />
                               </stylesheets>
                            </Label>
@@ -112,7 +112,7 @@
                                  <Insets left="5.0" right="5.0" />
                               </padding>
                               <stylesheets>
-                                 <URL value="@../../styles/colours.css" />
+                                 <URL value="@../../styles/fonts.css" />
                                  <URL value="@../../styles/styles.css" />
                               </stylesheets>
                            </Label>
@@ -129,7 +129,7 @@
                                  <Insets left="5.0" right="5.0" />
                               </padding>
                               <stylesheets>
-                                 <URL value="@../../styles/colours.css" />
+                                 <URL value="@../../styles/fonts.css" />
                                  <URL value="@../../styles/styles.css" />
                               </stylesheets>
                            </Label>
@@ -138,7 +138,7 @@
                      </VBox>
                      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                         <children>
-                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 14px;" stylesheets="@../../styles/colours.css" text="credits" wrapText="true">
+                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 14px;" stylesheets="@../../styles/fonts.css" text="credits" wrapText="true">
                               <font>
                                  <Font size="14.0" />
                               </font>
@@ -155,7 +155,7 @@
                   <children>
                      <VBox>
                         <children>
-                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 13px;" stylesheets="@../../styles/colours.css" text="description" wrapText="true">
+                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="19.0" style="-fx-font-family: 'Graduate'; -fx-font-size: 13px;" stylesheets="@../../styles/fonts.css" text="description" wrapText="true">
                               <font>
                                  <Font size="14.0" />
                               </font>
@@ -180,7 +180,7 @@
                                  <Insets left="5.0" right="5.0" />
                               </padding>
                               <stylesheets>
-                                 <URL value="@../../styles/colours.css" />
+                                 <URL value="@../../styles/fonts.css" />
                                  <URL value="@../../styles/styles.css" />
                               </stylesheets>
                            </Label>
